@@ -17,10 +17,10 @@ func FailMsg(errorCode int, msg string) Response {
 	return Resp(errorCode, msg, nil)
 }
 func Succeed() Response {
-	return Resp(CODE_OK, GetMsg(CODE_OK), nil)
+	return Resp(CodeOK, GetMsg(CodeOK), nil)
 }
 func SetData(data interface{}) Response {
-	return Resp(CODE_OK, GetMsg(CODE_OK), data)
+	return Resp(CodeOK, GetMsg(CodeOK), data)
 }
 func Resp(errorCode int, msg string, data interface{}) Response {
 	res := Response{

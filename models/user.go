@@ -22,12 +22,8 @@ func (u *User) TableName() string {
 	return "lin_user"
 }
 
+//var o orm.Ormer
 func init() {
-	//beego.AppConfig.String("mysqluser")
-	//beego.AppConfig.String("mysqlpass")
-	//beego.AppConfig.String("mysqlurls")
-	//beego.AppConfig.String("mysqldb")
-	orm.RegisterDataBase("default", "mysql", "root:123456@tcp(112.74.168.98:3006)/lin-cms?charset=utf8", 30)
 	orm.RegisterModel(new(User))
 }
 

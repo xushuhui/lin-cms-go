@@ -10,5 +10,4 @@ func BindJson(body []byte, obj interface{}) {
 	if err = json.Unmarshal(body, &obj); err != nil {
 		fmt.Println(err)
 	}
-
 }
