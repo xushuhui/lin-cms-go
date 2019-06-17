@@ -19,7 +19,6 @@ type user struct {
 func (c *MainController) Get() {
 	c.Data["Website"] = c.GetString("name")
 	c.Data["Email"] = "123@qq.com"
-	c.TplName = "index.tpl"
 }
 func (c *MainController) Post() {
 	var u *user
