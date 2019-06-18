@@ -1,12 +1,40 @@
 package controllers
 
 import (
+	"fmt"
 	"github.com/astaxie/beego"
+	"lin-cms-beego/core"
+	"lin-cms-beego/models"
+	"lin-cms-beego/utils"
 )
 
 // UserController operations for User
 type UserController struct {
 	beego.Controller
+}
+
+type user struct {
+	Nickname string `json:"nickname"`
+	Password string `json:"password"`
+}
+
+//登录
+func (c *UserController) Login() {
+	var u *user
+	utils.BindJson(c.Ctx.Input.RequestBody, &u)
+	userModel, _ := models.GetUserByNickname(u.Nickname)
+	fmt.Println(userModel)
+	if userModel == nil {
+		c.Data["json"] = core.Fail(core.CodeNoUser)
+		c.ServeJSON()
+	}
+	//fmt.Println(utils.MakePassword("12345","test"))
+	if !utils.ValidatePassword(u.Password, "test", userModel.Password) {
+		c.Data["json"] = core.Fail(core.CodeErrorPassword)
+		c.ServeJSON()
+	}
+	c.Data["json"] = core.SetData(userModel)
+	c.ServeJSON()
 }
 
 // URLMapping ...

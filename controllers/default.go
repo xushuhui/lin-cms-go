@@ -11,10 +11,6 @@ import (
 type MainController struct {
 	beego.Controller
 }
-type user struct {
-	Mobile   string `json:"mobile"`
-	Password string `json:"password"`
-}
 
 func (c *MainController) Get() {
 	c.Data["Website"] = c.GetString("name")

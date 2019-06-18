@@ -11,11 +11,11 @@ import (
 
 type User struct {
 	Id       int    `json:"id"`
-	Nickname string `orm:"size(128)"json:"name"`
-	Password string `orm:"size(128)"json:"password"`
+	Nickname string `orm:"size(128)",json:"nickname"`
+	Password string `orm:"size(128)",json:"password"`
 	Super    int    `json:"super"`
 	Active   int    `json:"active"`
-	Email    string `orm:"size(128)"json:"email"`
+	Email    string `orm:"size(128)",json:"email"`
 }
 
 func (u *User) TableName() string {
@@ -41,6 +41,14 @@ func GetUserById(id int) (v *User, err error) {
 	o := orm.NewOrm()
 	v = &User{Id: id}
 	if err = o.QueryTable(new(User)).Filter("Id", id).RelatedSel().One(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
+func GetUserByNickname(nickname string) (v *User, err error) {
+	o := orm.NewOrm()
+	v = &User{Nickname: nickname}
+	if err = o.QueryTable(new(User)).Filter("Nickname", nickname).RelatedSel().One(v); err == nil {
 		return v, nil
 	}
 	return nil, err
