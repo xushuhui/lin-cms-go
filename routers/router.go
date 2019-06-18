@@ -12,6 +12,7 @@ func init() {
 	ns := beego.NewNamespace("/cms",
 		beego.NSNamespace("/user",
 			beego.NSRouter("/login", &controllers.UserController{}, "post:Login"),
+			beego.NSRouter("/info", &controllers.UserController{}, "get:GetInfo"),
 		),
 	)
 	//注册 namespace

@@ -11,11 +11,11 @@ import (
 
 type User struct {
 	Id       int    `json:"id"`
-	Nickname string `orm:"size(128)",json:"nickname"`
-	Password string `orm:"size(128)",json:"password"`
+	Nickname string `orm:"size(128)"json:"nickname"`
+	Password string `orm:"size(128)"json:"-"`
 	Super    int    `json:"super"`
 	Active   int    `json:"active"`
-	Email    string `orm:"size(128)",json:"email"`
+	Email    string `orm:"size(128)"json:"email"`
 }
 
 func (u *User) TableName() string {
