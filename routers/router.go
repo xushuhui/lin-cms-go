@@ -13,6 +13,7 @@ func init() {
 		beego.NSNamespace("/user",
 			beego.NSRouter("/login", &controllers.UserController{}, "post:Login"),
 			beego.NSRouter("/info", &controllers.UserController{}, "get:GetInfo"),
+			beego.NSRouter("/register", &controllers.UserController{}, "post:Register"),
 		),
 	)
 	//注册 namespace

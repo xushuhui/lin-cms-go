@@ -53,6 +53,14 @@ func GetUserByNickname(nickname string) (v *User, err error) {
 	}
 	return nil, err
 }
+func GetUserByEmail(email string) (v *User, err error) {
+	o := orm.NewOrm()
+	v = &User{Email: email}
+	if err = o.QueryTable(new(User)).Filter("Email", email).RelatedSel().One(v); err == nil {
+		return v, nil
+	}
+	return nil, err
+}
 
 // GetAllUser retrieves all User matches certain condition. Returns empty list if
 // no records exist

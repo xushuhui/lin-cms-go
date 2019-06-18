@@ -6,6 +6,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"lin-cms-beego/core"
 	"lin-cms-beego/models"
+	"lin-cms-beego/request"
 	"lin-cms-beego/service"
 	"lin-cms-beego/utils"
 )
@@ -15,14 +16,9 @@ type UserController struct {
 	beego.Controller
 }
 
-type user struct {
-	Nickname string `json:"nickname"`
-	Password string `json:"password"`
-}
-
 //登录
 func (c *UserController) Login() {
-	var u *user
+	var u *request.UserLogin
 	utils.BindJson(c.Ctx.Input.RequestBody, &u)
 	userModel, _ := models.GetUserByNickname(u.Nickname)
 	if userModel == nil {
@@ -52,4 +48,32 @@ func (c *UserController) GetInfo() {
 	} else {
 		fmt.Println(err)
 	}
+}
+func (c *UserController) Register() {
+	var u *request.UserRegister
+	utils.BindJson(c.Ctx.Input.RequestBody, &u)
+	userModel, _ := models.GetUserByNickname(u.Nickname)
+	if userModel != nil {
+		c.Data["json"] = core.Fail(core.CodeUserExist)
+		c.ServeJSON()
+	}
+	userModel, _ = models.GetUserByEmail(u.Nickname)
+	if userModel != nil {
+		c.Data["json"] = core.Fail(core.CodeUserExist)
+		c.ServeJSON()
+	}
+
+	user := models.User{
+		Nickname: u.Nickname,
+		Email:    u.Email,
+		Password: utils.MakePassword(u.Nickname, "test"),
+	}
+
+	_, err := models.AddUser(&user)
+	if err != nil {
+		c.Data["json"] = core.Fail(core.CodeSqlError)
+		c.ServeJSON()
+	}
+	c.Data["json"] = core.Succeed()
+	c.ServeJSON()
 }
