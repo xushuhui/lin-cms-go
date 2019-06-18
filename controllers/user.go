@@ -36,6 +36,8 @@ func (c *UserController) Login() {
 	c.Data["json"] = core.SetData(usertoken)
 	c.ServeJSON()
 }
+
+//用户信息
 func (c *UserController) GetInfo() {
 
 	authString := c.Ctx.Input.Header("Authorization")
@@ -49,6 +51,8 @@ func (c *UserController) GetInfo() {
 		fmt.Println(err)
 	}
 }
+
+//注册
 func (c *UserController) Register() {
 	var u *request.UserRegister
 	utils.BindJson(c.Ctx.Input.RequestBody, &u)
