@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
 	"lin-cms-beego/core"
 	"lin-cms-beego/models"
 	"lin-cms-beego/request"
@@ -35,9 +36,34 @@ func (b *BookController) GetBooks() {
 	b.ServeJSON()
 }
 func (b *BookController) UpdateBook() {
-	var bookRequest *request.GetBook
+
+	var bookRequest *request.UpdateBook
+
 	utils.BindJson(b.Ctx.Input.RequestBody, &bookRequest)
-	b.Data["json"] = ""
+	valid := validation.Validation{}
+
+	verify, err := valid.Valid(bookRequest)
+	if err != nil {
+		panic(err)
+	}
+	if !verify {
+		for _, err := range valid.Errors {
+			//fmt.Println(err)
+			//log.Println(err)
+
+			//log.Println(err.Field, err.Message)
+			b.Data["json"] = core.FailMsg(core.CodeInvaldParams, err.Field+" "+err.Message)
+			b.ServeJSON()
+		}
+	}
+
+	//bookModel := models.Book{}
+	//bookModel = &bookRequest
+	//err = models.UpdateBookById(&bookModel)
+	//if err != nil {
+	//	panic(err)
+	//}
+	b.Data["json"] = core.Succeed()
 	b.ServeJSON()
 }
 func (b *BookController) DeleteBook() {
@@ -45,6 +71,10 @@ func (b *BookController) DeleteBook() {
 	if err != nil {
 		panic(err)
 	}
-	b.Data["json"] = id
+	err = models.DeleteBook(id)
+	if err != nil {
+		panic(err)
+	}
+	b.Data["json"] = core.Succeed()
 	b.ServeJSON()
 }

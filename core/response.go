@@ -16,6 +16,9 @@ func Fail(errorCode int) Response {
 func FailMsg(errorCode int, msg string) Response {
 	return Resp(errorCode, msg, nil)
 }
+func ParmsError(msg string) Response {
+	return Resp(CodeInvaldParams, msg, nil)
+}
 func Succeed() Response {
 	return Resp(CodeOK, GetMsg(CodeOK), nil)
 }
