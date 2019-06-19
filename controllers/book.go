@@ -5,7 +5,6 @@ import (
 	"lin-cms-beego/core"
 	"lin-cms-beego/models"
 	"lin-cms-beego/request"
-	"lin-cms-beego/utils"
 )
 
 type BookController struct {
@@ -13,10 +12,13 @@ type BookController struct {
 }
 
 func (b *BookController) CreateBook() {
-	var bookRequest *request.CreateBook
-	utils.BindJson(b.Ctx.Input.RequestBody, &bookRequest)
-
-	b.Data["json"] = ""
+	bookRequest := request.CreateBook{}
+	bookRequest.Bind(b.Ctx.Input.RequestBody)
+	if isCorrect, errmsg := bookRequest.Verify(); !isCorrect {
+		b.Data["json"] = core.ParmsError(errmsg)
+		b.ServeJSON()
+	}
+	b.Data["json"] = bookRequest
 	b.ServeJSON()
 }
 func (b *BookController) GetBook() {
@@ -43,8 +45,7 @@ func (b *BookController) UpdateBook() {
 		b.ServeJSON()
 	}
 
-	book, _ := models.GetBookById(r.Id)
-	if book == nil {
+	if book, _ := models.GetBookById(r.Id); book == nil {
 		b.Data["json"] = core.Fail(core.CodeNoBook)
 		b.ServeJSON()
 	}
@@ -55,8 +56,8 @@ func (b *BookController) UpdateBook() {
 		Image:   r.Image,
 		Summary: r.Summary,
 	}
-	err := models.UpdateBookById(&bookModel)
-	if err != nil {
+
+	if err := models.UpdateBookById(&bookModel); err != nil {
 		panic(err)
 	}
 	b.Data["json"] = core.Succeed()
@@ -67,8 +68,11 @@ func (b *BookController) DeleteBook() {
 	if err != nil {
 		panic(err)
 	}
-	err = models.DeleteBook(id)
-	if err != nil {
+	if book, _ := models.GetBookById(id); book == nil {
+		b.Data["json"] = core.Fail(core.CodeNoBook)
+		b.ServeJSON()
+	}
+	if err := models.SoftDeleteBook(id); err != nil {
 		panic(err)
 	}
 	b.Data["json"] = core.Succeed()
