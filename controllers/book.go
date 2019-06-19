@@ -12,13 +12,25 @@ type BookController struct {
 }
 
 func (b *BookController) CreateBook() {
-	bookRequest := request.CreateBook{}
-	bookRequest.Bind(b.Ctx.Input.RequestBody)
-	if isCorrect, errmsg := bookRequest.Verify(); !isCorrect {
+	r := request.CreateBook{}
+	r.Bind(b.Ctx.Input.RequestBody)
+	if isCorrect, errmsg := r.Verify(); !isCorrect {
 		b.Data["json"] = core.ParmsError(errmsg)
 		b.ServeJSON()
 	}
-	b.Data["json"] = bookRequest
+
+	bookModel := models.Book{
+		Title:   r.Title,
+		Author:  r.Author,
+		Image:   r.Image,
+		Summary: r.Summary,
+	}
+
+	if _, err := models.AddBook(&bookModel); err != nil {
+		b.Data["json"] = core.Fail(core.CodeSqlError)
+		b.ServeJSON()
+	}
+	b.Data["json"] = core.Succeed()
 	b.ServeJSON()
 }
 func (b *BookController) GetBook() {

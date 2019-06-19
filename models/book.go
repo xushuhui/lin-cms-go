@@ -14,7 +14,7 @@ type Book struct {
 	Image     string `orm:"size(128)"json:"image"`
 	CreatedAt string `json:"-"`
 	UpdatedAt string `json:"-"`
-	DeletedAt string `json:"-"`
+	DeletedAt string `orm:"size(128)"json:"-"`
 }
 
 func init() {
@@ -67,5 +67,13 @@ func UpdateBookById(m *Book) (err error) {
 	if num, err = o.Update(m, "title", "author", "summary", "image", "updated_at"); err == nil {
 		fmt.Println("Number of records updated in database:", num)
 	}
+	return
+}
+func AddBook(m *Book) (id int64, err error) {
+	o := orm.NewOrm()
+	now := time.Now().Format("2006-01-02 15:04:05")
+	m.CreatedAt = now
+	m.UpdatedAt = now
+	id, err = o.Insert(m)
 	return
 }
