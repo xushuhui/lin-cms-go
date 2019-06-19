@@ -18,4 +18,12 @@ func init() {
 	)
 	//注册 namespace
 	beego.AddNamespace(ns)
+	bookRoute := beego.NewNamespace("/v1",
+		beego.NSRouter("/book", &controllers.BookController{}, "post:CreateBook"),
+		beego.NSRouter("/book/:id", &controllers.BookController{}, "get:GetBook"),
+		beego.NSRouter("/book/:id", &controllers.BookController{}, "put:UpdateBook"),
+		beego.NSRouter("/book/:id", &controllers.BookController{}, "delete:DeleteBook"),
+		beego.NSRouter("/books", &controllers.BookController{}, "get:GetBooks"),
+	)
+	beego.AddNamespace(bookRoute)
 }

@@ -26,7 +26,7 @@ func (c *UserController) Login() {
 		c.ServeJSON()
 	}
 
-	fmt.Printf(" %T\n", userModel.Id)
+	//fmt.Printf(" %T\n", userModel.Id)
 	if !utils.ValidatePassword(u.Password, "test", userModel.Password) {
 		c.Data["json"] = core.Fail(core.CodeErrorPassword)
 		c.ServeJSON()
