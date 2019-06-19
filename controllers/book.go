@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/validation"
 	"lin-cms-beego/core"
 	"lin-cms-beego/models"
 	"lin-cms-beego/request"
@@ -37,34 +36,26 @@ func (b *BookController) GetBooks() {
 }
 func (b *BookController) UpdateBook() {
 
-	var bookRequest *request.UpdateBook
-
-	utils.BindJson(b.Ctx.Input.RequestBody, &bookRequest)
-	valid := validation.Validation{}
-
-	verify, err := valid.Valid(bookRequest)
-	if err != nil {
-		panic(err)
+	r := request.UpdateBook{}
+	r.Bind(b.Ctx.Input.RequestBody)
+	if isCorrect, errmsg := r.Verify(); !isCorrect {
+		b.Data["json"] = core.ParmsError(errmsg)
+		b.ServeJSON()
 	}
-	if !verify {
-		for _, err := range valid.Errors {
-			b.Data["json"] = core.FailMsg(core.CodeInvaldParams, err.Field+" "+err.Message)
-			b.ServeJSON()
-		}
-	}
-	book, _ := models.GetBookById(bookRequest.Id)
+
+	book, _ := models.GetBookById(r.Id)
 	if book == nil {
 		b.Data["json"] = core.Fail(core.CodeNoBook)
 		b.ServeJSON()
 	}
 	bookModel := models.Book{
-		Id:      bookRequest.Id,
-		Title:   bookRequest.Title,
-		Author:  bookRequest.Author,
-		Image:   bookRequest.Image,
-		Summary: bookRequest.Summary,
+		Id:      r.Id,
+		Title:   r.Title,
+		Author:  r.Author,
+		Image:   r.Image,
+		Summary: r.Summary,
 	}
-	err = models.UpdateBookById(&bookModel)
+	err := models.UpdateBookById(&bookModel)
 	if err != nil {
 		panic(err)
 	}
