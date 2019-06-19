@@ -48,21 +48,26 @@ func (b *BookController) UpdateBook() {
 	}
 	if !verify {
 		for _, err := range valid.Errors {
-			//fmt.Println(err)
-			//log.Println(err)
-
-			//log.Println(err.Field, err.Message)
 			b.Data["json"] = core.FailMsg(core.CodeInvaldParams, err.Field+" "+err.Message)
 			b.ServeJSON()
 		}
 	}
-
-	//bookModel := models.Book{}
-	//bookModel = &bookRequest
-	//err = models.UpdateBookById(&bookModel)
-	//if err != nil {
-	//	panic(err)
-	//}
+	book, _ := models.GetBookById(bookRequest.Id)
+	if book == nil {
+		b.Data["json"] = core.Fail(core.CodeNoBook)
+		b.ServeJSON()
+	}
+	bookModel := models.Book{
+		Id:      bookRequest.Id,
+		Title:   bookRequest.Title,
+		Author:  bookRequest.Author,
+		Image:   bookRequest.Image,
+		Summary: bookRequest.Summary,
+	}
+	err = models.UpdateBookById(&bookModel)
+	if err != nil {
+		panic(err)
+	}
 	b.Data["json"] = core.Succeed()
 	b.ServeJSON()
 }

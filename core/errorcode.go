@@ -9,6 +9,7 @@ const (
 	CodeNoUser
 	CodeErrorPassword
 	CodeUserExist
+	CodeNoBook
 )
 
 var errormap = map[int]string{
@@ -20,6 +21,7 @@ var errormap = map[int]string{
 	CodeNoUser:         "no user",
 	CodeErrorPassword:  "pass error",
 	CodeUserExist:      "user exist",
+	CodeNoBook:         "book no exist",
 }
 
 func GetMsg(errorcode int) string {
