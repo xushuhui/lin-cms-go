@@ -20,8 +20,10 @@ func InitEnv() {
 	if err = orm.RegisterDriver("mysql", orm.DRMySQL); err != nil {
 		panic(err)
 	}
+
 	if err = orm.RegisterDataBase("default", "mysql", dbLink); err != nil {
-		panic(err)
+		fmt.Println(err)
+
 	}
 	if Config.String("runmode") == "dev" {
 		orm.Debug = true

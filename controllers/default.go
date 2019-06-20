@@ -9,8 +9,8 @@ type MainController struct {
 }
 
 func (c *MainController) Get() {
-	c.Data["Website"] = c.GetString("name")
-	c.Data["Email"] = "123@qq.com"
+	c.Data["json"] = "123@qq.com"
+	c.ServeJSON()
 }
 
 //func (c *MainController) Post() {

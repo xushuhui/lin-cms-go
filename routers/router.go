@@ -9,7 +9,7 @@ func init() {
 	beego.Router("/", &controllers.MainController{})
 
 	//初始化 namespace
-	ns := beego.NewNamespace("/cms",
+	cmsRoute := beego.NewNamespace("/cms",
 		beego.NSNamespace("/user",
 			beego.NSRouter("/login", &controllers.UserController{}, "post:Login"),
 			beego.NSRouter("/info", &controllers.UserController{}, "get:GetInfo"),
@@ -17,7 +17,7 @@ func init() {
 		),
 	)
 	//注册 namespace
-	beego.AddNamespace(ns)
+	//beego.AddNamespace(ns)
 	bookRoute := beego.NewNamespace("/v1",
 		beego.NSRouter("/book", &controllers.BookController{}, "post:CreateBook"),
 		beego.NSRouter("/book/:id", &controllers.BookController{}, "get:GetBook"),
@@ -25,5 +25,5 @@ func init() {
 		beego.NSRouter("/book/:id", &controllers.BookController{}, "delete:DeleteBook"),
 		beego.NSRouter("/books", &controllers.BookController{}, "get:GetBooks"),
 	)
-	beego.AddNamespace(bookRoute)
+	beego.AddNamespace(cmsRoute, bookRoute)
 }

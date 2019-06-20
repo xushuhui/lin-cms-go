@@ -1,30 +1,30 @@
-package test
+package tests
 
 import (
-	_ "lin-cms-beego/routers"
+	"fmt"
+	"github.com/astaxie/beego"
+	"lin-cms-beego/core"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
 	"runtime"
 	"testing"
-
-	"github.com/astaxie/beego"
-	//. "github.com/smartystreets/goconvey/convey"
 )
 
 func init() {
 	_, file, _, _ := runtime.Caller(0)
 	apppath, _ := filepath.Abs(filepath.Dir(filepath.Join(file, ".."+string(filepath.Separator))))
+	fmt.Println(apppath + "/conf/app.conf")
 	beego.TestBeegoInit(apppath)
-}
+	beego.LoadAppConfig("ini", apppath+"/conf/app.conf")
 
-// TestBeego is a sample to run an endpoint test
-func TestBeego(t *testing.T) {
-	r, _ := http.NewRequest("GET", "/", nil)
+}
+func TestGetBooks(t *testing.T) {
+	core.InitEnv()
+	r, _ := http.NewRequest("GET", "/v1/books", nil)
 	w := httptest.NewRecorder()
 	beego.BeeApp.Handlers.ServeHTTP(w, r)
-
-	beego.Trace("testing", "TestBeego", "Code[%d]\n%s", w.Code, w.Body.String())
+	beego.Trace(w.Code, w.Body.String())
 
 	//Convey("Subject: Test Station Endpoint\n", t, func() {
 	//        Convey("Status Code Should Be 200", func() {
