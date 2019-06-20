@@ -8,5 +8,6 @@ import (
 
 func main() {
 	core.InitEnv()
+
 	beego.Run()
 }
