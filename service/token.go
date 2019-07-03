@@ -1,3 +1,10 @@
+/**
+ * Copyright (c) 2019 - xushuhui
+ * Author: xushuhui
+ * 微信公众号: 互联网工程师
+ * Email: xushuhui@qq.com
+ * 博客: https://www.phpst.cn
+ */
 package service
 
 import (
@@ -7,10 +14,9 @@ import (
 	"strings"
 	"time"
 )
-
-func MakeToken(user *models.User) string {
 	// 带权限创建令牌
-	fmt.Println(user.Id)
+func MakeToken(user *models.User) string {
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": user.Id,
 		"exp":     time.Now().Add(time.Hour * 480).Unix(),
