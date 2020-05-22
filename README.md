@@ -1,3 +1,3 @@
-# lin-cms-gin
+# GoFrame Project
 
-```
+https://goframe.org

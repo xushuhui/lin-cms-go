@@ -1,7 +1,5 @@
-module lin-cms-gin
+module lin-cms-go
 
-go 1.14
+require github.com/gogf/gf latest
 
-require (
-	
-)
+go 1.13
