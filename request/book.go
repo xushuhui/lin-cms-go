@@ -8,8 +8,7 @@
 package request
 
 import (
-	"github.com/astaxie/beego/validation"
-	"lin-cms-beego/utils"
+	"lin-cms-gin/utils"
 )
 
 type CreateBook struct {

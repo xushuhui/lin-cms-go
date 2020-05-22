@@ -1,9 +1,7 @@
-module lin-cms-beego
+module lin-cms-gin
 
-go 1.12
+go 1.14
 
 require (
-	github.com/astaxie/beego v1.11.1
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/go-sql-driver/mysql v1.4.1
+	
 )

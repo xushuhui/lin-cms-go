@@ -6,36 +6,37 @@
  * 博客: https://www.phpst.cn
  */
 package core
-
+//Data Data
 type Data struct {
 	Data interface{} `json:"data,omitempty"`
 }
-
+//Response 响应
 type Response struct {
-	ErrorCode int         `json:"error_code"`
-	Msg       string      `json:"msg"`
+	Code int         `json:"code"`
+	Message       string      `json:"Message"`
 	Data      interface{} `json:"data,omitempty"`
 }
 
-func Fail(errorCode int) Response {
-	return Resp(errorCode, GetMsg(errorCode), nil)
+func Fail(Code int) Response {
+	return Resp(Code, GetMessage(Code), nil)
 }
-func FailMsg(errorCode int, msg string) Response {
-	return Resp(errorCode, msg, nil)
+
+func SetFail(Code int, Message string) Response {
+	return Resp(Code, Message, nil)
 }
-func ParmsError(msg string) Response {
-	return Resp(CodeInvaldParams, msg, nil)
+func ParmsError(Message string) Response {
+	return Resp(InvaldParams, Message, nil)
 }
 func Succeed() Response {
-	return Resp(CodeOK, GetMsg(CodeOK), nil)
+	return Resp(OK, GetMessage(OK), nil)
 }
 func SetData(data interface{}) Response {
-	return Resp(CodeOK, GetMsg(CodeOK), data)
+	return Resp(OK, GetMessage(OK), data)
 }
-func Resp(errorCode int, msg string, data interface{}) Response {
+func Resp(Code int, Message string, data interface{}) Response {
 	res := Response{
-		ErrorCode: errorCode,
-		Msg:       msg,
+		Code: Code,
+		Message:       Message,
 		Data:      data,
 	}
 	return res
