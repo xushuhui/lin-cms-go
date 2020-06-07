@@ -2,13 +2,14 @@ package core
 
 import (
 	"github.com/gogf/gf/net/ghttp"
+	"log"
 )
 
 // JsonResponse 数据返回通用 JSON 数据结构
- type JsonResponse struct {
+type JsonResponse struct {
 	Code    int         `json:"code"`    // 错误码 ((0: 成功，1: 失败，>1: 错误码))
 	Message string      `json:"message"` // 提示信息
-	 Data    interface{} `json:"data"`    // 返回数据 (业务接口定义具体数据结构)
+	Data    interface{} `json:"data"`    // 返回数据 (业务接口定义具体数据结构)
 }
 
 // Json 标准返回结果数据结构封装。
@@ -17,15 +18,18 @@ func Json(r *ghttp.Request, code int, message string, data ...interface{}) {
 	if len(data) > 0 {
 		responseData = data[0]
 	}
-	r.Response.WriteJson(JsonResponse{
+	err := r.Response.WriteJson(JsonResponse{
 		Code:    code,
 		Message: message,
 		Data:    responseData,
 	})
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // JsonExit 返回 JSON 数据并退出当前 HTTP 执行函数。
-func JsonExit(r *ghttp.Request, err int, msg string, data ...interface{}) {
-	Json(r, err, msg, data...)
+func JsonExit(r *ghttp.Request, code int, message string, data ...interface{}) {
+	Json(r, code, message, data...)
 	r.Exit()
 }
