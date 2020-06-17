@@ -35,7 +35,22 @@ type UserController struct{}
 func NewAdminController() *UserController {
 	return &UserController{}
 }
-func (c *UserController) GetUser(r *ghttp.Request) {
+func (c *UserController) Users(r *ghttp.Request) {
 	req := load(r)
 	fmt.Println(req.Username, req.Password)
+}
+func (c *UserController) Permission() {
+
+}
+func (c *UserController) ChangeUserPassword() {
+
+}
+func (c *UserController) DeleteUser() {
+
+}
+func (c *UserController) UpdateUser() {
+
+}
+func (c *UserController) GetAllGroup() {
+
 }
