@@ -1,9 +1,9 @@
 package api
 
 import (
-	"fmt"
 	"github.com/gogf/gf/net/ghttp"
 	"lin-cms-go/app/request"
+	"lin-cms-go/app/service"
 )
 
 type UserController struct{}
@@ -12,24 +12,34 @@ func NewAdminController() *UserController {
 	return &UserController{}
 }
 func (c *UserController) Login(r *ghttp.Request) {
-	param := request.Login(r)
-	fmt.Println(param)
+	service.Login(request.Login(r))
 }
-func (c *UserController) Users(r *ghttp.Request) {
+func (c *UserController) Register(r *ghttp.Request) {
+	service.Register(request.Register(r))
+}
+
+func (c *UserController) Permission(r *ghttp.Request) {
 
 }
-func (c *UserController) Permission() {
+func (c *UserController) ChangeUserPassword(r *ghttp.Request) {
 
 }
-func (c *UserController) ChangeUserPassword() {
+func (c *UserController) DeleteUser(r *ghttp.Request) {
 
 }
-func (c *UserController) DeleteUser() {
+func (c *UserController) UpdateUser(r *ghttp.Request) {
 
 }
-func (c *UserController) UpdateUser() {
+func (c *UserController) UpdateSelfUser(r *ghttp.Request) {
 
 }
-func (c *UserController) GetInformation() {
+func (c *UserController) GetSelfInformation(r *ghttp.Request) {
+
+}
+
+func (c *UserController) UpdateSelfPassword(r *ghttp.Request) {
+
+}
+func (c *UserController) Refresh(r *ghttp.Request) {
 
 }

@@ -12,15 +12,15 @@ func init() {
 	s := g.Server()
 	s.Use(middleware.CORS)
 	s.Group("/", func(group *ghttp.RouterGroup) {
+
 		group.ALL("/", hello.Hello)
 	})
-
+	c := api.NewAdminController()
 	s.Group("/cms", func(group *ghttp.RouterGroup) {
 		group.Middleware(middleware.Auth)
-		c := api.NewAdminController()
+
 		s.Group("/admin", func(group *ghttp.RouterGroup) {
 
-			group.GET("/users", c.Users)
 			group.GET("/permission", c.Permission)
 			group.PUT("/user/:id/password", c.ChangeUserPassword)
 			group.DELETE("/user/:id", c.DeleteUser)
@@ -38,7 +38,14 @@ func init() {
 		group.POST("/file", c.Upload)
 		group.GET("/log", c.GetLogs)
 		group.GET("/log/search", c.SearchLogs)
-
+		group.GET("/log/users", c.GetLogUsers)
+		group.POST("/user/login", c.Login)
+		group.POST("/user/register", c.Register)
+		group.PUT("/user", c.UpdateSelfUser)
+		group.PUT("/user/change_password", c.UpdateSelfPassword)
+		group.GET("/user/refresh", c.Refresh)
+		group.GET("/user/permissions", c.GetSelfPermissions)
+		group.GET("/user/information", c.GetSelfInformation)
 	})
 
 }

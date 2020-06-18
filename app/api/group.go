@@ -1,39 +1,32 @@
 package api
 
-func (c *UserController) GetAllGroup() {
+import "github.com/gogf/gf/net/ghttp"
+
+func (c *UserController) GetAllGroup(r *ghttp.Request) {
 
 }
 
-func (c *UserController) GetGroup() {
+func (c *UserController) GetGroup(r *ghttp.Request) {
 
 }
-func (c *UserController) CreateGroup() {
+func (c *UserController) CreateGroup(r *ghttp.Request) {
 
 }
-func (c *UserController) UpdateGroup() {
+func (c *UserController) UpdateGroup(r *ghttp.Request) {
 
 }
-func (c *UserController) DeleteGroup() {
+func (c *UserController) DeleteGroup(r *ghttp.Request) {
 
 }
-func (c *UserController) DispatchPermission() {
+func (c *UserController) DispatchPermission(r *ghttp.Request) {
 
 }
-func (c *UserController) DispatchPermissions() {
+func (c *UserController) DispatchPermissions(r *ghttp.Request) {
 
 }
-func (c *UserController) RemovePermissions() {
+func (c *UserController) RemovePermissions(r *ghttp.Request) {
 
 }
-func (c *UserController) Upload() {
-
-}
-func (c *UserController) GetLogs() {
-
-}
-func (c *UserController) SearchLogs() {
-
-}
-func (c *UserController) GetPermissions() {
+func (c *UserController) GetSelfPermissions(r *ghttp.Request) {
 
 }
