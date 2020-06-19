@@ -12,15 +12,17 @@ type UserLoginRequest struct {
 	Password string `v:"required#密码不能为空" p:"password"`
 }
 type UserRegRequest struct {
-	Username string `v:"required#账号不能为空" p:"username"`
-	Password string `v:"required#密码不能为空" p:"password"`
+	Username        string `v:"required#账号不能为空" p:"username"`
+	Password        string `v:"required#密码不能为空" p:"password"`
+	GroupIds        []int  `v:"required#GroupIds不能为空"p:"group_ids"`
+	ConfirmPassword string `v:"required#ConfirmPassword不能为空"p:"confirm_password"`
 }
 
 func check(err error, r *ghttp.Request) {
 	if v, ok := err.(*gvalid.Error); ok {
-		core.JsonExit(r, 1, v.FirstString())
+		core.FailResp(r, 1, v.FirstString())
 	}
-	core.JsonExit(r, 1, err.Error())
+	core.FailResp(r, 1, err.Error())
 }
 func Login(r *ghttp.Request) *UserLoginRequest {
 	var data UserLoginRequest
