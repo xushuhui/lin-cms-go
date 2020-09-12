@@ -1,11 +1,22 @@
 package main
 
 import (
-	_ "lin-cms-go/boot"
-	_ "lin-cms-go/router"
-	"github.com/gogf/gf/frame/g"
+	"lin-cms-go/internal/router"
+	"lin-cms-go/pkg/core"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
-	g.Server().Run()
+
+	core.StartModule()
+
+	router.HttpServerRun()
+
+	quit := make(chan os.Signal)
+	signal.Notify(quit, syscall.SIGKILL, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	router.HttpServerStop()
+
 }

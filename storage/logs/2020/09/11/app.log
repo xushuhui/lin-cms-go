@@ -1,0 +1,15 @@
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 16:18:45"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 16:22:32"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 16:28:01"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 16:45:38"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 17:39:08"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 17:41:06"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 17:47:23"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 17:57:33"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 17:59:11"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 17:59:24"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 17:59:57"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 18:00:52"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 18:01:33"}
+{"file":"C:/www/lin-cms-go/pkg/core/start.go:40","func":"lin-cms-go/pkg/core.StartModule","level":"debug","msg":"test","time":"2020-09-11 18:02:35"}
+{"file":"C:/www/lin-cms-go/internal/middleware/error.go:22","func":"lin-cms-go/internal/middleware.ErrorHandle.func1","level":"warning","msg":"code=1, Message=密码为必填字段","time":"2020-09-11 18:02:36"}
