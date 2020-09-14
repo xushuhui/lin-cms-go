@@ -22,5 +22,5 @@ require (
 	github.com/unrolled/secure v1.0.8
 	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899
 	golang.org/x/tools v0.0.0-20200831203904-5a2aa26beb65 // indirect
-	gopkg.in/natefinch/lumberjack.v2 v2.0.0
+
 )
