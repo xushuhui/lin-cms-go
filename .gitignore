@@ -4,6 +4,7 @@
 *.exe
 /storage/*
 
-/web
+/configs/*.yaml
+
 /tmp
 .air.conf

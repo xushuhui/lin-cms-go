@@ -29,15 +29,14 @@ func StartModule() {
 	if err = initLogger(); err != nil {
 		log.Fatalf("initLogger err: %v", err)
 	}
-	//err = initDBEngine()
-	//if err != nil {
-	//	log.Fatalf("initDBEngine err: %v", err)
-	//}
+	err = initDBEngine()
+	if err != nil {
+		log.Fatalf("initDBEngine err: %v", err)
+	}
 	//err = initRedis()
 	//if err != nil {
 	//log.Fatalf("initRedis err: %v", err)
 	//}
-	global.Logger.Debug("test")
 
 	err = initTracer()
 	if err != nil {

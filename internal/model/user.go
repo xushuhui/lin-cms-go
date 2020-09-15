@@ -1,21 +1,42 @@
 package model
 
-type User struct {
-	Id            uint   `gorm:"column:id;type:int unsigned" json:"id"`                                       // 账号id
-	Email         string `gorm:"column:email;type:varchar(30);default:''" json:"email"`                       // 邮箱
-	Phone         string `gorm:"column:phone;type:varchar(15);default:''" json:"phone"`                       // 手机号
-	Password      string `gorm:"column:password;type:char(32);default:''" json:"password"`                    // 密码
-	CreateAt      int    `gorm:"column:create_at;type:int;default:'0'" json:"create_at"`                      // 创建时间
-	CreateIpAt    string `gorm:"column:create_ip_at;type:varchar(12);default:''" json:"create_ip_at"`         // 创建ip
-	LastLoginAt   int    `gorm:"column:last_login_at;type:int;default:'0'" json:"last_login_at"`              // 最后一次登录时间
-	LastLoginIpAt string `gorm:"column:last_login_ip_at;type:varchar(12);default:''" json:"last_login_ip_at"` // 最后一次登录ip
-	LoginTimes    int    `gorm:"column:login_times;type:int;default:'0'" json:"login_times"`                  // 登录次数
-	Status        int8   `gorm:"column:status;type:tinyint(1);default:'0'" json:"status"`                     // 状态 1:enable, 0:disable, -1:deleted
+import (
+	"lin-cms-go/global"
+)
+
+type Model struct {
+	ID uint `gorm:"primarykey"`
+}
+type LinUser struct {
+	Model
+	Email    string `gorm:"column:email;type:varchar(100);default:''" json:"email"`      // 邮箱
+	Username string `gorm:"column:username;type:varchar(24);default:''" json:"username"` // 手机号
+	Nickname string `gorm:"column:nickname;type:varchar(24);default:''" json:"nickname"` // 手机号
+	Avatar   string `gorm:"column:avatar;type:varchar(500);default:''" json:"avatar"`    // 密码
 
 }
+type LinUserIdentity struct {
+	Model
+	UserId       uint   `gorm:"column:user_id;" json:"user_id"`
+	IdentityType string `gorm:"column:identity_type;" json:"identity_type"`
+	Identifier   string `gorm:"column:identifier;" json:"identifier"`
+	Credential   string `gorm:"column:credential;" json:"credential"`
+}
+type LinUserGroup struct {
+	Model
+	UserId  uint `gorm:"column:user_id;" json:"user_id"`
+	GroupId int  `gorm:"column:group_id;" json:"group_id"`
+}
 
-func GetAccountUserOne(where string, args ...interface{}) (model User, err error) {
-	err = DB.First(&model, where, args).Error
+func GetLinUserOne(where string, args ...interface{}) (model LinUser, err error) {
+	err = global.DBEngine.First(&model, where, args).Error
 	return
-
+}
+func GetLinUserByID(id uint) (model LinUser, err error) {
+	err = global.DBEngine.First(&model, id).Error
+	return
+}
+func GetLinUserIdentityOne(where string, args ...interface{}) (model LinUserIdentity, err error) {
+	err = global.DBEngine.First(&model, where, args).Error
+	return
 }

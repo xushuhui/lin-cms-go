@@ -9,14 +9,14 @@ CREATE TABLE lin_file
 (
     id          int(10) unsigned NOT NULL AUTO_INCREMENT,
     path        varchar(500)     NOT NULL,
-    type        varchar(10)      NOT NULL DEFAULT 'LOCAL' COMMENT 'LOCAL 本地，REMOTE 远程',
+    type       tinyint(1)      NOT NULL DEFAULT 1 COMMENT '1 LOCAL 本地，2 REMOTE 远程',
     name        varchar(100)     NOT NULL,
     extension   varchar(50)               DEFAULT NULL,
     size        int(11)                   DEFAULT NULL,
     md5         varchar(40)               DEFAULT NULL COMMENT 'md5值，防止上传重复文件',
-    create_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    update_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    delete_time datetime(3)               DEFAULT NULL,
+    create_time timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    update_time timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    delete_time timestamp(3)               DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY md5_del (md5, delete_time)
 ) ENGINE = InnoDB
@@ -37,9 +37,9 @@ CREATE TABLE lin_log
     method      varchar(20)               DEFAULT NULL,
     path        varchar(50)               DEFAULT NULL,
     permission  varchar(100)              DEFAULT NULL,
-    create_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    update_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    delete_time datetime(3)               DEFAULT NULL,
+    create_time timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    update_time timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    delete_time timestamp(3)               DEFAULT NULL,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -55,9 +55,9 @@ CREATE TABLE lin_permission
     name        varchar(60)      NOT NULL COMMENT '权限名称，例如：访问首页',
     module      varchar(50)      NOT NULL COMMENT '权限所属模块，例如：人员管理',
     mount       tinyint(1)       NOT NULL DEFAULT 1 COMMENT '0：关闭 1：开启',
-    create_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    update_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    delete_time datetime(3)               DEFAULT NULL,
+    create_time timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    update_time timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    delete_time timestamp(3)               DEFAULT NULL,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -73,9 +73,9 @@ CREATE TABLE lin_group
     name        varchar(60)      NOT NULL COMMENT '分组名称，例如：搬砖者',
     info        varchar(255)              DEFAULT NULL COMMENT '分组信息：例如：搬砖的人',
     level       tinyint(2)       NOT NULL DEFAULT 3 COMMENT '分组级别 1：root 2：guest 3：user（root、guest分组只能存在一个)',
-    create_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    update_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    delete_time datetime(3)               DEFAULT NULL,
+    create_time timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    update_time timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    delete_time timestamp(3)               DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY name_del (name, delete_time)
 ) ENGINE = InnoDB
@@ -100,17 +100,17 @@ CREATE TABLE lin_group_permission
 -- ----------------------------
 -- 用户基本信息表
 -- ----------------------------
-DROP TABLE IF EXISTS lin_user;
-CREATE TABLE lin_user
+DROP TABLE IF EXISTS lin_users;
+CREATE TABLE lin_users
 (
     id          int(10) unsigned NOT NULL AUTO_INCREMENT,
     username    varchar(24)      NOT NULL COMMENT '用户名，唯一',
     nickname    varchar(24)               DEFAULT NULL COMMENT '用户昵称',
     avatar      varchar(500)              DEFAULT NULL COMMENT '头像url',
     email       varchar(100)              DEFAULT NULL COMMENT '邮箱',
-    create_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    update_time datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    delete_time datetime(3)               DEFAULT NULL,
+    create_time timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    update_time timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    delete_time timestamp(3)               DEFAULT NULL,
     PRIMARY KEY (id),
     UNIQUE KEY username_del (username, delete_time),
     UNIQUE KEY email_del (email, delete_time)
@@ -126,17 +126,17 @@ CREATE TABLE lin_user
 # identifier 标识（手机号 邮箱 用户名或第三方应用的唯一标识）
 # credential 密码凭证（站内的保存密码，站外的不保存或保存token）
 -- ----------------------------
-DROP TABLE IF EXISTS lin_user_identity;
-CREATE TABLE lin_user_identity
+DROP TABLE IF EXISTS lin_user_identities;
+CREATE TABLE lin_user_identities
 (
     id            int(10) unsigned NOT NULL AUTO_INCREMENT,
     user_id       int(10) unsigned NOT NULL COMMENT '用户id',
     identity_type varchar(100)     NOT NULL,
     identifier    varchar(100),
     credential    varchar(100),
-    create_time   datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    update_time   datetime(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    delete_time   datetime(3)               DEFAULT NULL,
+    create_time   timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    update_time   timestamp(3)      NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    delete_time   timestamp(3)               DEFAULT NULL,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -150,9 +150,9 @@ CREATE TABLE book
     author      varchar(30)          DEFAULT NULL,
     summary     varchar(1000)        DEFAULT NULL,
     image       varchar(100)         DEFAULT NULL,
-    create_time datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    update_time datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    delete_time datetime(3)          DEFAULT NULL,
+    create_time timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    update_time timestamp(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    delete_time timestamp(3)          DEFAULT NULL,
     PRIMARY KEY (id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -181,10 +181,10 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- 插入root分组
 -- ----------------------------
 BEGIN;
-INSERT INTO lin_user(id, username, nickname)
+INSERT INTO lin_users(id, username, nickname)
 VALUES (1, 'root', 'root');
 
-INSERT INTO lin_user_identity (id, user_id, identity_type, identifier, credential)
+INSERT INTO lin_user_identities (id, user_id, identity_type, identifier, credential)
 
 VALUES (1, 1, 'USERNAME_PASSWORD', 'root',
         'sha1$c419e500$1$84869e5560ebf3de26b6690386484929456d6c07');

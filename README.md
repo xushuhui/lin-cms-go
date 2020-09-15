@@ -6,5 +6,8 @@ goal,意为目标。希望我们不忘初心。
 
 lin-cms-go也将一改往日随意的开发态度，不断更新。let's go
 
-## 接口文档
+## lin-cms接口文档
 https://doc.cms.talelin.com/api/
+
+## 项目接口文档
+http://localhost:6060/pkg/lin-cms-go/api/

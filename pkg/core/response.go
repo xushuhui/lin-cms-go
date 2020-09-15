@@ -46,7 +46,15 @@ func ParseRequest(c *gin.Context, request interface{}) (err error) {
 	}
 	return
 }
-func FailResp(c *gin.Context, code int, msg string) {
+func FailResp(c *gin.Context, code int) {
+	c.AbortWithStatusJSON(200, Error{
+		Code:    code,
+		Message: errcode.GetMsg(code),
+	})
+	return
+}
+
+func ErrorResp(c *gin.Context, code int, msg string) {
 	c.AbortWithStatusJSON(200, Error{
 		Code:    code,
 		Message: msg,
@@ -68,7 +76,7 @@ func SuccessResp(c *gin.Context) {
 		Message: errcode.GetMsg(0),
 	})
 }
-func SetData(c *gin.Context, data interface{}) {
+func SetData(c *gin.Context, data map[string]interface{}) {
 	c.JSON(200, Error{
 		Code:    0,
 		Message: errcode.GetMsg(0),

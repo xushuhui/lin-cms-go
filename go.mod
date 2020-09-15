@@ -21,6 +21,9 @@ require (
 	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
 	github.com/unrolled/secure v1.0.8
 	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899
-	golang.org/x/tools v0.0.0-20200831203904-5a2aa26beb65 // indirect
+	golang.org/x/net v0.0.0-20200822124328-c89045814202 // indirect
+	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
+	gorm.io/driver/mysql v1.0.1
+	gorm.io/gorm v1.20.1
 
 )
