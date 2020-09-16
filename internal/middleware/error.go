@@ -20,7 +20,7 @@ func ErrorHandle() gin.HandlerFunc {
 		switch err.(type) {
 		case core.Error:
 			codeErr := err.(core.Error)
-			core.FailResp(c, codeErr.Code, codeErr.Message)
+			core.ErrorResp(c, codeErr.Code, codeErr.Message)
 
 		case *json.UnmarshalTypeError:
 			unmarshalTypeError := err.(*json.UnmarshalTypeError)

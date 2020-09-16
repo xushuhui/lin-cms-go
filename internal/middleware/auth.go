@@ -10,24 +10,25 @@ import (
 
 func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var err error
+
 		Authorization := c.Request.Header.Get("Authorization")
 
 		if Authorization == "" {
-			err = core.NewInvalidParamsError("empty Authorization")
+			core.InvalidParamsResp(c, "empty Authorization")
 			return
 		}
 
 		claims, err := lib.ParseToken(Authorization)
 		if err != nil {
-			err = core.NewError(errcode.ErrorAuthToken)
+			core.FailResp(c, errcode.ErrorAuthToken)
 			return
+
 		}
 		if time.Now().Unix() > claims.ExpiresAt {
-			err = core.NewError(errcode.TimeoutAuthToken)
+			core.FailResp(c, errcode.TimeoutAuthToken)
 			return
 		}
-
+		c.Set("uid", claims.Uid)
 		c.Next()
 	}
 

@@ -435,7 +435,7 @@ func Struct2Map(obj interface{}) map[string]interface{} {
 	return data
 }
 
-func Struct2Map2(obj interface{}) map[string]interface{} {
+func Struct2MapJson(obj interface{}) map[string]interface{} {
 	t := reflect.TypeOf(obj)
 	if t.Kind() != reflect.Struct {
 		return nil
