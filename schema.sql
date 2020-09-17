@@ -100,8 +100,8 @@ CREATE TABLE lin_group_permission
 -- ----------------------------
 -- 用户基本信息表
 -- ----------------------------
-DROP TABLE IF EXISTS lin_users;
-CREATE TABLE lin_users
+DROP TABLE IF EXISTS lin_user;
+CREATE TABLE lin_user
 (
     id          int(10) unsigned NOT NULL AUTO_INCREMENT,
     username    varchar(24)      NOT NULL COMMENT '用户名，唯一',
@@ -126,8 +126,8 @@ CREATE TABLE lin_users
 # identifier 标识（手机号 邮箱 用户名或第三方应用的唯一标识）
 # credential 密码凭证（站内的保存密码，站外的不保存或保存token）
 -- ----------------------------
-DROP TABLE IF EXISTS lin_user_identities;
-CREATE TABLE lin_user_identities
+DROP TABLE IF EXISTS lin_user_identiy;
+CREATE TABLE lin_user_identiy
 (
     id            int(10) unsigned NOT NULL AUTO_INCREMENT,
     user_id       int(10) unsigned NOT NULL COMMENT '用户id',
@@ -181,10 +181,10 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- 插入root分组
 -- ----------------------------
 BEGIN;
-INSERT INTO lin_users(id, username, nickname)
+INSERT INTO lin_user(id, username, nickname)
 VALUES (1, 'root', 'root');
 
-INSERT INTO lin_user_identities (id, user_id, identity_type, identifier, credential)
+INSERT INTO lin_user_identiy (id, user_id, identity_type, identifier, credential)
 
 VALUES (1, 1, 'USERNAME_PASSWORD', 'root',
         'sha1$c419e500$1$84869e5560ebf3de26b6690386484929456d6c07');

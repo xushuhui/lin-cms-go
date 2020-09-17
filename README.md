@@ -13,5 +13,5 @@ https://doc.cms.talelin.com/api/
 http://localhost:6060/pkg/lin-cms-go/api/
 
 ## 修改点
-1.表名改成复数形式（兼容gorm,不想自定义表名）
-2.user和group变成一对一关系
+
+user和group变成一对一关系

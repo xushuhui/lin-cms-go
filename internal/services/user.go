@@ -144,17 +144,20 @@ func GetMyPermissions(uid uint) (data map[string]interface{}, err error) {
 		return
 	}
 	data = utils.Struct2MapJson(userModel)
-	groupIds, err := model.GetLinUserGroupByUid(uid)
+	groupModel, err := model.GetLinUserGroupByUid(uid)
+	if err == gorm.ErrRecordNotFound {
+		err = nil
+	}
 	if err != nil {
 		return
 	}
 	var isAdmin bool
 
-	groupModel, err := model.GetLinGroupById(groupIds)
-	if err != nil {
-		return
-	}
-	if groupModel.Level == model.GroupLevelRoot {
+	//groupModel, err := model.GetLinGroupById(groupIds)
+	//if err != nil {
+	//	return
+	//}
+	if groupModel.Group.Level == model.GroupLevelRoot {
 		isAdmin = true
 	}
 	data["is_admin"] = isAdmin
