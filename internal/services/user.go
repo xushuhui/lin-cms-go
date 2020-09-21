@@ -59,46 +59,7 @@ func Register(req request.Register) (err error) {
 		},
 	}
 	global.DBEngine.Create(&userModel)
-	//TODO:关联插入
-	//err = global.DBEngine.Transaction(func(tx *gorm.DB) (err error) {
-	//	// 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
-	//	err = tx.Create(&userModel).Error
-	//	if err != nil {
-	//		return
-	//	}
-	//	uid := userModel.ID
-	//	list := make([]model.UserGroup, 0)
-	//	//for _, v := range req.GroupIds {
-	//	//
-	//	//	var item model.UserGroup
-	//	//	item.UserId = uid
-	//	//	item.GroupId = v
-	//	//	list = append(list, item)
-	//	//}
-	//	hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	//	if err != nil {
-	//		return
-	//	}
-	//	userIdentityModel := model.UserIdentity{
-	//		UserId:     uid,
-	//		Identifier: req.Username,
-	//		Credential: string(hash),
-	//	}
-	//	err = tx.Create(&list).Error
-	//	if err != nil {
-	//		return
-	//	}
-	//	err = tx.Create(&userIdentityModel).Error
-	//	if err != nil {
-	//		return
-	//	}
-	//	// 返回 nil 提交事务
-	//	return nil
-	//})
-	//if err != nil {
-	//	err = core.NewErrorMessage(errcode.DBError, err.Error())
-	//	return
-	//}
+
 	return
 }
 func UpdateMe(req request.UpdateMe, uid uint) (err error) {
@@ -139,28 +100,20 @@ func ChangeMyPassword(req request.ChangeMyPassword, uid uint) (err error) {
 	return
 }
 func GetMyPermissions(uid uint) (data map[string]interface{}, err error) {
-	userModel, err := model.GetLinUserByID(uid)
+	var userModel model.User
+	err = global.DBEngine.Preload("UserGroup.Group").First(&userModel, uid).Error
 	if err != nil {
 		return
 	}
-	data = utils.Struct2MapJson(userModel)
-	groupModel, err := model.GetLinUserGroupByUid(uid)
-	if err == gorm.ErrRecordNotFound {
-		err = nil
-	}
-	if err != nil {
-		return
-	}
-	var isAdmin bool
 
-	//groupModel, err := model.GetLinGroupById(groupIds)
-	//if err != nil {
-	//	return
-	//}
-	if groupModel.Group.Level == model.GroupLevelRoot {
+	var isAdmin bool
+	if userModel.UserGroup.Group.Level == model.GroupLevelRoot {
 		isAdmin = true
 	}
+
+	data = utils.Struct2MapJson(userModel)
 	data["is_admin"] = isAdmin
+	//data["permissions"] = permissions
 	return
 }
 func GetMyInfomation(uid uint) (data map[string]interface{}, err error) {
