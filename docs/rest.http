@@ -1,0 +1,13 @@
+###
+POST http://localhost:8000/cms/user/login
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "1234"
+}
+> {% client.global.set("token", response.body.data.access_token); %}
+###
+GET http://localhost:8000/cms/user/permissions
+Content-Type: application/json
+Authorization: Bearer {{token}}
