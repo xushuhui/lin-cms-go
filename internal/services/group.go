@@ -1,19 +1,33 @@
 package services
 
-import "lin-cms-go/internal/request"
+import (
+	"lin-cms-go/global"
+	"lin-cms-go/internal/model"
+	"lin-cms-go/internal/request"
+)
 
-func GetGroups() (data map[string]interface{}, err error) {
+func GetGroups() (data map[string]interface{}, e error) {
 	return
 }
-func GetGroup(id int) (data map[string]interface{}, err error) {
+func GetGroup(id int) (data map[string]interface{}, e error) {
+	//groupModel,e := model.GetLinGroupById(id)
+	//if e != nil {
+	//	return
+	//}
 	return
 }
-func CreateGroup(req request.CreateGroup) (err error) {
+func CreateGroup(req request.CreateGroup) (e error) {
+	groupModel := model.Group{
+		Name: req.Name,
+		Info: req.Info,
+	}
+	global.DBEngine.Create(&groupModel)
+
 	return
 }
-func UpdateGroup(req request.UpdateGroup) (err error) {
+func UpdateGroup(req request.UpdateGroup) (e error) {
 	return
 }
-func DeleteGroup(id int) (err error) {
+func DeleteGroup(id int) (e error) {
 	return
 }
