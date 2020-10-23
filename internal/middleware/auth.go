@@ -18,8 +18,8 @@ func Auth() gin.HandlerFunc {
 			return
 		}
 
-		claims, err := lib.ParseToken(Authorization)
-		if err != nil {
+		claims, e := lib.ParseToken(Authorization)
+		if e != nil {
 			core.FailResp(c, errcode.ErrorAuthToken)
 			return
 

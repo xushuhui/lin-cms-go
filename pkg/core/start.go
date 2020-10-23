@@ -4,6 +4,7 @@ import (
 	"flag"
 	"github.com/gin-gonic/gin"
 	"lin-cms-go/global"
+	"lin-cms-go/internal/cache"
 	"lin-cms-go/internal/model"
 	"lin-cms-go/pkg/logger"
 	"lin-cms-go/pkg/setting"
@@ -47,52 +48,49 @@ func StartModule() {
 var (
 	port    string
 	runMode string
-
-	isVersion bool
 )
 
 func initFlag() error {
 	flag.StringVar(&port, "port", "", "启动端口")
 	flag.StringVar(&runMode, "mode", gin.Mode(), "启动模式")
-	flag.BoolVar(&isVersion, "version", false, "编译信息")
 	flag.Parse()
 
 	return nil
 }
-func initSetting() error {
+func initSetting() (e error) {
 	path, _ := os.Getwd()
 	config := path + "/configs"
-	s, err := setting.NewSetting(config, runMode, "yaml")
-	if err != nil {
-		return err
+	s, e := setting.NewSetting(config, runMode, "yaml")
+	if e != nil {
+		return
 	}
-	err = s.ReadSection("Server", &global.ServerSetting)
-	if err != nil {
-		return err
+	e = s.ReadSection("Server", &global.ServerSetting)
+	if e != nil {
+		return
 	}
-	err = s.ReadSection("App", &global.AppSetting)
-	if err != nil {
-		return err
-	}
-
-	if err = s.ReadSection("Database", &global.DatabaseSetting); err != nil {
-		return err
+	e = s.ReadSection("App", &global.AppSetting)
+	if e != nil {
+		return
 	}
 
-	if err = s.ReadSection("Redis", &global.RedisSetting); err != nil {
-		return err
+	if e = s.ReadSection("Database", &global.DatabaseSetting); e != nil {
+		return
 	}
 
-	if err = s.ReadSection("JWT", &global.JWTSetting); err != nil {
-		return err
+	if e = s.ReadSection("Redis", &global.RedisSetting); e != nil {
+		return
 	}
 
-	if err = s.ReadSection("Log", &global.LogSetting); err != nil {
-		return err
+	if e = s.ReadSection("JWT", &global.JWTSetting); e != nil {
+		return
 	}
 
-	if err = s.ReadSection("Email", &global.EmailSetting); err != nil {
-		return err
+	if e = s.ReadSection("Log", &global.LogSetting); e != nil {
+		return
+	}
+
+	if e = s.ReadSection("Email", &global.EmailSetting); e != nil {
+		return
 	}
 
 	global.AppSetting.DefaultContextTimeout *= time.Second
@@ -106,15 +104,10 @@ func initSetting() error {
 		global.ServerSetting.RunMode = runMode
 	}
 
-	return nil
+	return
 }
 func initLogger() (e error) {
-	//global.Logger = logger.NewLogger(&lumberjack.Logger{
-	//	Filename:  fileName,
-	//	MaxSize:   500,
-	//	MaxAge:    10,
-	//	LocalTime: true,
-	//}, "", log.LstdFlags).WithCaller(2)
+
 	logSet := global.LogSetting
 	global.Logger, e = logger.NewLogger(logSet.Formatter, logSet.Level, logSet.ReportCaller, logSet.SavePath)
 	if e != nil {
@@ -126,20 +119,27 @@ func initLogger() (e error) {
 	return
 }
 
-func initDBEngine() error {
-	var err error
-	global.DBEngine, err = model.NewDBEngine(global.DatabaseSetting)
-	if err != nil {
-		return err
+func initDBEngine() (e error) {
+
+	global.DBEngine, e = model.NewDBEngine(global.DatabaseSetting)
+	if e != nil {
+		return
 	}
 
-	return nil
+	return
 }
-func initTracer() error {
-	jaegerTracer, _, err := tracer.NewJaegerTracer("s", "127.0.0.1:6831")
-	if err != nil {
-		return err
+func initTracer() (e error) {
+	jaegerTracer, _, e := tracer.NewJaegerTracer("s", "127.0.0.1:6831")
+	if e != nil {
+		return e
 	}
 	global.Tracer = jaegerTracer
 	return nil
+}
+func initRedis() (e error) {
+	global.RDB, e = cache.NewRedisClient(global.RedisSetting)
+	if e != nil {
+		return
+	}
+	return
 }

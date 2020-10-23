@@ -50,18 +50,18 @@ func AccessLog() gin.HandlerFunc {
 		var responseData interface{}
 
 		if responseBody != "" {
-			Error := core.Error{}
-			err := json.Unmarshal([]byte(responseBody), &Error)
-			if err == nil {
-				responseCode = Error.Code
-				responseMsg = Error.Message
-				responseData = Error.Data
+			handle := core.Error{}
+			er := json.Unmarshal([]byte(responseBody), &handle)
+			if er == nil {
+				responseCode = handle.Code
+				responseMsg = handle.Message
+				responseData = handle.Data
 			}
 		}
 
 		//日志格式
 		accessLogMap := make(map[string]interface{})
-
+		accessLogMap["request_uid"], _ = c.Get("uid")
 		accessLogMap["request_time"] = startTime
 		accessLogMap["request_method"] = c.Request.Method
 		accessLogMap["request_uri"] = c.Request.RequestURI
@@ -81,8 +81,8 @@ func AccessLog() gin.HandlerFunc {
 
 		accessLogJson, _ := utils.JSONEncode(accessLogMap)
 		AppAccessLogName := utils.LogDir(global.LogSetting.SavePath) + "access.log"
-		if f, err := os.OpenFile(AppAccessLogName, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0777); err != nil {
-			log.Println(err)
+		if f, e := os.OpenFile(AppAccessLogName, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0777); e != nil {
+			log.Println(e)
 		} else {
 			f.WriteString(string(accessLogJson) + "\n")
 		}
