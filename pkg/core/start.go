@@ -34,10 +34,10 @@ func StartModule() {
 	if err != nil {
 		log.Fatalf("initDBEngine err: %v", err)
 	}
-	//err = initRedis()
-	//if err != nil {
-	//log.Fatalf("initRedis err: %v", err)
-	//}
+	err = initRedis()
+	if err != nil {
+		log.Fatalf("initRedis err: %v", err)
+	}
 
 	err = initTracer()
 	if err != nil {

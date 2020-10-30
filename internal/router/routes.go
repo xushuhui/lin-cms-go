@@ -16,7 +16,7 @@ func InitRouter() *gin.Engine {
 
 	cms := router.Group("/cms")
 	cms.POST("/user/login", api.Login)
-	cms.Use(middleware.Auth())
+	//cms.Use(middleware.Auth())
 	{
 		userRouter := cms.Group("/user")
 		adminRouter := cms.Group("/admin")

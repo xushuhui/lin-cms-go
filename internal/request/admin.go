@@ -5,8 +5,8 @@ type GetUsers struct {
 	Pages
 }
 type Pages struct {
-	Count int `json:"count" binding:"required"`
-	Page  int `json:"page" binding:"required"`
+	Count int `json:"count" binding:"required" comment:"数量"`
+	Page  int `json:"page" binding:"required" comment:"页码"`
 }
 type ChangeUserPassword struct {
 	Id              int    `json:"uid"`

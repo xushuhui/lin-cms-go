@@ -60,7 +60,7 @@ URL:
 */
 func DispatchPermissions(c *gin.Context) {
 	var req request.DispatchPermissions
-	if err := core.ParseRequest(c, &req); err != nil {
+	if err := core.ParseRequest(c, req); err != nil {
 		c.Error(err)
 		return
 	}
@@ -94,7 +94,7 @@ URL:
 */
 func RemovePermissions(c *gin.Context) {
 	var req request.RemovePermissions
-	if err := core.ParseRequest(c, &req); err != nil {
+	if err := core.ParseRequest(c, req); err != nil {
 		c.Error(err)
 		return
 	}
