@@ -31,7 +31,7 @@ URL:
 */
 func GetUsers(c *gin.Context) {
 	var req request.GetUsers
-	if err := core.ParseRequest(c, req); err != nil {
+	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
 		return
 	}
@@ -67,7 +67,7 @@ URL:
 */
 func ChangeUserPassword(c *gin.Context) {
 	var req request.ChangeUserPassword
-	if err := core.ParseRequest(c, req); err != nil {
+	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
 		return
 	}
@@ -137,7 +137,7 @@ URL:
 */
 func UpdateUser(c *gin.Context) {
 	var req request.UpdateUser
-	if err := core.ParseRequest(c, req); err != nil {
+	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
 		return
 	}

@@ -13,7 +13,7 @@ func Upload(c *gin.Context) {
 }
 func GetLogs(c *gin.Context) {
 	var req request.GetLogs
-	if err := core.ParseRequest(c, req); err != nil {
+	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
 		return
 	}
@@ -28,7 +28,7 @@ func GetLogs(c *gin.Context) {
 }
 func SearchLogs(c *gin.Context) {
 	var req request.SearchLogs
-	if err := core.ParseRequest(c, req); err != nil {
+	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
 		return
 	}
@@ -43,7 +43,7 @@ func SearchLogs(c *gin.Context) {
 }
 func GetLogUsers(c *gin.Context) {
 	var req request.GetLogUsers
-	if err := core.ParseRequest(c, req); err != nil {
+	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
 		return
 	}

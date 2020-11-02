@@ -35,7 +35,7 @@ func GetGroup(c *gin.Context) {
 }
 func CreateGroup(c *gin.Context) {
 	var req request.CreateGroup
-	if err := core.ParseRequest(c, req); err != nil {
+	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
 		return
 	}
@@ -49,7 +49,7 @@ func CreateGroup(c *gin.Context) {
 }
 func UpdateGroup(c *gin.Context) {
 	var req request.UpdateGroup
-	if err := core.ParseRequest(c, req); err != nil {
+	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
 		return
 	}
