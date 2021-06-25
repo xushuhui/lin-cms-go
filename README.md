@@ -15,3 +15,6 @@ http://localhost:6060/pkg/lin-cms-go/api/
 ## 修改点
 
 user和group变成一对一关系
+
+### 微信公众号
+![扫码关注](https://tvax4.sinaimg.cn/large/a616b9a4gy1grl9d1rdpvj2076076wey.jpg)
