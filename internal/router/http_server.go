@@ -2,7 +2,6 @@ package router
 
 import (
 	"context"
-	"lin-cms-go/global"
 	"log"
 	"net/http"
 	"time"
@@ -13,21 +12,7 @@ var (
 	port           string
 )
 
-func HttpServerRun() {
 
-	r := InitRouter()
-	port = global.ServerSetting.HttpPort
-	HttpSrvHandler = &http.Server{
-		Addr:           ":" + port,
-		Handler:        r,
-		ReadTimeout:    global.ServerSetting.ReadTimeout,
-		WriteTimeout:   global.ServerSetting.WriteTimeout,
-		MaxHeaderBytes: 1 << 20,
-	}
-	go httpListen()
-	log.Printf(" [INFO] HttpServerRun:%s\n", port)
-
-}
 func httpListen() {
 	if err := HttpSrvHandler.ListenAndServe(); err != nil {
 		log.Fatalf(" [ERROR] HttpServerRun:%s err:%v\n", port, err)

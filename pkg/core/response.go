@@ -36,8 +36,8 @@ func NewErrorMessage(code int, message string) (e Error) {
 func NewInvalidParamsError(message string) (e Error) {
 	return NewErrorMessage(errcode.InvalidParams, message)
 }
-func ParseRequest(c *gin.Context, request interface{}) (err error) {
-	err = c.ShouldBind(request)
+func ParseRequest(c *fiber.Ctx, request interface{}) (err error) {
+	err = c.BodyParser(request)
 
 	if err != nil {
 		msg := Translate(err.(validator.ValidationErrors))
@@ -46,24 +46,24 @@ func ParseRequest(c *gin.Context, request interface{}) (err error) {
 	}
 	return
 }
-func FailResp(c *gin.Context, code int) {
-	c.AbortWithStatusJSON(200, Error{
+func FailResp(c *fiber.Ctx, code int) {
+	c.JSON( Error{
 		Code:    code,
 		Message: errcode.GetMsg(code),
 	})
 	return
 }
 
-func ErrorResp(c *gin.Context, code int, msg string) {
-	c.AbortWithStatusJSON(200, Error{
+func ErrorResp(c *fiber.Ctx, code int, msg string) {
+	c.JSON( Error{
 		Code:    code,
 		Message: msg,
 	})
 	return
 }
-func InvalidParamsResp(c *gin.Context, msg string) {
+func InvalidParamsResp(c *fiber.Ctx, msg string) {
 
-	c.AbortWithStatusJSON(200, Error{
+	c.JSON( Error{
 		Code:    errcode.InvalidParams,
 		Message: msg,
 	})
@@ -71,13 +71,13 @@ func InvalidParamsResp(c *gin.Context, msg string) {
 }
 
 func SuccessResp(c *fiber.Ctx) error {
-	c.JSON(200, Error{
+	return c.JSON( Error{
 		Code:    0,
 		Message: errcode.GetMsg(0),
 	})
 }
-func SetData(c *gin.Context, data map[string]interface{}) {
-	c.JSON(200, Error{
+func SetData(c *fiber.Ctx, data map[string]interface{}) error{
+	return c.JSON( Error{
 		Code:    0,
 		Message: errcode.GetMsg(0),
 		Data:    data,

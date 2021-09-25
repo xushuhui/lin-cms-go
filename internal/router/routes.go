@@ -3,50 +3,48 @@ package router
 import (
 	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/api"
-	"lin-cms-go/internal/middleware"
-	"net/http"
+
 )
 
-func InitRouter() *gin.Engine {
-	router := gin.Default()
+func InitRouter() *fiber.App {
+	router := fiber.New()
 	//加载静态资源，一般是上传的资源，例如用户上传的图片
-	router.StaticFS("/upload", http.Dir("storage/upload"))
+	router.Static("/upload", "storage/upload")
 
-	router.Use(middleware.Cors(), middleware.AccessLog(), middleware.ErrorHandle())
 
 	cms := router.Group("/cms")
-	cms.POST("/user/login", api.Login)
+	cms.Post("/user/login", api.Login)
 	//cms.Use(middleware.Auth())
 	{
 		userRouter := cms.Group("/user")
 		adminRouter := cms.Group("/admin")
 		logRouter := cms.Group("/log")
-		userRouter.POST("/register", api.Register)
-		userRouter.PUT("", api.UpdateMe)
-		userRouter.PUT("/change_password", api.ChangeMyPassword)
-		userRouter.GET("/permissions", api.GetMyPermissions)
-		userRouter.GET("/information", api.GetMyInfomation)
+		userRouter.Post("/register", api.Register)
+		userRouter.Put("", api.UpdateMe)
+		userRouter.Put("/change_password", api.ChangeMyPassword)
+		userRouter.Get("/permissions", api.GetMyPermissions)
+		userRouter.Get("/information", api.GetMyInfomation)
 
-		adminRouter.GET("/permissions", api.GetAllPermissions)
-		adminRouter.GET("/users", api.GetUsers)
-		adminRouter.PUT("/user/:id/password", api.ChangeUserPassword)
-		adminRouter.DELETE("/user/:id", api.DeleteUser)
-		adminRouter.PUT("/user/:id", api.UpdateUser)
+		adminRouter.Get("/permissions", api.GetAllPermissions)
+		adminRouter.Get("/users", api.GetUsers)
+		adminRouter.Put("/user/:id/password", api.ChangeUserPassword)
+		adminRouter.Delete("/user/:id", api.DeleteUser)
+		adminRouter.Put("/user/:id", api.UpdateUser)
 
-		adminRouter.GET("/group/:id", api.GetGroup)
-		adminRouter.PUT("/group/:id", api.UpdateGroup)
-		adminRouter.DELETE("/group/:id", api.DeleteGroup)
-		adminRouter.GET("/groups", api.GetGroups)
-		adminRouter.POST("/group", api.CreateGroup)
+		adminRouter.Get("/group/:id", api.GetGroup)
+		adminRouter.Put("/group/:id", api.UpdateGroup)
+		adminRouter.Delete("/group/:id", api.DeleteGroup)
+		adminRouter.Get("/groups", api.GetGroups)
+		adminRouter.Post("/group", api.CreateGroup)
 
-		adminRouter.POST("/permission/dispatch", api.DispatchPermission)
-		adminRouter.POST("/permissions/dispatch", api.DispatchPermissions)
-		adminRouter.POST("/permissions/remove", api.RemovePermissions)
+		adminRouter.Post("/permission/dispatch", api.DispatchPermission)
+		adminRouter.Post("/permissions/dispatch", api.DispatchPermissions)
+		adminRouter.Post("/permissions/remove", api.RemovePermissions)
 
-		cms.POST("/file", api.Upload)
-		logRouter.GET("", api.GetLogs)
-		logRouter.GET("/search", api.SearchLogs)
-		logRouter.GET("/users", api.GetLogUsers)
+		cms.Post("/file", api.Upload)
+		logRouter.Get("", api.GetLogs)
+		logRouter.Get("/search", api.SearchLogs)
+		logRouter.Get("/users", api.GetLogUsers)
 	}
 
 	//需要登录的接口

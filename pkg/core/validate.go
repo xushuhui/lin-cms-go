@@ -9,7 +9,7 @@ import (
 	ut "github.com/go-playground/universal-translator"
 	"github.com/go-playground/validator/v10"
 	zhtranslations "github.com/go-playground/validator/v10/translations/zh"
-	"github.com/gofiber/fiber/v2/binding"
+
 )
 
 func mobileValidate(fl validator.FieldLevel) bool {

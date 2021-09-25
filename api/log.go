@@ -3,56 +3,51 @@ package api
 import (
 	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/internal/request"
-	"lin-cms-go/internal/services"
+	"lin-cms-go/internal/biz"
 	"lin-cms-go/pkg/core"
 )
 
 func Upload(c *fiber.Ctx) error {
-	core.SuccessResp(c)
-	return
+
+	return core.SuccessResp(c)
 }
 func GetLogs(c *fiber.Ctx) error {
 	var req request.GetLogs
 	if err := core.ParseRequest(c, &req); err != nil {
-		c.Error(err)
-		return
+	
+		return err
 	}
 
-	data, err := services.GetLogs(req)
+	data, err := biz.GetLogs(req)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
-	core.SetData(c, data)
-	return
+	return core.SetData(c, data)
+
 }
 func SearchLogs(c *fiber.Ctx) error {
 	var req request.SearchLogs
 	if err := core.ParseRequest(c, &req); err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 
-	data, err := services.SearchLogs(req)
+	data, err := biz.SearchLogs(req)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
-	core.SetData(c, data)
-	return
+
+	return core.SetData(c, data)
 }
 func GetLogUsers(c *fiber.Ctx) error {
 	var req request.GetLogUsers
 	if err := core.ParseRequest(c, &req); err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 
-	data, err := services.GetLogUsers(req)
+	data, err := biz.GetLogUsers(req)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
-	core.SetData(c, data)
-	return
+
+	return core.SetData(c, data)
 }

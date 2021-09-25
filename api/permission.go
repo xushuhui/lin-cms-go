@@ -3,15 +3,15 @@ package api
 import (
 	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/internal/request"
-	"lin-cms-go/internal/services"
+	"lin-cms-go/internal/biz"
 	"lin-cms-go/pkg/core"
 )
 
 func GetAllPermissions(c *fiber.Ctx) error {
-	data, err := services.GetAllPermissions()
+	data, err := biz.GetAllPermissions()
 	if err != nil {
-		c.Error(err)
-		return
+		
+		return err
 	}
 	core.SetData(c, data)
 	return
@@ -25,13 +25,11 @@ func DispatchPermission(c *fiber.Ctx) error {
 func DispatchPermissions(c *fiber.Ctx) error {
 	var req request.DispatchPermissions
 	if err := core.ParseRequest(c, &req); err != nil {
-		c.Error(err)
-		return
+ 		return err
 	}
-	err := services.DispatchPermissions(req)
+	err := biz.DispatchPermissions(req)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 	core.SuccessResp(c)
 	return
@@ -40,13 +38,13 @@ func DispatchPermissions(c *fiber.Ctx) error {
 func RemovePermissions(c *fiber.Ctx) error {
 	var req request.RemovePermissions
 	if err := core.ParseRequest(c, &req); err != nil {
-		c.Error(err)
-		return
+		
+		return err
 	}
-	err := services.RemovePermissions(req)
+	err := biz.RemovePermissions(req)
 	if err != nil {
-		c.Error(err)
-		return
+		
+		return err
 	}
 	core.SuccessResp(c)
 	return

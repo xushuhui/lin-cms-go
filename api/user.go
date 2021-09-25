@@ -2,7 +2,7 @@ package api
 
 import (
 	"lin-cms-go/internal/request"
-	"lin-cms-go/internal/services"
+	"lin-cms-go/internal/biz"
 	"lin-cms-go/pkg/core"
 	"lin-cms-go/pkg/errcode"
 	"lin-cms-go/pkg/utils"
@@ -18,7 +18,7 @@ func Login(c *fiber.Ctx) error {
 		return
 	}
 
-	data, err := services.Login(req)
+	data, err := biz.Login(req)
 	if err != nil {
 		c.Error(err)
 		return
@@ -35,7 +35,7 @@ func Register(c *fiber.Ctx) error {
 		return
 	}
 
-	err := services.Register(req)
+	err := biz.Register(req)
 	if err != nil {
 		c.Error(err)
 		return
@@ -56,7 +56,7 @@ func UpdateMe(c *fiber.Ctx) error {
 		return
 	}
 
-	err = services.UpdateMe(req, uid)
+	err = biz.UpdateMe(req, uid)
 	if err != nil {
 		c.Error(err)
 		return
@@ -70,8 +70,7 @@ func ChangeMyPassword(c *fiber.Ctx) error {
 
 	var req request.ChangeMyPassword
 	if err := core.ParseRequest(c, &req); err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 
 	uid, err := uid(c)
@@ -79,7 +78,7 @@ func ChangeMyPassword(c *fiber.Ctx) error {
 		return
 	}
 
-	err = services.ChangeMyPassword(req, uid)
+	err = biz.ChangeMyPassword(req, uid)
 	if err != nil {
 		c.Error(err)
 		return
@@ -87,7 +86,7 @@ func ChangeMyPassword(c *fiber.Ctx) error {
 	core.SuccessResp(c)
 	return
 }
-func uid(c *fiber.Ctx) error (uid uint, err error) {
+func uid(c *fiber.Ctx)  (uid uint, err error) {
 	u, ok := c.Get("uid")
 
 	if !ok {
@@ -101,13 +100,12 @@ func uid(c *fiber.Ctx) error (uid uint, err error) {
 func GetMyPermissions(c *fiber.Ctx) error {
 	uid, err := uid(c)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
-	data, err := services.GetMyPermissions(uid)
+	data, err := biz.GetMyPermissions(uid)
 	if err != nil {
-		c.Error(err)
-		return
+		
+		return err
 	}
 	core.SetData(c, data)
 	return
@@ -117,13 +115,13 @@ func GetMyPermissions(c *fiber.Ctx) error {
 func GetMyInfomation(c *fiber.Ctx) error {
 	uid, err := uid(c)
 	if err != nil {
-		c.Error(err)
-		return
+	
+		return err
 	}
-	data, err := services.GetMyInfomation(uid)
+	data, err := biz.GetMyInfomation(uid)
 	if err != nil {
-		c.Error(err)
-		return
+		
+		return err
 	}
 	core.SetData(c, data)
 	return

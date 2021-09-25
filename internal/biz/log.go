@@ -1,4 +1,4 @@
-package services
+package biz
 
 import "lin-cms-go/internal/request"
 

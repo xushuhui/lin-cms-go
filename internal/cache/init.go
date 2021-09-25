@@ -2,7 +2,7 @@ package cache
 
 import (
 	"github.com/go-redis/redis"
-	"lin-cms-go/global"
+
 	"lin-cms-go/pkg/setting"
 )
 
@@ -17,6 +17,3 @@ func NewRedisClient(redisSet *setting.RedisSettings) (*redis.Client, error) {
 	return RDB, nil
 }
 
-func SelectDB(db int) {
-	global.RDB.Do("SELECT", db)
-}

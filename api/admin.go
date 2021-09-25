@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/internal/request"
-	"lin-cms-go/internal/services"
+	"lin-cms-go/internal/biz"
 	"lin-cms-go/pkg/core"
 	"lin-cms-go/pkg/utils"
 )
@@ -11,64 +11,57 @@ import (
 func GetUsers(c *fiber.Ctx) error {
 	var req request.GetUsers
 	if err := core.ParseRequest(c, &req); err != nil {
-		c.Error(err)
-		return
+
+		return err
 	}
 
-	data, err := services.GetUsers(req)
+	data, err := biz.GetUsers(req)
 	if err != nil {
-		c.Error(err)
-		return
+
+		return err
 	}
-	core.SetData(c, data)
-	return
+	return core.SetData(c, data)
+
 }
 
 func ChangeUserPassword(c *fiber.Ctx) error {
 	var req request.ChangeUserPassword
 	if err := core.ParseRequest(c, &req); err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 
-	err := services.ChangeUserPassword(req)
+	err := biz.ChangeUserPassword(req)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
-	core.SuccessResp(c)
-	return
+	return core.SuccessResp(c)
+
 }
 
 func DeleteUser(c *fiber.Ctx) error {
 
 	id, err := utils.StringToInt(c.Param("id"))
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
-	err = services.DeleteUser(id)
+	err = biz.DeleteUser(id)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
-	core.SuccessResp(c)
-	return
+	return core.SuccessResp(c)
 
 }
 
 func UpdateUser(c *fiber.Ctx) error {
 	var req request.UpdateUser
 	if err := core.ParseRequest(c, &req); err != nil {
-		c.Error(err)
-		return
+		return err
 	}
 
-	err := services.UpdateUser(req)
+	err := biz.UpdateUser(req)
 	if err != nil {
-		c.Error(err)
-		return
+		return err
 	}
-	core.SuccessResp(c)
-	return
+	return core.SuccessResp(c)
+
 }
