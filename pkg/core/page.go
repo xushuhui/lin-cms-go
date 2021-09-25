@@ -1,7 +1,7 @@
 package core
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/global"
 	"lin-cms-go/pkg/utils"
 )
@@ -16,7 +16,7 @@ type Pager struct {
 	TotalRows int `json:"total_rows"`
 }
 
-func GetPage(c *gin.Context) int {
+func GetPage(c *fiber.Ctx) error int {
 	page, _ := utils.StringToInt(c.Query("page"))
 	if page <= 0 {
 		return 1
@@ -25,7 +25,7 @@ func GetPage(c *gin.Context) int {
 	return page
 }
 
-func GetPageSize(c *gin.Context) int {
+func GetPageSize(c *fiber.Ctx) error int {
 	pageSize, _ := utils.StringToInt(c.Query("page_size"))
 	if pageSize <= 0 {
 		return global.AppSetting.DefaultPageSize

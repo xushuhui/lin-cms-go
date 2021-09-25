@@ -3,12 +3,12 @@ package middleware
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/pkg/core"
 )
 
 func ErrorHandle() gin.HandlerFunc {
-	return func(c *gin.Context) {
+	return func(c *fiber.Ctx) error {
 
 		c.Next()
 		e := c.Errors.Last()

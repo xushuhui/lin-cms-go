@@ -11,7 +11,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 )
 
 type bodyLogWriter struct {
@@ -29,7 +29,7 @@ func (w bodyLogWriter) WriteString(s string) (int, error) {
 }
 
 func AccessLog() gin.HandlerFunc {
-	return func(c *gin.Context) {
+	return func(c *fiber.Ctx) error {
 		bodyLogWriter := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
 		c.Writer = bodyLogWriter
 		rawData, _ := c.GetRawData()

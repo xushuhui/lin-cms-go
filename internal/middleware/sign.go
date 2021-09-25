@@ -3,7 +3,7 @@ package middleware
 import (
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/global"
 	"lin-cms-go/pkg/core"
 	"lin-cms-go/pkg/utils"
@@ -17,7 +17,7 @@ import (
 // AES 对称加密
 func Sign() gin.HandlerFunc {
 
-	return func(c *gin.Context) {
+	return func(c *fiber.Ctx) error {
 
 		sign, err := verifySign(c)
 
@@ -36,7 +36,7 @@ func Sign() gin.HandlerFunc {
 }
 
 // 验证签名
-func verifySign(c *gin.Context) (map[string]string, error) {
+func verifySign(c *fiber.Ctx) error (map[string]string, error) {
 	_ = c.Request.ParseForm()
 	req := c.Request.Form
 	debug := strings.Join(c.Request.Form["debug"], "")

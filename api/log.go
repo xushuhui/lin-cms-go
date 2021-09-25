@@ -1,17 +1,17 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/internal/request"
 	"lin-cms-go/internal/services"
 	"lin-cms-go/pkg/core"
 )
 
-func Upload(c *gin.Context) {
+func Upload(c *fiber.Ctx) error {
 	core.SuccessResp(c)
 	return
 }
-func GetLogs(c *gin.Context) {
+func GetLogs(c *fiber.Ctx) error {
 	var req request.GetLogs
 	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
@@ -26,7 +26,7 @@ func GetLogs(c *gin.Context) {
 	core.SetData(c, data)
 	return
 }
-func SearchLogs(c *gin.Context) {
+func SearchLogs(c *fiber.Ctx) error {
 	var req request.SearchLogs
 	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
@@ -41,7 +41,7 @@ func SearchLogs(c *gin.Context) {
 	core.SetData(c, data)
 	return
 }
-func GetLogUsers(c *gin.Context) {
+func GetLogUsers(c *fiber.Ctx) error {
 	var req request.GetLogUsers
 	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)

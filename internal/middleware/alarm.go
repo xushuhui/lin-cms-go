@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/pkg/core"
 	"runtime/debug"
 	"strings"
@@ -9,7 +9,7 @@ import (
 
 func Alarm() gin.HandlerFunc {
 
-	return func(c *gin.Context) {
+	return func(c *fiber.Ctx) error {
 		defer func() {
 			if err := recover(); err != nil {
 

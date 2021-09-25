@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"os"
 	"testing"
 )

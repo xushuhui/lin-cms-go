@@ -1,30 +1,13 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/internal/request"
 	"lin-cms-go/internal/services"
 	"lin-cms-go/pkg/core"
 )
 
-/*
-
-查询所有可分配的权限
-
-URL:
-GET	/cms/admin/permissions
-
-参数：
-
-返回值：
-
-	"code": 0
-	"message": "ok"
-	"data": {"
-
-	"}
-*/
-func GetAllPermissions(c *gin.Context) {
+func GetAllPermissions(c *fiber.Ctx) error {
 	data, err := services.GetAllPermissions()
 	if err != nil {
 		c.Error(err)
@@ -35,30 +18,11 @@ func GetAllPermissions(c *gin.Context) {
 }
 
 //TODO: 没找到必须实现该接口的业务场景，而且功能和分配多个权限重复，开发待定
-func DispatchPermission(c *gin.Context) {
+func DispatchPermission(c *fiber.Ctx) error {
 
 }
 
-/*
-
-分配多个权限
-
-URL:
-	POST /cms/admin/permissions/dispatch
-
-参数：
-	"group_id": 5, 分组 id
-  	"permission_ids": [4, 5] 权限 id
-
-返回值：
-
-	"code": 0
-	"message": "ok"
-	"data": {"
-
-	"}
-*/
-func DispatchPermissions(c *gin.Context) {
+func DispatchPermissions(c *fiber.Ctx) error {
 	var req request.DispatchPermissions
 	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
@@ -73,26 +37,7 @@ func DispatchPermissions(c *gin.Context) {
 	return
 }
 
-/*
-
-删除多个权限
-
-URL:
-	POST /cms/admin/permissions/remove
-
-参数：
-	"group_id": 5, 分组 id
-  	"permission_ids": [4, 5] 权限 id
-
-返回值：
-
-	"code": 0
-	"message": "ok"
-	"data": {"
-
-	"}
-*/
-func RemovePermissions(c *gin.Context) {
+func RemovePermissions(c *fiber.Ctx) error {
 	var req request.RemovePermissions
 	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)

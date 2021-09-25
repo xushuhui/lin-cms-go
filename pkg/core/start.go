@@ -2,7 +2,7 @@ package core
 
 import (
 	"flag"
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/global"
 	"lin-cms-go/internal/cache"
 	"lin-cms-go/internal/model"

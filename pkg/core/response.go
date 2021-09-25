@@ -2,8 +2,8 @@ package core
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/pkg/errcode"
 )
 
@@ -70,7 +70,7 @@ func InvalidParamsResp(c *gin.Context, msg string) {
 	return
 }
 
-func SuccessResp(c *gin.Context) {
+func SuccessResp(c *fiber.Ctx) error {
 	c.JSON(200, Error{
 		Code:    0,
 		Message: errcode.GetMsg(0),
@@ -96,7 +96,7 @@ func SetPage(c *gin.Context, list interface{}, totalRows int) {
 		},
 	})
 }
-func ServerError(c *gin.Context) {
+func ServerError(c *fiber.Ctx) error {
 	c.JSON(500, Error{
 		Code:    errcode.ServerError,
 		Message: errcode.GetMsg(errcode.ServerError),

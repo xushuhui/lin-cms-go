@@ -1,22 +1,15 @@
 package main
 
 import (
-	"lin-cms-go/internal/router"
-	"lin-cms-go/pkg/core"
-	"os"
-	"os/signal"
-	"syscall"
+	"github.com/gofiber/fiber/v2"
+	
+
 )
 
 func main() {
 
-	core.StartModule()
+	app := fiber.New()
 
-	router.HttpServerRun()
-
-	quit := make(chan os.Signal)
-	signal.Notify(quit, syscall.SIGKILL, syscall.SIGQUIT, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
-	router.HttpServerStop()
+	app.Listen(":3000")
 
 }

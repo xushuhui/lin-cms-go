@@ -1,14 +1,14 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/internal/request"
 	"lin-cms-go/internal/services"
 	"lin-cms-go/pkg/core"
 	"lin-cms-go/pkg/utils"
 )
 
-func GetGroups(c *gin.Context) {
+func GetGroups(c *fiber.Ctx) error {
 	data, err := services.GetGroups()
 	if err != nil {
 		c.Error(err)
@@ -18,7 +18,7 @@ func GetGroups(c *gin.Context) {
 	return
 
 }
-func GetGroup(c *gin.Context) {
+func GetGroup(c *fiber.Ctx) error {
 	id, err := utils.StringToInt(c.Param("id"))
 	if err != nil {
 		c.Error(err)
@@ -33,7 +33,7 @@ func GetGroup(c *gin.Context) {
 	return
 
 }
-func CreateGroup(c *gin.Context) {
+func CreateGroup(c *fiber.Ctx) error {
 	var req request.CreateGroup
 	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
@@ -47,7 +47,7 @@ func CreateGroup(c *gin.Context) {
 	}
 	return
 }
-func UpdateGroup(c *gin.Context) {
+func UpdateGroup(c *fiber.Ctx) error {
 	var req request.UpdateGroup
 	if err := core.ParseRequest(c, &req); err != nil {
 		c.Error(err)
@@ -61,7 +61,7 @@ func UpdateGroup(c *gin.Context) {
 	}
 	return
 }
-func DeleteGroup(c *gin.Context) {
+func DeleteGroup(c *fiber.Ctx) error {
 	id, err := utils.StringToInt(c.Param("id"))
 	if err != nil {
 		c.Error(err)

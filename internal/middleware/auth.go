@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/pkg/core"
 	"lin-cms-go/pkg/errcode"
 	"lin-cms-go/pkg/lib"
@@ -9,7 +9,7 @@ import (
 )
 
 func Auth() gin.HandlerFunc {
-	return func(c *gin.Context) {
+	return func(c *fiber.Ctx) error {
 
 		Authorization := c.Request.Header.Get("Authorization")
 

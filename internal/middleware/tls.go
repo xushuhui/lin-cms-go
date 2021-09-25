@@ -1,12 +1,12 @@
 package middleware
 
 import (
-	"github.com/gin-gonic/gin"
+	"github.com/gofiber/fiber/v2"
 	"github.com/unrolled/secure"
 )
 
 func TlsHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
+	return func(c *fiber.Ctx) error {
 		secureMiddleware := secure.New(secure.Options{
 			SSLRedirect: true,
 		})
