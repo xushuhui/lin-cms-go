@@ -3,25 +3,18 @@ module lin-cms-go
 go 1.14
 
 require (
-	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/fsnotify/fsnotify v1.4.9
+	entgo.io/ent v0.9.1
 	github.com/go-playground/locales v0.13.0
 	github.com/go-playground/universal-translator v0.17.0
 	github.com/go-playground/validator/v10 v10.2.0
 	github.com/go-redis/redis v6.15.8+incompatible
+	github.com/go-sql-driver/mysql v1.5.1-0.20200311113236-681ffa848bae
 	github.com/gofiber/fiber/v2 v2.19.0
+	github.com/google/wire v0.5.0
 	github.com/onsi/ginkgo v1.14.0 // indirect
-	github.com/opentracing/opentracing-go v1.2.0
 	github.com/sirupsen/logrus v1.6.0
-	github.com/spf13/viper v1.7.0
-	github.com/stretchr/testify v1.4.0
-	github.com/uber/jaeger-client-go v2.25.0+incompatible
-	github.com/uber/jaeger-lib v2.2.0+incompatible // indirect
-	github.com/unrolled/secure v1.0.8
+	github.com/stretchr/testify v1.7.0
 	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
-	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
-	gorm.io/driver/mysql v1.0.1
-	gorm.io/gorm v1.20.1
+	gopkg.in/yaml.v2 v2.4.0
 
 )

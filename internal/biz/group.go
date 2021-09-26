@@ -1,8 +1,6 @@
 package biz
 
 import (
-	"lin-cms-go/global"
-	"lin-cms-go/internal/model"
 	"lin-cms-go/internal/request"
 )
 
@@ -16,12 +14,11 @@ func GetGroup(id int) (data map[string]interface{}, e error) {
 	//}
 	return
 }
-func CreateGroup(req request.CreateGroup) (e error) {
-	groupModel := model.Group{
-		Name: req.Name,
-		Info: req.Info,
-	}
-	global.DBEngine.Create(&groupModel)
+func CreateGroup(name, info string) (e error) {
+	//groupModel := model.Group{
+	//	Name: name,
+	//	Info:info,
+	//}
 
 	return
 }

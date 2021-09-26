@@ -3,7 +3,7 @@ package test
 import (
 	"encoding/json"
 	"io"
-	"lin-cms-go/internal/router"
+
 	"lin-cms-go/pkg/core"
 	"net/http"
 	"net/http/httptest"
@@ -12,7 +12,6 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -33,21 +32,14 @@ func NewBufferString(body string) io.Reader {
 	return bytes.NewBufferString(body)
 }
 
-func PerformRequest(mothod, url, contentType string, body string) (c *gin.Context, r *http.Request, w *httptest.ResponseRecorder) {
-	rout := router.InitRouter()
+func PerformRequest(mothod, url, contentType string, body string) (r *http.Request, w *httptest.ResponseRecorder) {
 
-	w = httptest.NewRecorder()
-	c, _ = gin.CreateTestContext(w)
-	r = httptest.NewRequest(mothod, url, NewBufferString(body))
-	c.Request = r
-	c.Request.Header.Set("Content-Type", contentType)
-	rout.ServeHTTP(w, r)
 	return
 }
 
 func call(t *testing.T, testcase []TestCase) {
 	for k, v := range testcase {
-		_, _, w := PerformRequest(v.method, v.url, v.contentType, v.param)
+		_, w := PerformRequest(v.method, v.url, v.contentType, v.param)
 		//assert.Contains(t, w.Body.String(),fmt.Sprintf("\"error_code\":%d",v.code))
 		fmt.Println()
 		fmt.Printf("第%d个测试用例：%s", k+1, v.desc)

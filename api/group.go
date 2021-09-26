@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"lin-cms-go/internal/request"
 	"lin-cms-go/internal/biz"
+	"lin-cms-go/internal/request"
 	"lin-cms-go/pkg/core"
 	"lin-cms-go/pkg/utils"
 )
@@ -16,10 +16,9 @@ func GetGroups(c *fiber.Ctx) error {
 	}
 	return core.SetData(c, data)
 
-
 }
 func GetGroup(c *fiber.Ctx) error {
-	id, err := utils.StringToInt(c.Param("id"))
+	id, err := utils.StringToInt(c.Params("id"))
 	if err != nil {
 
 		return err
@@ -34,12 +33,10 @@ func GetGroup(c *fiber.Ctx) error {
 func CreateGroup(c *fiber.Ctx) error {
 	var req request.CreateGroup
 	if err := core.ParseRequest(c, &req); err != nil {
-
 		return err
 	}
 
-	err := biz.CreateGroup(req)
-
+	err := biz.CreateGroup(req.Name, req.Info)
 	return err
 }
 func UpdateGroup(c *fiber.Ctx) error {
@@ -53,7 +50,7 @@ func UpdateGroup(c *fiber.Ctx) error {
 	return err
 }
 func DeleteGroup(c *fiber.Ctx) error {
-	id, err := utils.StringToInt(c.Param("id"))
+	id, err := utils.StringToInt(c.Params("id"))
 	if err != nil {
 
 		return err
@@ -63,6 +60,6 @@ func DeleteGroup(c *fiber.Ctx) error {
 
 		return err
 	}
-	return 	core.SuccessResp(c)
+	return core.SuccessResp(c)
 
 }

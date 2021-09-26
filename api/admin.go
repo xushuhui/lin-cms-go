@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"lin-cms-go/internal/request"
 	"lin-cms-go/internal/biz"
+	"lin-cms-go/internal/request"
 	"lin-cms-go/pkg/core"
 	"lin-cms-go/pkg/utils"
 )
@@ -40,7 +40,7 @@ func ChangeUserPassword(c *fiber.Ctx) error {
 
 func DeleteUser(c *fiber.Ctx) error {
 
-	id, err := utils.StringToInt(c.Param("id"))
+	id, err := utils.StringToInt(c.Params("id"))
 	if err != nil {
 		return err
 	}

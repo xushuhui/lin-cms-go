@@ -3,7 +3,7 @@ package lib
 import (
 	"io"
 	"io/ioutil"
-	"lin-cms-go/global"
+
 	"lin-cms-go/pkg/utils"
 	"mime/multipart"
 	"os"
@@ -30,11 +30,11 @@ func GetFileExt(name string) string {
 }
 
 func GetSavePath() string {
-	return global.AppSetting.UploadSavePath
+	return ""
 }
 
 func GetServerUrl() string {
-	return global.AppSetting.UploadServerUrl
+	return ""
 }
 
 func CheckSavePath(dst string) bool {
@@ -47,7 +47,7 @@ func CheckContainExt(t FileType, name string) bool {
 	ext = strings.ToUpper(ext)
 	switch t {
 	case TypeImage:
-		for _, allowExt := range global.AppSetting.UploadImageAllowExts {
+		for _, allowExt := range []string{} {
 			if strings.ToUpper(allowExt) == ext {
 				return true
 			}
@@ -63,7 +63,7 @@ func CheckMaxSize(t FileType, f multipart.File) bool {
 	size := len(content)
 	switch t {
 	case TypeImage:
-		if size >= global.AppSetting.UploadImageMaxSize*1024*1024 {
+		if size >= 1*1024*1024 {
 			return true
 		}
 	}

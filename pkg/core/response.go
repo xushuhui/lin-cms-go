@@ -5,6 +5,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/pkg/errcode"
+	"net/http"
 )
 
 // Error 数据返回通用 JSON 数据结构
@@ -46,58 +47,59 @@ func ParseRequest(c *fiber.Ctx, request interface{}) (err error) {
 	}
 	return
 }
-func FailResp(c *fiber.Ctx, code int) {
-	c.JSON( Error{
+func FailResp(c *fiber.Ctx, code int) error {
+	return c.JSON(Error{
 		Code:    code,
 		Message: errcode.GetMsg(code),
 	})
-	return
+
 }
 
-func ErrorResp(c *fiber.Ctx, code int, msg string) {
-	c.JSON( Error{
+func ErrorResp(c *fiber.Ctx, code int, msg string) error {
+	return c.JSON(Error{
 		Code:    code,
 		Message: msg,
 	})
-	return
-}
-func InvalidParamsResp(c *fiber.Ctx, msg string) {
 
-	c.JSON( Error{
+}
+func InvalidParamsResp(c *fiber.Ctx, msg string) error {
+
+	return c.JSON(Error{
 		Code:    errcode.InvalidParams,
 		Message: msg,
 	})
-	return
+
 }
 
 func SuccessResp(c *fiber.Ctx) error {
-	return c.JSON( Error{
+	return c.JSON(Error{
 		Code:    0,
 		Message: errcode.GetMsg(0),
 	})
 }
-func SetData(c *fiber.Ctx, data map[string]interface{}) error{
-	return c.JSON( Error{
+func SetData(c *fiber.Ctx, data map[string]interface{}) error {
+	return c.JSON(Error{
 		Code:    0,
 		Message: errcode.GetMsg(0),
 		Data:    data,
 	})
 }
 
-func SetPage(c *gin.Context, list interface{}, totalRows int) {
-	c.JSON(200, Error{
+func SetPage(c *fiber.Ctx, list interface{}, totalRows int) error {
+	return c.JSON(Error{
 		Code:    0,
 		Message: errcode.GetMsg(0),
 		Data: Pager{
-			Page:      GetPage(c),
-			PageSize:  GetPageSize(c),
-			TotalRows: totalRows,
-			List:      list,
+			Page:  GetPage(c),
+			Size:  GetSize(c),
+			Total: totalRows,
+			Items: list,
 		},
 	})
 }
 func ServerError(c *fiber.Ctx) error {
-	c.JSON(500, Error{
+	c.Status(http.StatusInternalServerError)
+	return c.JSON(Error{
 		Code:    errcode.ServerError,
 		Message: errcode.GetMsg(errcode.ServerError),
 	})
