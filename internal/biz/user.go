@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	"errors"
 	"golang.org/x/crypto/bcrypt"
 	"lin-cms-go/internal/data/ent"
 	"lin-cms-go/internal/request"
@@ -14,6 +15,10 @@ type LinUserUsecase struct {
 }
 type LinUserRepo interface {
 	GetLinUserIdentityByIdentifier(ctx context.Context, identifier string) (*ent.LinUserIdentiy, error)
+	CreateLinUser(ctx context.Context, username, password, email string, groupId int) error
+	GetLinUserById(ctx context.Context, uid int) (*ent.LinUser, error)
+	UpdateLinUser(ctx context.Context, uid int, avatar, nickname, email string) error
+	UpdateLinUserIdentityPassword(ctx context.Context, username, password string) error
 }
 
 func NewLinUserUsecase(repo LinUserRepo) *LinUserUsecase {
@@ -41,23 +46,22 @@ func (uc *LinUserUsecase) Login(ctx context.Context, username, password string) 
 	//data["access_token"] = token
 	return
 }
-func Register(req request.Register) (err error) {
-	//userModel, err := model.GetLinUserOne("username=?", req.Username)
-	//if err == gorm.ErrRecordNotFound {
-	//	err = nil
-	//}
-	//if err != nil {
-	//	return
-	//}
-	//
-	//if userModel.ID > 0 {
-	//	err = core.NewError(errcode.UserExist)
-	//	return
-	//}
-	//hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	//if err != nil {
-	//	return
-	//}
+func (uc *LinUserUsecase) Register(ctx context.Context, req request.Register) (err error) {
+	userIdentityModel, err := uc.repo.GetLinUserIdentityByIdentifier(ctx, req.Username)
+	if ent.MaskNotFound(err) != nil {
+		return err
+	}
+	if userIdentityModel.ID > 0 {
+		err = errors.New("user is found")
+		return
+	}
+
+	hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return
+	}
+	err = uc.repo.CreateLinUser(ctx, req.Username, string(hash), req.Email, req.GroupId)
+	return
 	//userModel = model.User{
 	//	Username:  req.Username,
 	//	Email:     req.Email,
@@ -69,46 +73,40 @@ func Register(req request.Register) (err error) {
 	//}
 	//global.DBEngine.Create(&userModel)
 
+}
+func (uc *LinUserUsecase) UpdateMe(ctx context.Context, req request.UpdateMe, uid int) (err error) {
+	_, err = uc.repo.GetLinUserById(ctx, uid)
+
+	if err != nil {
+		return
+	}
+	err = uc.repo.UpdateLinUser(ctx, uid, req.Avatar, req.Nickname, req.Email)
 	return
 }
-func UpdateMe(req request.UpdateMe, uid uint) (err error) {
-	//userModel, err := model.GetLinUserByID(uid)
-	//if err != nil {
-	//	return
-	//}
-	//userModel.Avatar = req.Avatar
-	//userModel.Nickname = req.Nickname
-	//userModel.Email = req.Email
-	//err = global.DBEngine.Save(&userModel).Error
-	//
-	//if err != nil {
-	//	return
-	//}
+func (uc *LinUserUsecase) ChangeMyPassword(ctx context.Context, req request.ChangeMyPassword, uid int) (err error) {
+	var username string
+	//todo jwt username
+	userIdentityModel, err := uc.repo.GetLinUserIdentityByIdentifier(ctx, username)
+	if err != nil {
+		return err
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(userIdentityModel.Credential), []byte(req.OldPassword))
+	if err != nil {
+		err = core.NewError(errcode.ErrorPassWord)
+		return
+	}
+	hash, err := bcrypt.GenerateFromPassword([]byte(req.NewPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return
+	}
+	err = uc.repo.UpdateLinUserIdentityPassword(ctx, username, string(hash))
+	if err != nil {
+		return
+	}
+
 	return
 }
-func ChangeMyPassword(req request.ChangeMyPassword, uid uint) (err error) {
-	//userIdentityModel, err := model.GetLinUserIdentityOne("user_id=?", uid)
-	//if err != nil {
-	//	return
-	//}
-	//err = bcrypt.CompareHashAndPassword([]byte(userIdentityModel.Credential), []byte(req.OldPassword))
-	//if err != nil {
-	//	err = core.NewError(errcode.ErrorPassWord)
-	//	return
-	//}
-	//hash, err := bcrypt.GenerateFromPassword([]byte(req.NewPassword), bcrypt.DefaultCost)
-	//if err != nil {
-	//	return
-	//}
-	//userIdentityModel.Credential = string(hash)
-	//err = global.DBEngine.Save(&userIdentityModel).Error
-	//if err != nil {
-	//
-	//	return
-	//}
-	return
-}
-func GetMyPermissions(uid uint) (data map[string]interface{}, err error) {
+func (uc *LinUserUsecase) GetMyPermissions(uid uint) (data map[string]interface{}, err error) {
 	//var userModel model.User
 	//err = global.DBEngine.Preload("UserGroup.Group").First(&userModel, uid).Error
 	//if err != nil {
@@ -125,6 +123,6 @@ func GetMyPermissions(uid uint) (data map[string]interface{}, err error) {
 	//data["permissions"] = permissions
 	return
 }
-func GetMyInfomation(uid uint) (data map[string]interface{}, err error) {
+func (uc *LinUserUsecase) GetMyInfomation(uid uint) (data map[string]interface{}, err error) {
 	return
 }

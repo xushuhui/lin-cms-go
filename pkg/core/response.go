@@ -1,6 +1,7 @@
 package core
 
 import (
+	"errors"
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -44,16 +45,15 @@ type ErrorResponse struct {
 	Value       string
 }
 
-func ValidateRequest(obj interface{}) string {
-	var s string
+func ValidateRequest(obj interface{}) error {
 
 	err := validate.Struct(obj)
 
 	if err != nil {
-		s = Translate(err.(validator.ValidationErrors))
-
+		s := Translate(err.(validator.ValidationErrors))
+		return errors.New(s)
 	}
-	return s
+	return nil
 }
 func ParseRequest(c *fiber.Ctx, request interface{}) (err error) {
 	err = c.BodyParser(request)
@@ -61,7 +61,7 @@ func ParseRequest(c *fiber.Ctx, request interface{}) (err error) {
 	if err != nil {
 		return err
 	}
-
+	err = ValidateRequest(request)
 	return
 }
 func FailResp(c *fiber.Ctx, code int) error {

@@ -28,17 +28,12 @@ func (u *User) Login(c *fiber.Ctx) error {
 		return err
 	}
 
-	errors := core.ValidateRequest(req)
-	if errors != "" {
-		return c.JSON(errors)
-
-	}
-
 	data, err := u.uc.Login(c.Context(), req.Username, req.Password)
 	if err != nil {
 
 		return err
 	}
+	//todo jwt token
 	return core.SetData(c, data)
 
 }
@@ -50,7 +45,7 @@ func (u *User) Register(c *fiber.Ctx) error {
 		return err
 	}
 
-	err := biz.Register(req)
+	err := u.uc.Register(c.Context(), req)
 	if err != nil {
 		return err
 	}
@@ -62,12 +57,9 @@ func (u *User) UpdateMe(c *fiber.Ctx) error {
 	if err := core.ParseRequest(c, &req); err != nil {
 		return err
 	}
-	uid, err := uid(c)
-	if err != nil {
-		return err
-	}
+	var uid int
 
-	err = biz.UpdateMe(req, uid)
+	err := u.uc.UpdateMe(c.Context(), req, uid)
 	if err != nil {
 		return err
 	}
@@ -81,12 +73,9 @@ func (u *User) ChangeMyPassword(c *fiber.Ctx) error {
 		return err
 	}
 
-	uid, err := uid(c)
-	if err != nil {
-		return err
-	}
+	var uid int
 
-	err = biz.ChangeMyPassword(req, uid)
+	err := u.uc.ChangeMyPassword(c.Context(), req, uid)
 	if err != nil {
 
 		return err

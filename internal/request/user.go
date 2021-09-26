@@ -9,7 +9,7 @@ type Register struct {
 	Email           string `json:"email" binding:"required" comment:"邮箱"`
 	Password        string `json:"password" binding:"required" comment:"密码"`
 	ConfirmPassword string `json:"confirm_password" binding:"required,eqcsfield=Password" comment:"确认密码"`
-	GroupId         uint   `json:"group_id" binding:"required" comment:"分组id"`
+	GroupId         int    `json:"group_id" binding:"required" comment:"分组id"`
 }
 type UpdateMe struct {
 	Nickname string `json:"nickname" binding:"required" comment:"昵称"`
