@@ -15,9 +15,6 @@ func StartModule() {
 	if err = initSetting(); err != nil {
 		log.Fatalf("initSetting err: %v", err)
 	}
-	if err = initValidate(); err != nil {
-		log.Fatalf("initValidate err: %v", err)
-	}
 
 	if err = initLogger(); err != nil {
 		log.Fatalf("initLogger err: %v", err)

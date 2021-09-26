@@ -28,6 +28,12 @@ func (u *User) Login(c *fiber.Ctx) error {
 		return err
 	}
 
+	errors := core.ValidateRequest(req)
+	if errors != "" {
+		return c.JSON(errors)
+
+	}
+
 	data, err := u.uc.Login(c.Context(), req.Username, req.Password)
 	if err != nil {
 

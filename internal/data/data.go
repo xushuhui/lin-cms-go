@@ -18,7 +18,8 @@ type Data struct {
 
 func NewDB(conf *conf.Data) *ent.Client {
 
-	client, err := ent.Open(conf.Database.Driver, conf.Database.Source)
+	opt := ent.Debug()
+	client, err := ent.Open(conf.Database.Driver, conf.Database.Source, opt)
 	if err != nil {
 		panic(err)
 	}

@@ -1,8 +1,8 @@
 package request
 
 type Login struct {
-	Username string `json:"username" binding:"required" comment:"用户名"`
-	Password string `json:"password" binding:"required" comment:"密码"`
+	Username string `json:"username" validate:"required,min=3,max=32" comment:"用户名"`
+	Password string `json:"password" validate:"required" comment:"密码"`
 }
 type Register struct {
 	Username        string `json:"username" binding:"required" comment:"用户名"`

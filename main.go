@@ -9,6 +9,7 @@ import (
 	"lin-cms-go/internal/conf"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/server"
+	"lin-cms-go/pkg/core"
 	"log"
 )
 
@@ -37,7 +38,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
+	core.InitValidate()
 	app := initApp(c)
 	log.Fatal(app.Listen(c.Server.Http.Addr))
 

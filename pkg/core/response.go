@@ -37,14 +37,31 @@ func NewErrorMessage(code int, message string) (e Error) {
 func NewInvalidParamsError(message string) (e Error) {
 	return NewErrorMessage(errcode.InvalidParams, message)
 }
+
+type ErrorResponse struct {
+	FailedField string
+	Tag         string
+	Value       string
+}
+
+func ValidateRequest(obj interface{}) string {
+	var s string
+
+	err := validate.Struct(obj)
+
+	if err != nil {
+		s = Translate(err.(validator.ValidationErrors))
+
+	}
+	return s
+}
 func ParseRequest(c *fiber.Ctx, request interface{}) (err error) {
 	err = c.BodyParser(request)
 
 	if err != nil {
-		msg := Translate(err.(validator.ValidationErrors))
-		err = NewErrorMessage(errcode.InvalidParams, msg)
-		return
+		return err
 	}
+
 	return
 }
 func FailResp(c *fiber.Ctx, code int) error {
