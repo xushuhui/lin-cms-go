@@ -6,7 +6,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/pkg/errcode"
-	"net/http"
 )
 
 // Error 数据返回通用 JSON 数据结构
@@ -14,14 +13,14 @@ type Error struct {
 	Code    int         `json:"code"`    // 错误码 ((0: 成功，1: 失败，>1: 错误码))
 	Message string      `json:"message"` // 提示信息
 	Data    interface{} `json:"data"`    // 返回数据 (业务接口定义具体数据结构)
-
+	Err     error       `json:"-"`
 }
 
 func (e Error) Error() (re string) {
 	return fmt.Sprintf("code=%v, Message=%v", e.Code, e.Message)
 }
 
-func NewError(code int) (e Error) {
+func NewErrorCode(code int) (e Error) {
 	e = Error{
 		Code:    code,
 		Message: errcode.GetMsg(code),
@@ -37,12 +36,6 @@ func NewErrorMessage(code int, message string) (e Error) {
 }
 func NewInvalidParamsError(message string) (e Error) {
 	return NewErrorMessage(errcode.InvalidParams, message)
-}
-
-type ErrorResponse struct {
-	FailedField string
-	Tag         string
-	Value       string
 }
 
 func ValidateRequest(obj interface{}) error {
@@ -69,7 +62,6 @@ func FailResp(c *fiber.Ctx, code int) error {
 		Code:    code,
 		Message: errcode.GetMsg(code),
 	})
-
 }
 
 func ErrorResp(c *fiber.Ctx, code int, msg string) error {
@@ -114,10 +106,17 @@ func SetPage(c *fiber.Ctx, list interface{}, totalRows int) error {
 		},
 	})
 }
-func ServerError(c *fiber.Ctx) error {
-	c.Status(http.StatusInternalServerError)
+func ServerError(c *fiber.Ctx, err error) error {
+
 	return c.JSON(Error{
 		Code:    errcode.ServerError,
 		Message: errcode.GetMsg(errcode.ServerError),
+		Err:     err,
+	})
+}
+func (e Error) HttpError(c *fiber.Ctx) error {
+	return c.JSON(Error{
+		Code:    e.Code,
+		Message: errcode.GetMsg(e.Code),
 	})
 }

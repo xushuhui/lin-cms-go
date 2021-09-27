@@ -91,32 +91,33 @@ func uid(c *fiber.Ctx) (uid uint, err error) {
 }
 
 func (u *User) GetMyPermissions(c *fiber.Ctx) error {
-	uid, err := uid(c)
-	if err != nil {
-		return err
-	}
-	data, err := biz.GetMyPermissions(uid)
-	if err != nil {
 
-		return err
-	}
-	return core.SetData(c, data)
-
+	//uid, err := uid(c)
+	//if err != nil {
+	//	return err
+	//}
+	//data, err := biz.GetMyPermissions(uid)
+	//if err != nil {
+	//
+	//	return err
+	//}
+	//return core.SetData(c, data)
+	return nil
 }
 
 func (u *User) GetMyInfomation(c *fiber.Ctx) error {
-	uid, err := uid(c)
-	if err != nil {
-
-		return err
-	}
-	data, err := biz.GetMyInfomation(uid)
-	if err != nil {
-
-		return err
-	}
-	return core.SetData(c, data)
-
+	//uid, err := uid(c)
+	//if err != nil {
+	//
+	//	return err
+	//}
+	//data, err := biz.GetMyInfomation(uid)
+	//if err != nil {
+	//
+	//	return err
+	//}
+	//return core.SetData(c, data)
+	return nil
 }
 
 //TODO 对cms意义并不大，先不实现

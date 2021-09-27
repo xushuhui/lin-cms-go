@@ -2,6 +2,8 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"lin-cms-go/api"
@@ -14,7 +16,28 @@ import (
 )
 
 func initApp(c *conf.Config) *fiber.App {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		// Override default error handler
+		ErrorHandler: func(c *fiber.Ctx, err error) error {
+			// Status code defaults to 500
+			if e, ok := err.(core.Error); ok {
+				if e.Err == nil {
+					return e.HttpError(c)
+				}
+
+			}
+			return core.ServerError(c, err)
+			//code := fiber.StatusOK
+			//if e, ok := err.(*fiber.Error); ok {
+			//	core.Error{
+			//		Code: code,
+			//		Message: e.Message,
+			//	}
+			//
+			//}
+
+		}})
+	app.Use(recover.New(), logger.New())
 	dbclient := data.NewDB(&c.Data)
 
 	dataData, _, err := data.NewData(&c.Data, dbclient)
@@ -25,10 +48,11 @@ func initApp(c *conf.Config) *fiber.App {
 	linUserUsecase := biz.NewLinUserUsecase(repo)
 	userRoute := api.NewUser(linUserUsecase)
 	server.InitRoute(app, userRoute)
+
 	return app
 }
 func main() {
-	//var c conf.Config
+
 	c := new(conf.Config)
 	yamlFile, err := ioutil.ReadFile("configs/config.yaml")
 	if err != nil {
@@ -41,5 +65,4 @@ func main() {
 	core.InitValidate()
 	app := initApp(c)
 	log.Fatal(app.Listen(c.Server.Http.Addr))
-
 }

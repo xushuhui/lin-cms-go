@@ -30,12 +30,16 @@ func (uc *LinUserUsecase) Login(ctx context.Context, username, password string) 
 
 	// 正确密码验证
 	userIdentityModel, err := uc.repo.GetLinUserIdentityByIdentifier(ctx, username)
+	if ent.IsNotFound(err) {
+		err = core.NewErrorCode(errcode.UserNotFound)
+		return
+	}
 	if err != nil {
 		return
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(userIdentityModel.Credential), []byte(password))
 	if err != nil {
-		err = core.NewError(errcode.ErrorPassWord)
+		err = core.NewErrorCode(errcode.ErrorPassWord)
 		return
 	}
 	//token, err := lib.GenerateToken(userIdentityModel.UserID)
@@ -92,7 +96,7 @@ func (uc *LinUserUsecase) ChangeMyPassword(ctx context.Context, req request.Chan
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(userIdentityModel.Credential), []byte(req.OldPassword))
 	if err != nil {
-		err = core.NewError(errcode.ErrorPassWord)
+		err = core.NewErrorCode(errcode.ErrorPassWord)
 		return
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(req.NewPassword), bcrypt.DefaultCost)
