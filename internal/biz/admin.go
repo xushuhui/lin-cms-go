@@ -5,10 +5,10 @@ import (
 	"lin-cms-go/pkg/core"
 )
 
-func GetUsers(req request.GetUsers) (data map[string]interface{}, e error) {
+func GetUsers(req request.GetUsers) (data map[string]interface{}, err error) {
 	return
 }
-func ChangeUserPassword(req request.ChangeUserPassword) (e error) {
+func ChangeUserPassword(req request.ChangeUserPassword) (err error) {
 
 	//userIdentityModel, err :=  modelbak.GetLinUserIdentityOne("user_id=?", req.Id)
 	//if err != nil {
@@ -26,13 +26,13 @@ func ChangeUserPassword(req request.ChangeUserPassword) (e error) {
 	//}
 	return
 }
-func DeleteUser(id int) (e error) {
+func DeleteUser(id int) (err error) {
 	if id <= 0 {
-		e = core.NewInvalidParamsError("id cannot be negative")
+		err = core.NewInvalidParamsError("id cannot be negative")
 		return
 	}
 	return
 }
-func UpdateUser(req request.UpdateUser) (e error) {
+func UpdateUser(req request.UpdateUser) (err error) {
 	return
 }

@@ -2,17 +2,17 @@ package biz
 
 import "lin-cms-go/internal/request"
 
-func GetAllPermissions() (data map[string]interface{}, e error) {
+func GetAllPermissions() (data map[string]interface{}, err error) {
 	return
 }
 
-func DispatchPermission(req request.DispatchPermission) (e error) {
+func DispatchPermission(req request.DispatchPermission) (err error) {
 	return
 }
 
-func DispatchPermissions(req request.DispatchPermissions) (e error) {
+func DispatchPermissions(req request.DispatchPermissions) (err error) {
 	return
 }
-func RemovePermissions(req request.RemovePermissions) (e error) {
+func RemovePermissions(req request.RemovePermissions) (err error) {
 	return
 }

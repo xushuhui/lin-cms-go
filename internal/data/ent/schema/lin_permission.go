@@ -2,6 +2,8 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
@@ -9,7 +11,11 @@ import (
 type LinPermission struct {
 	ent.Schema
 }
-
+func (LinPermission) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "lin_log"},
+	}
+}
 func (LinPermission) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").Comment("权限名称，例如：访问首页"),

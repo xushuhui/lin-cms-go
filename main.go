@@ -20,7 +20,7 @@ func initApp(c *conf.Config) *fiber.App {
 		// Override default error handler
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			// Status code defaults to 500
-			if e, ok := err.(core.Error); ok {
+			if e, ok := err.(core.IError); ok {
 				if e.Err == nil {
 					return e.HttpError(c)
 				}

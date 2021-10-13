@@ -12,7 +12,7 @@ func PathExists(path string) (bool, error) {
 	}
 	return false, err
 }
-func CreateFile(fileName string) (f *os.File, e error) {
+func CreateFile(fileName string) (f *os.File, err error) {
 	exist, e := PathExists(fileName)
 	if e != nil {
 		return

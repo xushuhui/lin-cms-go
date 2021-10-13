@@ -28,12 +28,10 @@ func JSONEncode(v interface{}) ([]byte, error) {
 /// <param name="b">被反序列化的字节数组</param>
 /// <param name="v">被反序列化的对象,必须是对象指针</param>
 /// <returns></returns>
-func JSONDecode(b []byte, v interface{}) (e error) {
+func JSONDecode(b []byte, v interface{}) (err error) {
 	d := json.NewDecoder(bytes.NewReader(b))
 	d.UseNumber()
-	e = d.Decode(v)
-	if e != nil {
-		return e
-	}
+	err = d.Decode(v)
+	
 	return
 }

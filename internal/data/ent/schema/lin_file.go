@@ -2,13 +2,19 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 )
 
 type LinFile struct {
 	ent.Schema
 }
-
+func (LinFile) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "lin_file"},
+	}
+}
 func (LinFile) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("path").Comment(""),

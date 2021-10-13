@@ -4,17 +4,17 @@ import (
 	"lin-cms-go/internal/request"
 )
 
-func GetGroups() (data map[string]interface{}, e error) {
+func GetGroups() (data map[string]interface{}, err error) {
 	return
 }
-func GetGroup(id int) (data map[string]interface{}, e error) {
+func GetGroup(id int) (data map[string]interface{}, err error) {
 	//groupModel,e := model.GetLinGroupById(id)
 	//if e != nil {
 	//	return
 	//}
 	return
 }
-func CreateGroup(name, info string) (e error) {
+func CreateGroup(name, info string) (err error) {
 	//groupModel := model.Group{
 	//	Name: name,
 	//	Info:info,
@@ -22,9 +22,9 @@ func CreateGroup(name, info string) (e error) {
 
 	return
 }
-func UpdateGroup(req request.UpdateGroup) (e error) {
+func UpdateGroup(req request.UpdateGroup) (err error) {
 	return
 }
-func DeleteGroup(id int) (e error) {
+func DeleteGroup(id int) (err error) {
 	return
 }

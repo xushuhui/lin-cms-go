@@ -13,7 +13,7 @@ type LinGroup struct {
 }
 func (LinGroup) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "lin_user_group"},
+		entsql.Annotation{Table: "lin_group"},
 	}
 }
 func (LinGroup) Fields() []ent.Field {

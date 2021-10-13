@@ -2,13 +2,19 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 )
 
 type LinLog struct {
 	ent.Schema
 }
-
+func (LinLog) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "lin_log"},
+	}
+}
 func (LinLog) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("message").Comment(""),
