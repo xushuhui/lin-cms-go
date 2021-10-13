@@ -12,7 +12,15 @@ import (
 )
 
 type LinUserUsecase struct {
-	repo LinUserRepo
+	linUserRepo LinUserRepo
+	linUserGroupRepo LinUserGroupRepo
+	linUserPermissionRepo LinUserPermissionRepo
+}
+type LinUserGroupRepo interface {
+	
+}
+type LinUserPermissionRepo interface{
+
 }
 type LinUserRepo interface {
 	GetLinUserIdentityByIdentifier(ctx context.Context, identifier string) (*ent.LinUserIdentiy, error)
@@ -22,15 +30,17 @@ type LinUserRepo interface {
 	UpdateLinUserIdentityPassword(ctx context.Context, username, password string) error
 }
 
-func NewLinUserUsecase(repo LinUserRepo) *LinUserUsecase {
+func NewLinUserUsecase(linUserRepo LinUserRepo,linUserGroupRepo LinUserGroupRepo,linUserPermissionRepo LinUserPermissionRepo) *LinUserUsecase {
 	return &LinUserUsecase{
-		repo: repo,
+		linUserRepo:linUserRepo,
+		linUserGroupRepo: linUserGroupRepo,
+		linUserPermissionRepo: linUserPermissionRepo,
 	}
 }
-func (uc *LinUserUsecase) Login(ctx context.Context, username, password string) (data map[string]interface{}, err error) {
+func  Login(ctx context.Context, username, password string) (data map[string]interface{}, err error) {
 
 	// 正确密码验证
-	userIdentityModel, err := uc.repo.GetLinUserIdentityByIdentifier(ctx, username)
+	userIdentityModel, err := data.GetLinUserIdentityByIdentifier(ctx, username)
 	if ent.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.UserNotFound)
 		return
@@ -53,7 +63,7 @@ func (uc *LinUserUsecase) Login(ctx context.Context, username, password string) 
 	return
 }
 func (uc *LinUserUsecase) Register(ctx context.Context, req request.Register) (err error) {
-	userIdentityModel, err := uc.repo.GetLinUserIdentityByIdentifier(ctx, req.Username)
+	userIdentityModel, err := uc.linUserRepo.GetLinUserIdentityByIdentifier(ctx, req.Username)
 	if ent.MaskNotFound(err) != nil {
 		return err
 	}
@@ -66,12 +76,12 @@ func (uc *LinUserUsecase) Register(ctx context.Context, req request.Register) (e
 	if err != nil {
 		return
 	}
-	err = uc.repo.CreateLinUser(ctx, req.Username, string(hash), req.Email, req.GroupId)
+	err = uc.linUserRepo.CreateLinUser(ctx, req.Username, string(hash), req.Email, req.GroupId)
 	return
 
 }
 func (uc *LinUserUsecase) UpdateMe(ctx context.Context, req request.UpdateMe, uid int) (err error) {
-	_, err = uc.repo.GetLinUserById(ctx, uid)
+	_, err = uc.linUserRepo.GetLinUserById(ctx, uid)
 	if ent.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.UserNotFound)
 		return
@@ -79,13 +89,13 @@ func (uc *LinUserUsecase) UpdateMe(ctx context.Context, req request.UpdateMe, ui
 	if err != nil {
 		return
 	}
-	err = uc.repo.UpdateLinUser(ctx, uid, req.Avatar, req.Nickname, req.Email)
+	err = uc.linUserRepo.UpdateLinUser(ctx, uid, req.Avatar, req.Nickname, req.Email)
 	return
 }
 func (uc *LinUserUsecase) ChangeMyPassword(ctx context.Context, req request.ChangeMyPassword, uid int) (err error) {
 	var username string
 	//todo jwt username
-	userIdentityModel, err := uc.repo.GetLinUserIdentityByIdentifier(ctx, username)
+	userIdentityModel, err := uc.linUserRepo.GetLinUserIdentityByIdentifier(ctx, username)
 	if err != nil {
 		return err
 	}
@@ -98,7 +108,7 @@ func (uc *LinUserUsecase) ChangeMyPassword(ctx context.Context, req request.Chan
 	if err != nil {
 		return
 	}
-	err = uc.repo.UpdateLinUserIdentityPassword(ctx, username, string(hash))
+	err = uc.linUserRepo.UpdateLinUserIdentityPassword(ctx, username, string(hash))
 	if err != nil {
 		return
 	}
@@ -106,7 +116,7 @@ func (uc *LinUserUsecase) ChangeMyPassword(ctx context.Context, req request.Chan
 	return
 }
 func (uc *LinUserUsecase) GetMyPermissions(ctx context.Context,uid int) (data map[string]interface{}, err error) {
-	user, err := uc.repo.GetLinUserById(ctx, uid)
+	user, err := uc.linUserRepo.GetLinUserById(ctx, uid)
 	if ent.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.UserNotFound)
 		return
@@ -130,7 +140,7 @@ func (uc *LinUserUsecase) GetMyPermissions(ctx context.Context,uid int) (data ma
 	return
 }
 func (uc *LinUserUsecase) GetMyInfomation(ctx context.Context,uid int) (data map[string]interface{}, err error) {
-		_, err = uc.repo.GetLinUserById(ctx, uid)
+		_, err = uc.linUserRepo.GetLinUserById(ctx, uid)
 	if ent.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.UserNotFound)
 		return

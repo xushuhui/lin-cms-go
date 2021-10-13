@@ -8,7 +8,7 @@ import (
 	"lin-cms-go/internal/data/ent/linuseridentiy"
 )
 
-var _ biz.LinUserRepo = (*linUserRepo)(nil)
+
 
 type linUserRepo struct {
 	data *Data
@@ -19,7 +19,6 @@ func NewLinUserRepo(data *Data) biz.LinUserRepo {
 		data: data,
 	}
 }
-
 func (r *linUserRepo) GetLinUserIdentityByIdentifier(ctx context.Context, identifier string) (*ent.LinUserIdentiy, error) {
 
 	po, err := r.data.db.LinUserIdentiy.Query().Where(linuseridentiy.Identifier(identifier)).First(ctx)

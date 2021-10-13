@@ -11,10 +11,12 @@ import (
 var ProviderSet = wire.NewSet(NewData, NewDB, NewLinUserRepo)
 
 // Data .
-type Data struct {
+type DataSource struct {
 	// warpped database client
 	db *ent.Client
 }
+
+
 
 func NewDB(conf *conf.Data) *ent.Client {
 
@@ -28,14 +30,15 @@ func NewDB(conf *conf.Data) *ent.Client {
 }
 
 // NewData .
-func NewData(c *conf.Data, client *ent.Client) (*Data, func(), error) {
+func NewData(c *conf.Data, client *ent.Client) (*Database, func(), error) {
 	cleanup := func() {
 		//if err := client.Close(); err != nil {
 		//	log.NewHelper(logger).Error(err)
 		//}
 		//log.NewHelper(logger).Info("closing the data resources")
 	}
-	return &Data{
+
+	return &Database{
 		client,
 	}, cleanup, nil
 }

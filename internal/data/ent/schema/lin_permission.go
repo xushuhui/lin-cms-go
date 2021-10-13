@@ -13,7 +13,7 @@ type LinPermission struct {
 }
 func (LinPermission) Annotations() []schema.Annotation {
 	return []schema.Annotation{
-		entsql.Annotation{Table: "lin_log"},
+		entsql.Annotation{Table: "lin_permission"},
 	}
 }
 func (LinPermission) Fields() []ent.Field {
