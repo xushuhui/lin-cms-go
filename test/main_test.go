@@ -2,14 +2,14 @@ package test
 
 import (
 	"fmt"
-	"github.com/gofiber/fiber/v2"
+	
 	"os"
 	"testing"
 )
 
 func setup() {
 
-	gin.SetMode(gin.TestMode)
+	
 	//fmt.Println(global.JWTSetting.Secret)
 	fmt.Println("Before all tests")
 }

@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"io"
 	"log"
 	"runtime"
@@ -107,14 +106,10 @@ func (l *Logger) WithCallersFrames() *Logger {
 }
 
 func (l *Logger) WithTrace() *Logger {
-	ginCtx, ok := l.ctx.(*gin.Context)
-	if ok {
 		return l.WithFields(Fields{
-			"trace_id": ginCtx.MustGet("X-Trace-ID"),
-			"span_id":  ginCtx.MustGet("X-Span-ID"),
+			"trace_id": "X-Trace-ID",
+			"span_id":  "X-Span-ID",
 		})
-	}
-	return l
 }
 
 func (l *Logger) JSONFormat(level Level, message string) map[string]interface{} {

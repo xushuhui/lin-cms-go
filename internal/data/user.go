@@ -36,7 +36,7 @@ func (r *linUserRepo) CreateLinUser(ctx context.Context, username, password, ema
 	_, err = r.data.db.LinUser.Create().
 		SetUsername(username).
 		SetEmail(email).
-		SetLinUserGroupID(groupId).
+		AddLinGroupIDs(groupId).
 		AddLinUserIdentiy(identiyModel).
 		Save(ctx)
 	if err != nil {

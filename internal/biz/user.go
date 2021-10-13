@@ -3,6 +3,7 @@ package biz
 import (
 	"context"
 	"errors"
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
 	"lin-cms-go/internal/data/ent"
 	"lin-cms-go/internal/request"
@@ -42,6 +43,7 @@ func (uc *LinUserUsecase) Login(ctx context.Context, username, password string) 
 		err = core.NewErrorCode(errcode.ErrorPassWord)
 		return
 	}
+	//TODO token
 	//token, err := lib.GenerateToken(userIdentityModel.UserID)
 	//if err != nil {
 	//	return
@@ -66,21 +68,14 @@ func (uc *LinUserUsecase) Register(ctx context.Context, req request.Register) (e
 	}
 	err = uc.repo.CreateLinUser(ctx, req.Username, string(hash), req.Email, req.GroupId)
 	return
-	//userModel = model.User{
-	//	Username:  req.Username,
-	//	Email:     req.Email,
-	//	UserGroup: model.UserGroup{GroupID: req.GroupId},
-	//	UserIdentity: model.UserIdentity{
-	//		Identifier: req.Username,
-	//		Credential: string(hash),
-	//	},
-	//}
-	//global.DBEngine.Create(&userModel)
 
 }
 func (uc *LinUserUsecase) UpdateMe(ctx context.Context, req request.UpdateMe, uid int) (err error) {
 	_, err = uc.repo.GetLinUserById(ctx, uid)
-
+	if ent.IsNotFound(err) {
+		err = core.NewErrorCode(errcode.UserNotFound)
+		return
+	}
 	if err != nil {
 		return
 	}
@@ -110,23 +105,38 @@ func (uc *LinUserUsecase) ChangeMyPassword(ctx context.Context, req request.Chan
 
 	return
 }
-func (uc *LinUserUsecase) GetMyPermissions(uid uint) (data map[string]interface{}, err error) {
-	//var userModel model.User
-	//err = global.DBEngine.Preload("UserGroup.Group").First(&userModel, uid).Error
-	//if err != nil {
-	//	return
-	//}
-	//
-	//var isAdmin bool
-	//if userModel.UserGroup.Group.Level == model.GroupLevelRoot {
-	//	isAdmin = true
-	//}
-	//
+func (uc *LinUserUsecase) GetMyPermissions(ctx context.Context,uid int) (data map[string]interface{}, err error) {
+	user, err := uc.repo.GetLinUserById(ctx, uid)
+	if ent.IsNotFound(err) {
+		err = core.NewErrorCode(errcode.UserNotFound)
+		return
+	}
+	if err != nil {
+		return
+	}
+	groupModel,err :=  user.QueryLinGroup().First(ctx)
+	if err != nil {
+		return
+	}
+	var isRoot bool
+	if groupModel.Level == 1 {
+		isRoot = true
+	}
+	fmt.Println(isRoot)
+
 	//data = utils.Struct2MapJson(userModel)
 	//data["is_admin"] = isAdmin
 	//data["permissions"] = permissions
 	return
 }
-func (uc *LinUserUsecase) GetMyInfomation(uid uint) (data map[string]interface{}, err error) {
+func (uc *LinUserUsecase) GetMyInfomation(ctx context.Context,uid int) (data map[string]interface{}, err error) {
+		_, err = uc.repo.GetLinUserById(ctx, uid)
+	if ent.IsNotFound(err) {
+		err = core.NewErrorCode(errcode.UserNotFound)
+		return
+	}
+	if err != nil {
+		return
+	}
 	return
 }

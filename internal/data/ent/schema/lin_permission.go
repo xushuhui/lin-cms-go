@@ -2,6 +2,7 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -17,5 +18,11 @@ func (LinPermission) Fields() []ent.Field {
 		field.Time("create_time").Comment(""),
 		field.Time("update_time").Comment(""),
 		field.Time("delete_time").Comment(""),
+	}
+}
+func (LinPermission) Edges() []ent.Edge {
+	return []ent.Edge{
+		edge.To("lin_group", LinGroup.Type),
+
 	}
 }

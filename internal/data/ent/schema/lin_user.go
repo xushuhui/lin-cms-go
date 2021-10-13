@@ -2,6 +2,8 @@ package schema
 
 import (
 	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
@@ -10,7 +12,11 @@ import (
 type LinUser struct {
 	ent.Schema
 }
-
+func (LinUser) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "lin_user"},
+	}
+}
 func (LinUser) Mixin() []ent.Mixin {
 	return []ent.Mixin{
 		mixin.Time{},
@@ -27,6 +33,7 @@ func (LinUser) Fields() []ent.Field {
 func (LinUser) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("lin_user_identiy", LinUserIdentiy.Type),
-		edge.To("lin_user_group", LinUserGroup.Type).Unique(),
+		edge.From("lin_group", LinGroup.Type).Ref("lin_user"),
+
 	}
 }

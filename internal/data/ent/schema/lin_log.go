@@ -18,8 +18,8 @@ func (LinLog) Fields() []ent.Field {
 		field.String("method").Comment(""),
 		field.String("path").Comment(""),
 		field.String("permission").Comment(""),
-		field.Time("create_time").Comment(""),
-		field.Time("update_time").Comment(""),
-		field.Time("delete_time").Comment(""),
+		field.String("create_time").Comment(""),
+		field.String("update_time").Comment(""),
+		field.String("delete_time").Comment(""),
 	}
 }
