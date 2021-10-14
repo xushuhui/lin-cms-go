@@ -13,6 +13,7 @@ func InitRoute(app *fiber.App) {
 	cms := app.Group("/cms")
 	cms.Post("/file", api.Upload)
 	cms.Post("/user/login", api.Login)
+	cms.Post("/user/register", api.Register)
 	cms.Use(jwtware.New(jwtware.Config{
 		SigningKey: []byte("secret"),
 	}))
@@ -20,7 +21,7 @@ func InitRoute(app *fiber.App) {
 		userRouter := cms.Group("/user")
 		adminRouter := cms.Group("/admin")
 		logRouter := cms.Group("/log")
-		userRouter.Post("/register", api.Register)
+
 		userRouter.Put("/", api.UpdateMe)
 		userRouter.Put("/change_password", api.ChangeMyPassword)
 		userRouter.Get("/permissions", api.GetMyPermissions)
