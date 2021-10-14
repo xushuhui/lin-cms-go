@@ -1,6 +1,10 @@
 # lin-cms-go
 ## 框架选型
 fiber ent
+### 生成ent对象
+```
+go generate ./internal/data/ent/
+```
 
 lin-cms-go 不断更新。let's go
 

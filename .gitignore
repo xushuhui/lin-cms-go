@@ -2,9 +2,9 @@
 /.idea
 /.vscode
 *.exe
-/storage/*
 
-/configs/*.yaml
+
+
 
 /tmp
 .air.conf

@@ -1,0 +1,16 @@
+server:
+  http:
+    addr: 0.0.0.0:3000
+    timeout: 1
+
+data:
+  database:
+    driver: mysql
+    source: root:@tcp(127.0.0.1:3306)/lincms?charset=utf8mb4&parseTime=True
+  redis:
+    addr: 127.0.0.1:6379
+    read_timeout: 0.2
+    write_timeout: 0.2
+
+log:
+  path: .
