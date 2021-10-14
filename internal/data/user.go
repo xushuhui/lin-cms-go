@@ -2,7 +2,6 @@ package data
 
 import (
 	"context"
-	"lin-cms-go/internal/biz"
 	"lin-cms-go/internal/data/ent"
 	"lin-cms-go/internal/data/ent/linuser"
 	"lin-cms-go/internal/data/ent/linuseridentiy"
@@ -10,29 +9,22 @@ import (
 
 
 
-type linUserRepo struct {
-	data *Data
-}
 
-func NewLinUserRepo(data *Data) biz.LinUserRepo {
-	return &linUserRepo{
-		data: data,
-	}
-}
-func (r *linUserRepo) GetLinUserIdentityByIdentifier(ctx context.Context, identifier string) (*ent.LinUserIdentiy, error) {
 
-	po, err := r.data.db.LinUserIdentiy.Query().Where(linuseridentiy.Identifier(identifier)).First(ctx)
+func  GetLinUserIdentityByIdentifier(ctx context.Context, identifier string) (*ent.LinUserIdentiy, error) {
+
+	po, err := GetDBClient().LinUserIdentiy.Query().Where(linuseridentiy.Identifier(identifier)).First(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return po, nil
 }
-func (r *linUserRepo) CreateLinUser(ctx context.Context, username, password, email string, groupId int) error {
-	identiyModel, err := r.data.db.LinUserIdentiy.Create().
+func  CreateLinUser(ctx context.Context, username, password, email string, groupId int) error {
+	identiyModel, err := GetDBClient().LinUserIdentiy.Create().
 		SetIdentifier(username).
 		SetCredential(password).
 		Save(ctx)
-	_, err = r.data.db.LinUser.Create().
+	_, err = GetDBClient().LinUser.Create().
 		SetUsername(username).
 		SetEmail(email).
 		AddLinGroupIDs(groupId).
@@ -44,24 +36,24 @@ func (r *linUserRepo) CreateLinUser(ctx context.Context, username, password, ema
 
 	return nil
 }
-func (r *linUserRepo) GetLinUserById(ctx context.Context, uid int) (*ent.LinUser, error) {
-	model, err := r.data.db.LinUser.Query().Where(linuser.ID(uid)).First(ctx)
+func  GetLinUserById(ctx context.Context, uid int) (*ent.LinUser, error) {
+	model, err := GetDBClient().LinUser.Query().Where(linuser.ID(uid)).First(ctx)
 	if err != nil {
 		return nil, err
 	}
 	return model, nil
 }
 
-func (r *linUserRepo) UpdateLinUser(ctx context.Context, uid int, avatar, nickname, email string) error {
-	_, err := r.data.db.LinUser.Update().Where(linuser.ID(uid)).SetEmail(email).SetAvatar(avatar).SetNickname(nickname).
+func  UpdateLinUser(ctx context.Context, uid int, avatar, nickname, email string) error {
+	_, err := GetDBClient().LinUser.Update().Where(linuser.ID(uid)).SetEmail(email).SetAvatar(avatar).SetNickname(nickname).
 		Save(ctx)
 	if err != nil {
 		return err
 	}
 	return nil
 }
-func (r *linUserRepo) UpdateLinUserIdentityPassword(ctx context.Context, username, password string) error {
-	_, err := r.data.db.LinUserIdentiy.Update().Where(linuseridentiy.Identifier(username)).
+func  UpdateLinUserIdentityPassword(ctx context.Context, username, password string) error {
+	_, err := GetDBClient().LinUserIdentiy.Update().Where(linuseridentiy.Identifier(username)).
 		SetCredential(password).Save(ctx)
 	if err != nil {
 		return err

@@ -5,23 +5,23 @@ import (
 	"lin-cms-go/api"
 )
 
-func InitRoute(app *fiber.App, user *api.User) {
+func InitRoute(app *fiber.App) {
 	//加载静态资源，一般是上传的资源，例如用户上传的图片
 	app.Static("/upload", "storage/upload")
-	app.Get("/", user.Hello)
+	app.Get("/", api.Hello)
 	cms := app.Group("/cms")
 	cms.Post("/file", api.Upload)
-	cms.Post("/user/login", user.Login)
+	cms.Post("/user/login", api.Login)
 
 	{
 		userRouter := cms.Group("/user")
 		adminRouter := cms.Group("/admin")
 		logRouter := cms.Group("/log")
-		userRouter.Post("/register", user.Register)
-		userRouter.Put("/", user.UpdateMe)
-		userRouter.Put("/change_password", user.ChangeMyPassword)
-		userRouter.Get("/permissions", user.GetMyPermissions)
-		userRouter.Get("/information", user.GetMyInfomation)
+		userRouter.Post("/register", api.Register)
+		userRouter.Put("/", api.UpdateMe)
+		userRouter.Put("/change_password", api.ChangeMyPassword)
+		userRouter.Get("/permissions", api.GetMyPermissions)
+		userRouter.Get("/information", api.GetMyInfomation)
 
 		adminRouter.Get("/permissions", api.GetAllPermissions)
 		adminRouter.Get("/users", api.GetUsers)

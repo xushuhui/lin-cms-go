@@ -114,7 +114,7 @@ func ServerError(c *fiber.Ctx, err error) error {
 		Err:     err,
 	})
 }
-func (err IError) HttpError(c *fiber.Ctx) error {
+func (err *IError) HttpError(c *fiber.Ctx) error {
 	return c.JSON(IError{
 		Code:    err.Code,
 		Message: errcode.GetMsg(err.Code),

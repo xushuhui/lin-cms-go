@@ -10,25 +10,16 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type User struct {
-	uc *biz.LinUserUsecase
-}
-
-func NewUser(uc *biz.LinUserUsecase) *User {
-	return &User{
-		uc: uc,
-	}
-}
-func (u *User) Hello(ctx *fiber.Ctx) error {
+func Hello(ctx *fiber.Ctx) error {
 	return ctx.JSON("Hello")
 }
-func (u *User) Login(c *fiber.Ctx) error {
+func Login(c *fiber.Ctx) error {
 	var req request.Login
 	if err := core.ParseRequest(c, &req); err != nil {
 		return err
 	}
 
-	data, err := u.uc.Login(c.Context(), req.Username, req.Password)
+	data, err := biz.Login(c.Context(), req.Username, req.Password)
 	if err != nil {
 
 		return err
@@ -38,35 +29,35 @@ func (u *User) Login(c *fiber.Ctx) error {
 
 }
 
-func (u *User) Register(c *fiber.Ctx) error {
+func Register(c *fiber.Ctx) error {
 	var req request.Register
 	if err := core.ParseRequest(c, &req); err != nil {
 
 		return err
 	}
 
-	err := u.uc.Register(c.Context(), req)
+	err := biz.Register(c.Context(), req)
 	if err != nil {
 		return err
 	}
 	return core.SuccessResp(c)
 }
 
-func (u *User) UpdateMe(c *fiber.Ctx) error {
+func UpdateMe(c *fiber.Ctx) error {
 	var req request.UpdateMe
 	if err := core.ParseRequest(c, &req); err != nil {
 		return err
 	}
 	var uid int
 
-	err := u.uc.UpdateMe(c.Context(), req, uid)
+	err := biz.UpdateMe(c.Context(), req, uid)
 	if err != nil {
 		return err
 	}
 	return core.SuccessResp(c)
 }
 
-func (u *User) ChangeMyPassword(c *fiber.Ctx) error {
+func ChangeMyPassword(c *fiber.Ctx) error {
 
 	var req request.ChangeMyPassword
 	if err := core.ParseRequest(c, &req); err != nil {
@@ -75,7 +66,7 @@ func (u *User) ChangeMyPassword(c *fiber.Ctx) error {
 
 	var uid int
 
-	err := u.uc.ChangeMyPassword(c.Context(), req, uid)
+	err := biz.ChangeMyPassword(c.Context(), req, uid)
 	if err != nil {
 
 		return err
@@ -90,7 +81,7 @@ func uid(c *fiber.Ctx) (uid uint, err error) {
 	return
 }
 
-func (u *User) GetMyPermissions(c *fiber.Ctx) error {
+func GetMyPermissions(c *fiber.Ctx) error {
 
 	//uid, err := uid(c)
 	//if err != nil {
@@ -105,7 +96,7 @@ func (u *User) GetMyPermissions(c *fiber.Ctx) error {
 	return nil
 }
 
-func (u *User) GetMyInfomation(c *fiber.Ctx) error {
+func GetMyInfomation(c *fiber.Ctx) error {
 	//uid, err := uid(c)
 	//if err != nil {
 	//
