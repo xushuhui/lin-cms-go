@@ -5,8 +5,6 @@ import (
 	"lin-cms-go/internal/request"
 	"lin-cms-go/pkg/core"
 
-	"lin-cms-go/pkg/utils"
-
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -24,7 +22,7 @@ func Login(c *fiber.Ctx) error {
 
 		return err
 	}
-	//todo jwt token
+
 	return core.SetData(c, data)
 
 }
@@ -48,9 +46,8 @@ func UpdateMe(c *fiber.Ctx) error {
 	if err := core.ParseRequest(c, &req); err != nil {
 		return err
 	}
-	var uid int
-
-	err := biz.UpdateMe(c.Context(), req, uid)
+	user := biz.LocalUser(c)
+	err := biz.UpdateMe(c.Context(), req, user.ID)
 	if err != nil {
 		return err
 	}
@@ -74,25 +71,16 @@ func ChangeMyPassword(c *fiber.Ctx) error {
 	return core.SuccessResp(c)
 
 }
-func uid(c *fiber.Ctx) (uid uint, err error) {
-	u := c.Get("uid", "")
-
-	uid, err = utils.ToUint(u)
-	return
-}
 
 func GetMyPermissions(c *fiber.Ctx) error {
+	user := biz.LocalUser(c)
 
-	//uid, err := uid(c)
-	//if err != nil {
-	//	return err
-	//}
-	//data, err := biz.GetMyPermissions(uid)
-	//if err != nil {
-	//
-	//	return err
-	//}
-	//return core.SetData(c, data)
+	data, err := biz.GetMyPermissions(c.Context(), user.ID)
+	if err != nil {
+
+		return err
+	}
+	core.SetData(c, data)
 	return nil
 }
 

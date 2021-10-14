@@ -3,12 +3,14 @@ package biz
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/golang-jwt/jwt/v4"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/data/ent"
 	"lin-cms-go/internal/request"
 	"lin-cms-go/pkg/core"
 	"lin-cms-go/pkg/errcode"
+	"lin-cms-go/pkg/lib"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -24,18 +26,26 @@ func Login(ctx context.Context, username, password string) (res map[string]inter
 	if err != nil {
 		return
 	}
+
 	err = bcrypt.CompareHashAndPassword([]byte(userIdentityModel.Credential), []byte(password))
 	if err != nil {
 		err = core.NewErrorCode(errcode.ErrorPassWord)
 		return
 	}
-	//TODO token
-	//token, err := lib.GenerateToken(userIdentityModel.UserID)
-	//if err != nil {
-	//	return
-	//}
-	//data = make(map[string]interface{})
-	//data["access_token"] = token
+	user, err := data.GetLinUserById(ctx, userIdentityModel.UserID)
+	if err != nil {
+		return
+	}
+	// jwt
+	claims := make(jwt.MapClaims)
+	claims["user"] = user
+	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+	token, err := lib.GenerateJwt(claims)
+	if err != nil {
+		return
+	}
+	res = make(map[string]interface{})
+	res["access_token"] = token
 	return
 }
 func Register(ctx context.Context, req request.Register) (err error) {
@@ -43,7 +53,7 @@ func Register(ctx context.Context, req request.Register) (err error) {
 	if ent.MaskNotFound(err) != nil {
 		return err
 	}
-	if userIdentityModel.ID > 0 {
+	if userIdentityModel != nil && userIdentityModel.ID > 0 {
 		err = errors.New("user is found")
 		return
 	}
@@ -108,10 +118,9 @@ func GetMyPermissions(ctx context.Context, uid int) (res map[string]interface{},
 	if groupModel.Level == 1 {
 		isRoot = true
 	}
-	fmt.Println(isRoot)
 
-	//data = utils.Struct2MapJson(userModel)
-	//data["is_admin"] = isAdmin
+	res = make(map[string]interface{})
+	res["is_admin"] = isRoot
 	//data["permissions"] = permissions
 	return
 }

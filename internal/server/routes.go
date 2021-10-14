@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/gofiber/fiber/v2"
+	jwtware "github.com/gofiber/jwt/v3"
 	"lin-cms-go/api"
 )
 
@@ -12,7 +13,9 @@ func InitRoute(app *fiber.App) {
 	cms := app.Group("/cms")
 	cms.Post("/file", api.Upload)
 	cms.Post("/user/login", api.Login)
-
+	cms.Use(jwtware.New(jwtware.Config{
+		SigningKey: []byte("secret"),
+	}))
 	{
 		userRouter := cms.Group("/user")
 		adminRouter := cms.Group("/admin")

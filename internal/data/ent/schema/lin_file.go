@@ -10,6 +10,7 @@ import (
 type LinFile struct {
 	ent.Schema
 }
+
 func (LinFile) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		entsql.Annotation{Table: "lin_file"},
@@ -23,8 +24,5 @@ func (LinFile) Fields() []ent.Field {
 		field.String("extension").Comment(""),
 		field.Int("size").Comment(""),
 		field.String("md5").Comment("md5值，防止上传重复文件").Unique(),
-		field.Time("create_time").Comment(""),
-		field.Time("update_time").Comment(""),
-		field.Time("delete_time").Comment(""),
 	}
 }

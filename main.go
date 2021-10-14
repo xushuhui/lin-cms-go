@@ -19,24 +19,24 @@ func initApp(c *conf.Config) *fiber.App {
 		// Override default error handler
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			// Status code defaults to 500
-			if e, ok := err.(*core.IError); ok {
+			if e, ok := err.(core.IError); ok {
 				if e.Err == nil {
 					return e.HttpError(c)
 				}
 
 			}
+			if e, ok := err.(error); ok {
+				return core.InvalidParamsError(c, e.Error())
 
+			}
 			return core.ServerError(c, err)
 
 		}})
 	app.Use(recover.New(), logger.New())
-	data.NewDBClient(&c.Data)
+	data.NewDataSource(&c.Data)
+	//TODO clean source
 
-	// dataData, _, err := data.NewData(&c.Data, dbclient)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
+	core.InitValidate()
 	server.InitRoute(app)
 
 	return app
@@ -52,7 +52,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	core.InitValidate()
+
 	app := initApp(c)
 	log.Fatal(app.Listen(c.Server.Http.Addr))
 }

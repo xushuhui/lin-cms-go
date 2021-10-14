@@ -32,6 +32,6 @@ func JSONDecode(b []byte, v interface{}) (err error) {
 	d := json.NewDecoder(bytes.NewReader(b))
 	d.UseNumber()
 	err = d.Decode(v)
-	
+
 	return
 }
