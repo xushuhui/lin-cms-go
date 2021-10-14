@@ -187,7 +187,7 @@ VALUES (1, 'root', 'root');
 INSERT INTO lin_user_identiy (id, user_id, identity_type, identifier, credential)
 
 VALUES (1, 1, 'USERNAME_PASSWORD', 'root',
-        'sha1$c419e500$1$84869e5560ebf3de26b6690386484929456d6c07');
+        '$2a$10$Subt/mCLem8axyivSN4BBeSLUtdPPEhDJJTWpGQVWJst1aVa9TzQq');
 
 INSERT INTO lin_group(id, name, info, level)
 VALUES (1, 'root', '超级用户组', 1);
