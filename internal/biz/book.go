@@ -10,7 +10,8 @@ import (
 )
 
 func GetBookAll(ctx context.Context, page int, size int) (res interface{}, err error) {
-	bookModel, err := data.GetBookAll(ctx, page, size)
+	offset := core.GetPageOffset(page, size)
+	bookModel, err := data.GetBookAll(ctx, offset, size)
 	if err != nil {
 		return
 	}

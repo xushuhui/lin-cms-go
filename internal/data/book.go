@@ -6,8 +6,8 @@ import (
 	"lin-cms-go/internal/data/ent/book"
 )
 
-func GetBookAll(ctx context.Context, page int, size int) (model []*ent.Book, err error) {
-	model, err = GetDB().Book.Query().Limit(size).Offset((page - 1) * size).All(ctx)
+func GetBookAll(ctx context.Context, offset int, size int) (model []*ent.Book, err error) {
+	model, err = GetDB().Book.Query().Limit(size).Offset(offset).All(ctx)
 	return
 }
 
