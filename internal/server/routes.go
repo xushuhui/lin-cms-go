@@ -11,16 +11,22 @@ func InitRoute(app *fiber.App) {
 	app.Static("/upload", "storage/upload")
 	app.Get("/", api.Hello)
 	cms := app.Group("/cms")
+	v1 := app.Group("/v1")
 	cms.Post("/file", api.Upload)
 	cms.Post("/user/login", api.Login)
 	cms.Post("/user/register", api.Register)
 	cms.Use(jwtware.New(jwtware.Config{
 		SigningKey: []byte("secret"),
 	}))
+
+	v1.Use(jwtware.New(jwtware.Config{
+		SigningKey: []byte("secret"),
+	}))
 	{
 		userRouter := cms.Group("/user")
 		adminRouter := cms.Group("/admin")
 		logRouter := cms.Group("/log")
+		bookRouter := v1.Group("/book")
 
 		userRouter.Put("/", api.UpdateMe)
 		userRouter.Put("/change_password", api.ChangeMyPassword)
@@ -46,6 +52,11 @@ func InitRoute(app *fiber.App) {
 		logRouter.Get("", api.GetLogs)
 		logRouter.Get("/search", api.SearchLogs)
 		logRouter.Get("/users", api.GetLogUsers)
+
+		bookRouter.Get("", api.GetBooks)
+		bookRouter.Put("", api.UpdateBook)
+		bookRouter.Post("", api.CreateBook)
+		bookRouter.Delete("", api.DeleteBook)
 	}
 
 }

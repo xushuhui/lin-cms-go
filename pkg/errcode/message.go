@@ -12,6 +12,7 @@ const (
 	ErrorPassWord
 	UserFound
 	UserNotFound
+	BookNotFound
 )
 
 var MsgFlags = map[int]string{
@@ -25,6 +26,7 @@ var MsgFlags = map[int]string{
 	ErrorPassWord:         "密码错误",
 	UserFound:             "用户已存在",
 	UserNotFound:          "用户不存在",
+	BookNotFound:          "书籍不存在",
 }
 
 func GetMsg(code int) string {
