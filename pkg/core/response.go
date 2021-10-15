@@ -86,7 +86,7 @@ func SuccessResp(c *fiber.Ctx) error {
 		Message: errcode.GetMsg(0),
 	})
 }
-func SetData(c *fiber.Ctx, data map[string]interface{}) error {
+func SetData(c *fiber.Ctx, data interface{}) error {
 	return c.JSON(IError{
 		Code:    0,
 		Message: errcode.GetMsg(0),

@@ -54,9 +54,10 @@ func InitRoute(app *fiber.App) {
 		logRouter.Get("/users", api.GetLogUsers)
 
 		bookRouter.Get("", api.GetBooks)
-		bookRouter.Put("", api.UpdateBook)
+		bookRouter.Get("/:id", api.GetBook)
+		bookRouter.Put("/:id", api.UpdateBook)
 		bookRouter.Post("", api.CreateBook)
-		bookRouter.Delete("", api.DeleteBook)
+		bookRouter.Delete("/:id", api.DeleteBook)
 	}
 
 }
