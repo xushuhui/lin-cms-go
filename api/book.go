@@ -37,6 +37,7 @@ func UpdateBook(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
+
 	err = biz.UpdateBook(c.Context(), id, req)
 	if err != nil {
 		return err
@@ -57,6 +58,7 @@ func CreateBook(c *fiber.Ctx) error {
 }
 
 func DeleteBook(c *fiber.Ctx) error {
+	// TODO 没有软删除，ent默认没有软删除待加强
 	id, err := utils.StringToInt(c.Params("id"))
 	if err != nil {
 		return err
