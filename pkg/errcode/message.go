@@ -13,6 +13,7 @@ const (
 	UserFound
 	UserNotFound
 	BookNotFound
+	BookTitleRepetition
 )
 
 var MsgFlags = map[int]string{
@@ -27,6 +28,7 @@ var MsgFlags = map[int]string{
 	UserFound:             "用户已存在",
 	UserNotFound:          "用户不存在",
 	BookNotFound:          "书籍不存在",
+	BookTitleRepetition:   "书籍标题重复",
 }
 
 func GetMsg(code int) string {
