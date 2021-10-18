@@ -75,7 +75,7 @@ func InvalidParamsError(c *fiber.Ctx, msg string) error {
 
 	return c.JSON(IError{
 		Code:    errcode.InvalidParams,
-		Message: msg,
+		Message: errcode.GetMsg(errcode.InvalidParams),
 	})
 
 }

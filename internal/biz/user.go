@@ -3,7 +3,6 @@ package biz
 import (
 	"context"
 	"errors"
-	"github.com/golang-jwt/jwt/v4"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/data/ent"
 	"lin-cms-go/internal/request"
@@ -11,6 +10,8 @@ import (
 	"lin-cms-go/pkg/errcode"
 	"lin-cms-go/pkg/lib"
 	"time"
+
+	"github.com/golang-jwt/jwt/v4"
 
 	"golang.org/x/crypto/bcrypt"
 )
