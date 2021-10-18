@@ -49,7 +49,7 @@ func InitRoute(app *fiber.App) {
 		adminRouter.Post("/permissions/dispatch", api.DispatchPermissions)
 		adminRouter.Post("/permissions/remove", api.RemovePermissions)
 
-		logRouter.Get("", api.GetLogs)
+		logRouter.Get("/", api.GetLogs)
 		logRouter.Get("/search", api.SearchLogs)
 		logRouter.Get("/users", api.GetLogUsers)
 
