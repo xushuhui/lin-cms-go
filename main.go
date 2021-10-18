@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/gofiber/contrib/fiberzap"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -12,6 +12,7 @@ import (
 	"lin-cms-go/internal/server"
 	"lin-cms-go/pkg/core"
 	"lin-cms-go/pkg/log"
+	"os"
 )
 
 func errorHandler(c *fiber.Ctx, err error) error {
@@ -27,11 +28,17 @@ func errorHandler(c *fiber.Ctx, err error) error {
 }
 func initApp(c *conf.Config) *fiber.App {
 	app := fiber.New(fiber.Config{ErrorHandler: errorHandler})
-	app.Use(fiberzap.New(fiberzap.Config{
-		Logger: log.Defaultlogger,
-		Fields: []string{"method", "url", "latency", "status", "reqbody", "body", "error"},
-	}))
-	app.Use(recover.New(), cors.New())
+
+	l := log.NewLogger(os.Stderr)
+	w, _ := os.Create("./app.log")
+	l.WithWriter(w).Debug("debug", "ssss")
+	l.Error("err", "e")
+	app.Use(recover.New(),
+		logger.New(logger.Config{
+			TimeFormat: "2006-01-02 15:04:05.000", Format: "[${time}] ${method} ${path} - ${status} ${latency} \n ${body} \n ${resBody} \n ${error}", Output: os.Stderr,
+		}),
+		cors.New())
+
 	data.NewDataSource(&c.Data)
 	//TODO clean source
 
