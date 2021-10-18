@@ -6,7 +6,6 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
-	"entgo.io/ent/schema/mixin"
 )
 
 type LinUser struct {
@@ -20,7 +19,7 @@ func (LinUser) Annotations() []schema.Annotation {
 }
 func (LinUser) Mixin() []ent.Mixin {
 	return []ent.Mixin{
-		mixin.Time{},
+		TimeMixin{},
 	}
 }
 func (LinUser) Fields() []ent.Field {
