@@ -3,6 +3,7 @@ package schema
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
+
 	"entgo.io/ent/schema/mixin"
 	"time"
 )
@@ -21,20 +22,7 @@ func (TimeMixin) Fields() []ent.Field {
 		field.Time("updated_time").
 			Default(time.Now).
 			UpdateDefault(time.Now),
+		field.Time("delete_time").
+			Default(nil),
 	}
 }
-
-//type LinUserGroup struct {
-//	ent.Schema
-//}
-//func (LinUserGroup) Annotations() []schema.Annotation {
-//	return []schema.Annotation{
-//		entsql.Annotation{Table: "lin_user_group"},
-//	}
-//}
-//func (LinUserGroup) Fields() []ent.Field {
-//	return []ent.Field{
-//		field.Int("user_id").Comment("用户id").Unique(),
-//		field.Int("group_id").Comment("分组id"),
-//	}
-//}

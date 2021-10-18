@@ -60,10 +60,9 @@ func ChangeMyPassword(c *fiber.Ctx) error {
 	if err := core.ParseRequest(c, &req); err != nil {
 		return err
 	}
+	user := biz.LocalUser(c)
 
-	var uid int
-
-	err := biz.ChangeMyPassword(c.Context(), req, uid)
+	err := biz.ChangeMyPassword(c.Context(), req, user.ID)
 	if err != nil {
 
 		return err
