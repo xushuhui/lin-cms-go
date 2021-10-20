@@ -1,7 +1,6 @@
 package data
 
 import (
-	"github.com/grestful/logs"
 	"lin-cms-go/internal/conf"
 	"lin-cms-go/internal/data/ent"
 	"sync"
@@ -30,9 +29,7 @@ func NewDBClient(conf *conf.Data) (db *ent.Client) {
 	var err error
 	once.Do(func() {
 
-		db, err = ent.Open(conf.Database.Driver, conf.Database.Source, ent.Debug(), ent.Log(func(i ...interface{}) {
-			logs.Debug("sql", i, 111111111111)
-		}))
+		db, err = ent.Open(conf.Database.Driver, conf.Database.Source, ent.Debug())
 		if err != nil {
 			panic(err)
 		}
