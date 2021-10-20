@@ -4,6 +4,7 @@ import (
 	"context"
 	"lin-cms-go/internal/data/ent"
 	"lin-cms-go/internal/data/ent/book"
+	"lin-cms-go/pkg/core"
 )
 
 func GetBookAll(ctx context.Context, offset int, size int) (model []*ent.Book, err error) {
@@ -38,5 +39,24 @@ func DeleteBook(ctx context.Context, id int) (err error) {
 
 func GetBookCount(ctx context.Context) (count int, err error) {
 	count, err = GetDB().Book.Query().Count(ctx)
+
+	return
+}
+
+type Paging struct {
+	Page   int
+	Size   int
+	Offset int
+}
+
+func NewPaging(page, pageSize int) *Paging {
+	return &Paging{
+		Page:   page,
+		Size:   pageSize,
+		Offset: core.GetPageOffset(page, pageSize),
+	}
+}
+func (p *Paging) ListBook(ctx context.Context) (model []*ent.Book, err error) {
+	model, err = GetDB().Book.Query().Limit(p.Size).Offset(p.Offset).All(ctx)
 	return
 }

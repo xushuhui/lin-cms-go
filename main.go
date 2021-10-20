@@ -16,7 +16,7 @@ import (
 )
 
 func errorHandler(c *fiber.Ctx, err error) error {
-	// Status code defaults to 500
+	// response err handle
 	if e, ok := err.(core.IError); ok {
 		if e.Err == nil {
 			return e.HttpError(c)
