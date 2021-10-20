@@ -11,6 +11,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.20.2
 	github.com/gofiber/jwt/v3 v3.1.2
 	github.com/golang-jwt/jwt/v4 v4.1.0
+	github.com/grestful/logs v1.0.7
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
 	gopkg.in/yaml.v2 v2.4.0
