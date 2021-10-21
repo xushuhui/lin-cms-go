@@ -2,12 +2,13 @@ package data
 
 import (
 	"context"
-	"lin-cms-go/internal/data/ent"
-	"lin-cms-go/internal/data/ent/linlog"
+
+	"lin-cms-go/internal/data/model"
+	"lin-cms-go/internal/data/model/linlog"
 	"time"
 )
 
-func (p *Paging) FindLogsByUsernameAndRange(ctx context.Context, name string, start time.Time, end time.Time) (model []*ent.LinLog, err error) {
+func (p *Paging) FindLogsByUsernameAndRange(ctx context.Context, name string, start time.Time, end time.Time) (model []*model.LinLog, err error) {
 	model, err = GetDB().LinLog.Query().Where(linlog.Username(name)).Where(linlog.And(
 		linlog.CreateTimeGT(start),
 		linlog.CreateTimeLT(end),
@@ -15,12 +16,12 @@ func (p *Paging) FindLogsByUsernameAndRange(ctx context.Context, name string, st
 	return
 }
 
-func (p *Paging) GetLogAll(ctx context.Context) (model []*ent.LinLog, err error) {
+func (p *Paging) GetLogAll(ctx context.Context) (model []*model.LinLog, err error) {
 	model, err = GetDB().LinLog.Query().Limit(p.Size).Offset(p.Offset).All(ctx)
 	return
 }
 
-func (p *Paging) FindLogsByUsername(ctx context.Context, name string) (model []*ent.LinLog, err error) {
+func (p *Paging) FindLogsByUsername(ctx context.Context, name string) (model []*model.LinLog, err error) {
 	model, err = GetDB().LinLog.Query().Where(linlog.Username(name)).Limit(p.Size).Offset(p.Offset).All(ctx)
 	return
 }

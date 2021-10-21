@@ -2,18 +2,18 @@ package data
 
 import (
 	"context"
-	"lin-cms-go/internal/data/ent"
-	"lin-cms-go/internal/data/ent/linuser"
-	"lin-cms-go/internal/data/ent/linuseridentiy"
+	"lin-cms-go/internal/data/model"
+	"lin-cms-go/internal/data/model/linuser"
+	"lin-cms-go/internal/data/model/linuseridentiy"
 )
 
-func GetLinUserIdentityByIdentifier(ctx context.Context, identifier string) (model *ent.LinUserIdentiy, err error) {
+func GetLinUserIdentityByIdentifier(ctx context.Context, identifier string) (model *model.LinUserIdentiy, err error) {
 
 	model, err = GetDB().LinUserIdentiy.Query().Where(linuseridentiy.Identifier(identifier)).First(ctx)
 	return
 }
 
-func GetLinUserIdentityByUserId(ctx context.Context, userId int) (model *ent.LinUserIdentiy, err error) {
+func GetLinUserIdentityByUserId(ctx context.Context, userId int) (model *model.LinUserIdentiy, err error) {
 
 	model, err = GetDB().LinUserIdentiy.Query().Where(linuseridentiy.UserID(userId)).First(ctx)
 	return
@@ -38,7 +38,7 @@ func CreateLinUser(ctx context.Context, username, password, email string, groupI
 
 	return
 }
-func GetLinUserById(ctx context.Context, uid int) (model *ent.LinUser, err error) {
+func GetLinUserById(ctx context.Context, uid int) (model *model.LinUser, err error) {
 	model, err = GetDB().LinUser.Query().Where(linuser.ID(uid)).First(ctx)
 
 	return
