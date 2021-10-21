@@ -14,6 +14,6 @@ type CreateBook struct {
 	Image   string `json:"image" validate:"required" comment:"书籍封面图"`
 }
 type GetBooks struct {
-	Size int `json:"size" binding:"required" comment:"数量"`
-	Page int `json:"page" binding:"required" comment:"页码"`
+	Size int `json:"size" validate:"required" comment:"数量"`
+	Page int `json:"page" validate:"required" comment:"页码"`
 }

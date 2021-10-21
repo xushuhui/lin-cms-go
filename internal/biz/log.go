@@ -36,8 +36,8 @@ func GetLogs(ctx context.Context, req request.GetLogs) (res interface{}, total i
 func SearchLogs(req request.SearchLogs) (res map[string]interface{}, err error) {
 	return
 }
-func GetLogUsers(ctx context.Context, req request.GetLogUsers) (res interface{}, total int, err error) {
-	paging := data.NewPaging(req.Page, req.Count)
+func GetLogUsers(ctx context.Context, page, size int) (res interface{}, total int, err error) {
+	paging := data.NewPaging(page, size)
 	res, err = paging.GetLogUsers(ctx)
 	if err != nil {
 		return
