@@ -15,9 +15,9 @@ func InitRoute(app *fiber.App) {
 	cms.Post("/file", api.Upload)
 	cms.Post("/user/login", api.Login)
 	cms.Post("/user/register", api.Register)
-	cms.Use(jwtware.New(jwtware.Config{
-		SigningKey: []byte("secret"),
-	}))
+	//cms.Use(jwtware.New(jwtware.Config{
+	//	SigningKey: []byte("secret"),
+	//}))
 
 	v1.Use(jwtware.New(jwtware.Config{
 		SigningKey: []byte("secret"),

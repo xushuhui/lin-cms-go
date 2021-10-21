@@ -26,9 +26,9 @@ func GetPage(c *fiber.Ctx) int {
 }
 
 func GetSize(c *fiber.Ctx) int {
-	pageSize, _ := utils.StringToInt(c.Query("size"))
+	pageSize, _ := utils.StringToInt(c.Query("count"))
 	if pageSize <= 0 {
-		return 20
+		return 10
 	}
 
 	return pageSize

@@ -12,9 +12,10 @@ func Upload(c *fiber.Ctx) error {
 }
 func GetLogs(c *fiber.Ctx) error {
 	var req request.GetLogs
-	if err := core.ParseRequest(c, &req); err != nil {
+	if err := core.ParseQuery(c, &req); err != nil {
 		return err
 	}
+
 	data, total, err := biz.GetLogs(c.Context(), req)
 	if err != nil {
 		return err
@@ -24,7 +25,7 @@ func GetLogs(c *fiber.Ctx) error {
 
 func SearchLogs(c *fiber.Ctx) error {
 	var req request.SearchLogs
-	if err := core.ParseRequest(c, &req); err != nil {
+	if err := core.ParseQuery(c, &req); err != nil {
 		return err
 	}
 
@@ -36,11 +37,9 @@ func SearchLogs(c *fiber.Ctx) error {
 	return core.SetData(c, data)
 }
 func GetLogUsers(c *fiber.Ctx) error {
-	var req request.GetLogUsers
-	if err := core.ParseRequest(c, &req); err != nil {
-		return err
-	}
-	data, total, err := biz.GetLogUsers(c.Context(), req)
+	page := core.GetPage(c)
+	size := core.GetSize(c)
+	data, total, err := biz.GetLogUsers(c.Context(), page, size)
 	if err != nil {
 		return err
 	}

@@ -26,15 +26,12 @@ func (p *Paging) FindLogsByUsername(ctx context.Context, name string) (model []*
 }
 
 func (p *Paging) GetLogUsers(ctx context.Context) (model []string, err error) {
-	model, err = GetDB().LinLog.Query().Limit(p.Size).Offset(p.Offset).Select(linlog.FieldUsername).GroupBy("username").Strings(ctx)
+	model, err = GetDB().LinLog.Query().Limit(p.Size).Offset(p.Offset).GroupBy(linlog.FieldUsername).Strings(ctx)
 	return
 }
 
 func GetLogUsersTotal(ctx context.Context) (total int, err error) {
-	// TODO sql有问题
-	model, err := GetDB().LinLog.Query().Select(linlog.FieldUsername).GroupBy("username").Strings(ctx)
-	GetDB().LinLog.Query().GroupBy("username")
-	total = len(model)
+	total, err = GetDB().LinLog.Query().Select(linlog.FieldUsername).Count(ctx)
 	return
 }
 

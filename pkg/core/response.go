@@ -48,6 +48,16 @@ func ValidateRequest(obj interface{}) error {
 	}
 	return nil
 }
+func ParseQuery(c *fiber.Ctx, request interface{}) (err error) {
+	err = c.QueryParser(request)
+
+	if err != nil {
+		return err
+	}
+
+	err = ValidateRequest(request)
+	return
+}
 func ParseRequest(c *fiber.Ctx, request interface{}) (err error) {
 	err = c.BodyParser(request)
 
