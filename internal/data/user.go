@@ -7,10 +7,15 @@ import (
 	"lin-cms-go/internal/data/ent/linuseridentiy"
 )
 
-func GetLinUserIdentityByIdentifier(ctx context.Context, identifier string) (po *ent.LinUserIdentiy, err error) {
+func GetLinUserIdentityByIdentifier(ctx context.Context, identifier string) (model *ent.LinUserIdentiy, err error) {
 
-	po, err = GetDB().LinUserIdentiy.Query().Where(linuseridentiy.Identifier(identifier)).First(ctx)
+	model, err = GetDB().LinUserIdentiy.Query().Where(linuseridentiy.Identifier(identifier)).First(ctx)
+	return
+}
 
+func GetLinUserIdentityByUserId(ctx context.Context, userId int) (model *ent.LinUserIdentiy, err error) {
+
+	model, err = GetDB().LinUserIdentiy.Query().Where(linuseridentiy.UserID(userId)).First(ctx)
 	return
 }
 func CreateLinUser(ctx context.Context, username, password, email string, groupId int) (err error) {

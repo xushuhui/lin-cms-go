@@ -62,7 +62,7 @@ func ChangeMyPassword(c *fiber.Ctx) error {
 	}
 	user := biz.LocalUser(c)
 
-	err := biz.ChangeMyPassword(c.Context(), req, user.ID)
+	err := biz.ChangeMyPassword(c.Context(), req, user.Username)
 	if err != nil {
 
 		return err
@@ -79,23 +79,19 @@ func GetMyPermissions(c *fiber.Ctx) error {
 
 		return err
 	}
-	core.SetData(c, data)
-	return nil
+	return core.SetData(c, data)
+
 }
 
 func GetMyInfomation(c *fiber.Ctx) error {
-	//uid, err := uid(c)
-	//if err != nil {
-	//
-	//	return err
-	//}
-	//data, err := biz.GetMyInfomation(uid)
-	//if err != nil {
-	//
-	//	return err
-	//}
-	//return core.SetData(c, data)
-	return nil
+	user := biz.LocalUser(c)
+	data, err := biz.GetMyInfomation(c.Context(), user.ID)
+	if err != nil {
+
+		return err
+	}
+	return core.SetData(c, data)
+
 }
 
 //TODO 对cms意义并不大，先不实现

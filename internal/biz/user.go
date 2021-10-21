@@ -79,9 +79,8 @@ func UpdateMe(ctx context.Context, req request.UpdateMe, uid int) (err error) {
 	err = data.UpdateLinUser(ctx, uid, req.Avatar, req.Nickname, req.Email)
 	return
 }
-func ChangeMyPassword(ctx context.Context, req request.ChangeMyPassword, uid int) (err error) {
-	var username string
-	//todo jwt username
+func ChangeMyPassword(ctx context.Context, req request.ChangeMyPassword, username string) (err error) {
+
 	userIdentityModel, err := data.GetLinUserIdentityByIdentifier(ctx, username)
 	if err != nil {
 		return err
@@ -125,14 +124,12 @@ func GetMyPermissions(ctx context.Context, uid int) (res map[string]interface{},
 	//data["permissions"] = permissions
 	return
 }
-func GetMyInfomation(ctx context.Context, uid int) (res map[string]interface{}, err error) {
-	_, err = data.GetLinUserById(ctx, uid)
+func GetMyInfomation(ctx context.Context, uid int) (res interface{}, err error) {
+	model, err := data.GetLinUserById(ctx, uid)
 	if ent.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.UserNotFound)
 		return
 	}
-	if err != nil {
-		return
-	}
+	res = model
 	return
 }
