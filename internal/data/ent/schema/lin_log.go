@@ -16,6 +16,12 @@ func (LinLog) Annotations() []schema.Annotation {
 		entsql.Annotation{Table: "lin_log"},
 	}
 }
+
+func (LinLog) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		TimeMixin{},
+	}
+}
 func (LinLog) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("message").Comment(""),
