@@ -2,16 +2,16 @@ package data
 
 import (
 	"context"
-	"lin-cms-go/internal/data/ent"
-	"lin-cms-go/internal/data/ent/book"
+	"lin-cms-go/internal/data/model"
+	"lin-cms-go/internal/data/model/book"
 )
 
-func GetBookById(ctx context.Context, id int) (model *ent.Book, err error) {
+func GetBookById(ctx context.Context, id int) (model *model.Book, err error) {
 	model, err = GetDB().Book.Query().Where(book.ID(id)).First(ctx)
 	return
 }
 
-func GetBookByTitle(ctx context.Context, title string) (model *ent.Book, err error) {
+func GetBookByTitle(ctx context.Context, title string) (model *model.Book, err error) {
 	model, err = GetDB().Book.Query().Where(book.Title(title)).First(ctx)
 	return
 }
@@ -36,7 +36,7 @@ func GetBookCount(ctx context.Context) (count int, err error) {
 	return
 }
 
-func (p *Paging) ListBook(ctx context.Context) (model []*ent.Book, err error) {
+func (p *Paging) ListBook(ctx context.Context) (model []*model.Book, err error) {
 	model, err = GetDB().Book.Query().Limit(p.Size).Offset(p.Offset).All(ctx)
 	return
 }

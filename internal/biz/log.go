@@ -3,13 +3,13 @@ package biz
 import (
 	"context"
 	"lin-cms-go/internal/data"
-	"lin-cms-go/internal/data/ent"
+	"lin-cms-go/internal/data/model"
 	"lin-cms-go/internal/request"
 	"lin-cms-go/pkg/utils"
 )
 
 func GetLogs(ctx context.Context, req request.GetLogs) (res interface{}, total int, err error) {
-	var logs []*ent.LinLog
+	var logs []*model.LinLog
 	paging := data.NewPaging(req.Page, req.Count)
 
 	if req.Name == "" && req.Start == "" && req.End == "" {
