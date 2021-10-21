@@ -2,7 +2,6 @@ package server
 
 import (
 	"github.com/gofiber/fiber/v2"
-	jwtware "github.com/gofiber/jwt/v3"
 	"lin-cms-go/api"
 )
 
@@ -15,13 +14,14 @@ func InitRoute(app *fiber.App) {
 	cms.Post("/file", api.Upload)
 	cms.Post("/user/login", api.Login)
 	cms.Post("/user/register", api.Register)
+	// FIXME 开发阶段先注释jwt
 	//cms.Use(jwtware.New(jwtware.Config{
 	//	SigningKey: []byte("secret"),
 	//}))
 
-	v1.Use(jwtware.New(jwtware.Config{
-		SigningKey: []byte("secret"),
-	}))
+	//v1.Use(jwtware.New(jwtware.Config{
+	//	SigningKey: []byte("secret"),
+	//}))
 	{
 		userRouter := cms.Group("/user")
 		adminRouter := cms.Group("/admin")
