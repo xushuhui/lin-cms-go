@@ -2,7 +2,8 @@ package data
 
 import (
 	"lin-cms-go/internal/conf"
-	"lin-cms-go/internal/data/ent"
+
+	"lin-cms-go/internal/data/model"
 	"lin-cms-go/pkg/core"
 	"sync"
 
@@ -28,23 +29,23 @@ func NewPaging(page, pageSize int) *Paging {
 
 // DataSource .
 type DataSource struct {
-	Db map[string]*ent.Client
+	Db map[string]*model.Client
 }
 
 func NewDataSource(conf *conf.Data) {
 	ds = &DataSource{
-		Db: make(map[string]*ent.Client),
+		Db: make(map[string]*model.Client),
 	}
 	db := NewDBClient(conf)
 	ds.Db["default"] = db
 }
 
-func NewDBClient(conf *conf.Data) (db *ent.Client) {
+func NewDBClient(conf *conf.Data) (db *model.Client) {
 
 	var err error
 	once.Do(func() {
 
-		db, err = ent.Open(conf.Database.Driver, conf.Database.Source, ent.Debug())
+		db, err = model.Open(conf.Database.Driver, conf.Database.Source, model.Debug())
 		if err != nil {
 			panic(err)
 		}
@@ -53,13 +54,13 @@ func NewDBClient(conf *conf.Data) (db *ent.Client) {
 	return db
 }
 
-func (d *DataSource) GetDb(name string) *ent.Client {
+func (d *DataSource) GetDb(name string) *model.Client {
 	if db, ok := d.Db[name]; ok {
 		return db
 	}
 	panic(name + " db not exists")
 }
 
-func GetDB() *ent.Client {
+func GetDB() *model.Client {
 	return ds.GetDb("default")
 }

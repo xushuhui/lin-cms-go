@@ -4,7 +4,8 @@ import (
 	"context"
 	"errors"
 	"lin-cms-go/internal/data"
-	"lin-cms-go/internal/data/ent"
+	"lin-cms-go/internal/data/model"
+
 	"lin-cms-go/internal/request"
 	"lin-cms-go/pkg/core"
 	"lin-cms-go/pkg/errcode"
@@ -20,7 +21,7 @@ func Login(ctx context.Context, username, password string) (res map[string]inter
 
 	// 正确密码验证
 	userIdentityModel, err := data.GetLinUserIdentityByIdentifier(ctx, username)
-	if ent.IsNotFound(err) {
+	if model.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.UserNotFound)
 		return
 	}
@@ -51,7 +52,7 @@ func Login(ctx context.Context, username, password string) (res map[string]inter
 }
 func Register(ctx context.Context, req request.Register) (err error) {
 	userIdentityModel, err := data.GetLinUserIdentityByIdentifier(ctx, req.Username)
-	if ent.MaskNotFound(err) != nil {
+	if model.MaskNotFound(err) != nil {
 		return err
 	}
 	if userIdentityModel != nil && userIdentityModel.ID > 0 {
@@ -69,7 +70,7 @@ func Register(ctx context.Context, req request.Register) (err error) {
 }
 func UpdateMe(ctx context.Context, req request.UpdateMe, uid int) (err error) {
 	_, err = data.GetLinUserById(ctx, uid)
-	if ent.IsNotFound(err) {
+	if model.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.UserNotFound)
 		return
 	}
@@ -103,7 +104,7 @@ func ChangeMyPassword(ctx context.Context, req request.ChangeMyPassword, usernam
 }
 func GetMyPermissions(ctx context.Context, uid int) (res map[string]interface{}, err error) {
 	user, err := data.GetLinUserById(ctx, uid)
-	if ent.IsNotFound(err) {
+	if model.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.UserNotFound)
 		return
 	}
@@ -125,11 +126,11 @@ func GetMyPermissions(ctx context.Context, uid int) (res map[string]interface{},
 	return
 }
 func GetMyInfomation(ctx context.Context, uid int) (res interface{}, err error) {
-	model, err := data.GetLinUserById(ctx, uid)
-	if ent.IsNotFound(err) {
+	usermodel, err := data.GetLinUserById(ctx, uid)
+	if model.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.UserNotFound)
 		return
 	}
-	res = model
+	res = usermodel
 	return
 }
