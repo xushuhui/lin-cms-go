@@ -17,14 +17,11 @@ func GetBooks(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-
 	total, err := biz.GetBookTotal(c.Context())
 	if err != nil {
 		return err
 	}
-
 	core.SetPage(c, data, total)
-
 	return nil
 }
 

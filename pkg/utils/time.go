@@ -25,3 +25,8 @@ func GetCurrentMilliUnix() int64 {
 func GetCurrentNanoUnix() int64 {
 	return time.Now().UnixNano()
 }
+
+func String2time(dateString string) time.Time {
+	date, _ := time.Parse("2006-01-02 15:04:05", dateString)
+	return date
+}

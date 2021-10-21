@@ -10,12 +10,11 @@ import (
 )
 
 func GetBookAll(ctx context.Context, page int, size int) (res interface{}, err error) {
-	offset := core.GetPageOffset(page, size)
-	bookModel, err := data.GetBookAll(ctx, offset, size)
+	books, err := data.NewPaging(page, size).ListBook(ctx)
 	if err != nil {
 		return
 	}
-	res = bookModel
+	res = books
 	return
 }
 

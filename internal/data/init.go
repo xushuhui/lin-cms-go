@@ -3,6 +3,7 @@ package data
 import (
 	"lin-cms-go/internal/conf"
 	"lin-cms-go/internal/data/ent"
+	"lin-cms-go/pkg/core"
 	"sync"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -10,6 +11,20 @@ import (
 
 var ds *DataSource
 var once sync.Once
+
+type Paging struct {
+	Page   int
+	Size   int
+	Offset int
+}
+
+func NewPaging(page, pageSize int) *Paging {
+	return &Paging{
+		Page:   page,
+		Size:   pageSize,
+		Offset: core.GetPageOffset(page, pageSize),
+	}
+}
 
 // DataSource .
 type DataSource struct {
