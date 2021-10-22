@@ -4,6 +4,8 @@ import (
 	"context"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/data/model"
+	"lin-cms-go/internal/data/model/linlog"
+	"lin-cms-go/internal/data/model/predicate"
 	"lin-cms-go/internal/request"
 	"lin-cms-go/pkg/utils"
 	"time"
@@ -39,42 +41,54 @@ func SearchLogs(ctx context.Context, req request.SearchLogs) (res interface{}, t
 	var start time.Time
 	var end time.Time
 	paging := data.NewPaging(req.Page, req.Count)
+
+	var query []predicate.LinLog
+	if req.Name != "" {
+		query = append(query, data.WithUsername(req.Name))
+	}
 	if req.Start != "" && req.End != "" {
 		start = utils.String2time(req.Start)
 		end = utils.String2time(req.End)
+		q := linlog.And(linlog.CreateTimeGT(start), linlog.CreateTimeLT(end))
+		query = append(query, q)
 	}
-	if req.Name != "" && req.Start != "" && req.End != "" && req.Keyword != "" {
-		logs, err = paging.FindLogsByUsernameAndRangeAndKeyword(ctx, req.Name, req.Keyword, start, end)
-		total = data.GetLogsByUsernameAndRangeAndKeywordTotal(ctx, req.Name, req.Keyword, start, end)
+	if req.Keyword != "" {
+		query = append(query, data.WithKeyword(req.Name))
 	}
-	if req.Name == "" && req.Start == "" && req.End == "" && req.Keyword == "" {
-		logs, err = paging.GetLogAll(ctx)
-		total = data.GetLosTotal(ctx)
-	}
-	if req.Keyword != "" && req.Start != "" && req.End != "" && req.Name == "" {
-		logs, err = paging.FindLogsByRangeAndKeyword(ctx, req.Keyword, start, end)
-		total = data.GetLogsByRangeAndKeywordTotal(ctx, req.Keyword, start, end)
-	}
-	if req.Keyword != "" && req.Name != "" && req.Start == "" && req.End == "" {
-		logs, err = paging.FindLogsByUsernameAndKeyword(ctx, req.Name, req.Keyword)
-		total = data.GetLogsByUsernameAndKeywordTotal(ctx, req.Name, req.Keyword)
-	}
-	if req.Keyword != "" && req.Name == "" && req.Start == "" && req.End == "" {
-		logs, err = paging.FindLogsByKeyword(ctx, req.Keyword)
-		total = data.GetLogsByKeywordTotal(ctx, req.Keyword)
-	}
-	if req.Keyword == "" && req.Name == "" && req.Start != "" && req.End != "" {
-		logs, err = paging.FindLogsByRange(ctx, start, end)
-		total = data.GetLogsByRangeTotal(ctx, start, end)
-	}
-	if req.Keyword == "" && req.Name != "" && req.Start == "" && req.End == "" {
-		logs, err = paging.FindLogsByUsername(ctx, req.Name)
-		total = data.GetLogsByUsernameTotal(ctx, req.Name)
-	}
-	if req.Keyword == "" && req.Name != "" && req.Start != "" && req.End != "" {
-		logs, err = paging.FindLogsByUsernameAndRange(ctx, req.Name, start, end)
-		total = data.GetLogsByUsernameAndRangeTotal(ctx, req.Name, start, end)
-	}
+	logs, err = paging.Search(ctx, query)
+
+	//if req.Name != "" && req.Start != "" && req.End != "" && req.Keyword != "" {
+	//	logs, err = paging.FindLogsByUsernameAndRangeAndKeyword(ctx, req.Name, req.Keyword, start, end)
+	//	total = data.GetLogsByUsernameAndRangeAndKeywordTotal(ctx, req.Name, req.Keyword, start, end)
+	//}
+	//if req.Name == "" && req.Start == "" && req.End == "" && req.Keyword == "" {
+	//	logs, err = paging.GetLogAll(ctx)
+	//	total = data.GetLosTotal(ctx)
+	//}
+	//if req.Keyword != "" && req.Start != "" && req.End != "" && req.Name == "" {
+	//	logs, err = paging.FindLogsByRangeAndKeyword(ctx, req.Keyword, start, end)
+	//	total = data.GetLogsByRangeAndKeywordTotal(ctx, req.Keyword, start, end)
+	//}
+	//if req.Keyword != "" && req.Name != "" && req.Start == "" && req.End == "" {
+	//	logs, err = paging.FindLogsByUsernameAndKeyword(ctx, req.Name, req.Keyword)
+	//	total = data.GetLogsByUsernameAndKeywordTotal(ctx, req.Name, req.Keyword)
+	//}
+	//if req.Keyword != "" && req.Name == "" && req.Start == "" && req.End == "" {
+	//	logs, err = paging.FindLogsByKeyword(ctx, req.Keyword)
+	//	total = data.GetLogsByKeywordTotal(ctx, req.Keyword)
+	//}
+	//if req.Keyword == "" && req.Name == "" && req.Start != "" && req.End != "" {
+	//	logs, err = paging.FindLogsByRange(ctx, start, end)
+	//	total = data.GetLogsByRangeTotal(ctx, start, end)
+	//}
+	//if req.Keyword == "" && req.Name != "" && req.Start == "" && req.End == "" {
+	//	logs, err = paging.FindLogsByUsername(ctx, req.Name)
+	//	total = data.GetLogsByUsernameTotal(ctx, req.Name)
+	//}
+	//if req.Keyword == "" && req.Name != "" && req.Start != "" && req.End != "" {
+	//	logs, err = paging.FindLogsByUsernameAndRange(ctx, req.Name, start, end)
+	//	total = data.GetLogsByUsernameAndRangeTotal(ctx, req.Name, start, end)
+	//}
 	res = logs
 	return
 }

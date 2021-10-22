@@ -1,7 +1,6 @@
 package core
 
 import (
-	"errors"
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -44,7 +43,7 @@ func ValidateRequest(obj interface{}) error {
 
 	if err != nil {
 		s := Translate(err.(validator.ValidationErrors))
-		return errors.New(s)
+		return NewInvalidParamsError(s)
 	}
 	return nil
 }
@@ -127,6 +126,6 @@ func ServerError(c *fiber.Ctx, err error) error {
 func (err *IError) HttpError(c *fiber.Ctx) error {
 	return c.JSON(IError{
 		Code:    err.Code,
-		Message: errcode.GetMsg(err.Code),
+		Message: err.Message,
 	})
 }
