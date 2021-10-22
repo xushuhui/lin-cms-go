@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"entgo.io/ent/dialect/sql"
 
 	"lin-cms-go/internal/data/model"
 	"lin-cms-go/internal/data/model/linlog"
@@ -23,6 +24,48 @@ func (p *Paging) GetLogAll(ctx context.Context) (model []*model.LinLog, err erro
 
 func (p *Paging) FindLogsByUsername(ctx context.Context, name string) (model []*model.LinLog, err error) {
 	model, err = GetDB().LinLog.Query().Where(linlog.Username(name)).Limit(p.Size).Offset(p.Offset).All(ctx)
+	return
+}
+
+func (p *Paging) FindLogsByRange(ctx context.Context, start time.Time, end time.Time) (model []*model.LinLog, err error) {
+	model, err = GetDB().LinLog.Query().Where(linlog.And(
+		linlog.CreateTimeGT(start),
+		linlog.CreateTimeLT(end),
+	)).Limit(p.Size).Offset(p.Offset).All(ctx)
+	return
+}
+
+func (p *Paging) FindLogsByUsernameAndRangeAndKeyword(ctx context.Context, name string, keyword string, start time.Time, end time.Time) (model []*model.LinLog, err error) {
+	model, err = GetDB().LinLog.Query().Where(linlog.Username(name)).Where(linlog.And(
+		linlog.CreateTimeGT(start),
+		linlog.CreateTimeLT(end),
+	)).Where(func(s *sql.Selector) {
+		s.Where(sql.Like(linlog.FieldMessage, "%"+keyword+"%"))
+	}).Limit(p.Size).Offset(p.Offset).All(ctx)
+	return
+}
+
+func (p *Paging) FindLogsByKeyword(ctx context.Context, keyword string) (model []*model.LinLog, err error) {
+	model, err = GetDB().LinLog.Query().Where(func(s *sql.Selector) {
+		s.Where(sql.Like(linlog.FieldMessage, "%"+keyword+"%"))
+	}).Limit(p.Size).Offset(p.Offset).All(ctx)
+	return
+}
+
+func (p *Paging) FindLogsByUsernameAndKeyword(ctx context.Context, username string, keyword string) (model []*model.LinLog, err error) {
+	model, err = GetDB().LinLog.Query().Where(linlog.Username(username)).Where(func(s *sql.Selector) {
+		s.Where(sql.Like(linlog.FieldMessage, "%"+keyword+"%"))
+	}).Limit(p.Size).Offset(p.Offset).All(ctx)
+	return
+}
+
+func (p *Paging) FindLogsByRangeAndKeyword(ctx context.Context, keyword string, start time.Time, end time.Time) (model []*model.LinLog, err error) {
+	model, err = GetDB().LinLog.Query().Where(linlog.And(
+		linlog.CreateTimeGT(start),
+		linlog.CreateTimeLT(end),
+	)).Where(func(s *sql.Selector) {
+		s.Where(sql.Like(linlog.FieldMessage, "%"+keyword+"%"))
+	}).Limit(p.Size).Offset(p.Offset).All(ctx)
 	return
 }
 
@@ -48,5 +91,44 @@ func GetLogsByUsernameTotal(ctx context.Context, name string) (total int) {
 
 func GetLogsByUsernameAndRangeTotal(ctx context.Context, name string, start time.Time, end time.Time) (total int) {
 	total, _ = GetDB().LinLog.Query().Where(linlog.Username(name)).Where(linlog.CreateTimeGT(start)).Where(linlog.CreateTimeLT(end)).Count(ctx)
+	return
+}
+
+func GetLogsByRangeTotal(ctx context.Context, start time.Time, end time.Time) (total int) {
+	total, _ = GetDB().LinLog.Query().Where(linlog.CreateTimeGT(start)).Where(linlog.CreateTimeLT(end)).Count(ctx)
+	return
+}
+
+func GetLogsByUsernameAndRangeAndKeywordTotal(ctx context.Context, name string, keyword string, start time.Time, end time.Time) (total int) {
+	total, _ = GetDB().LinLog.Query().Where(linlog.Username(name)).Where(linlog.And(
+		linlog.CreateTimeGT(start),
+		linlog.CreateTimeLT(end),
+	)).Where(func(s *sql.Selector) {
+		s.Where(sql.Like(linlog.FieldMessage, "%"+keyword+"%"))
+	}).Count(ctx)
+	return
+}
+
+func GetLogsByKeywordTotal(ctx context.Context, keyword string) (total int) {
+	total, _ = GetDB().LinLog.Query().Where(func(s *sql.Selector) {
+		s.Where(sql.Like(linlog.FieldMessage, "%"+keyword+"%"))
+	}).Count(ctx)
+	return
+}
+
+func GetLogsByUsernameAndKeywordTotal(ctx context.Context, username string, keyword string) (total int) {
+	total, _ = GetDB().LinLog.Query().Where(linlog.Username(username)).Where(func(s *sql.Selector) {
+		s.Where(sql.Like(linlog.FieldMessage, "%"+keyword+"%"))
+	}).Count(ctx)
+	return
+}
+
+func GetLogsByRangeAndKeywordTotal(ctx context.Context, keyword string, start time.Time, end time.Time) (total int) {
+	total, _ = GetDB().LinLog.Query().Where(linlog.And(
+		linlog.CreateTimeGT(start),
+		linlog.CreateTimeLT(end),
+	)).Where(func(s *sql.Selector) {
+		s.Where(sql.Like(linlog.FieldMessage, "%"+keyword+"%"))
+	}).Count(ctx)
 	return
 }

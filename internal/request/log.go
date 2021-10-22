@@ -10,7 +10,6 @@ type GetLogs struct {
 type SearchLogs struct {
 	Keyword string `json:"keyword"`
 	GetLogs
-	Pages
 }
 type GetLogUsers struct {
 	Pages
