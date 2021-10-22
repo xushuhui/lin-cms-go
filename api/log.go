@@ -15,7 +15,6 @@ func GetLogs(c *fiber.Ctx) error {
 	if err := core.ParseQuery(c, &req); err != nil {
 		return err
 	}
-
 	data, total, err := biz.GetLogs(c.Context(), req)
 	if err != nil {
 		return err
@@ -28,13 +27,11 @@ func SearchLogs(c *fiber.Ctx) error {
 	if err := core.ParseQuery(c, &req); err != nil {
 		return err
 	}
-
-	data, err := biz.SearchLogs(req)
+	data, total, err := biz.SearchLogs(c.Context(), req)
 	if err != nil {
 		return err
 	}
-
-	return core.SetData(c, data)
+	return core.SetPage(c, data, total)
 }
 func GetLogUsers(c *fiber.Ctx) error {
 	page := core.GetPage(c)
