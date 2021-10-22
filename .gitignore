@@ -2,8 +2,7 @@
 /.idea
 /.vscode
 *.exe
-
-
+*.log
 
 
 /tmp

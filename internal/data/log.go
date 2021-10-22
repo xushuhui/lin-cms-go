@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"entgo.io/ent/dialect/sql"
+	"lin-cms-go/internal/data/model/predicate"
 
 	"lin-cms-go/internal/data/model"
 	"lin-cms-go/internal/data/model/linlog"
@@ -34,7 +35,20 @@ func (p *Paging) FindLogsByRange(ctx context.Context, start time.Time, end time.
 	)).Limit(p.Size).Offset(p.Offset).All(ctx)
 	return
 }
-
+func WithKeyword(keyword string) func(s *sql.Selector) {
+	return func(s *sql.Selector) {
+		s.Where(sql.Like(linlog.FieldMessage, "%"+keyword+"%"))
+	}
+}
+func WithUsername(name string) func(s *sql.Selector) {
+	return func(s *sql.Selector) {
+		s.Where(sql.EQ(linlog.FieldUsername, name))
+	}
+}
+func (p *Paging) Search(ctx context.Context, query []predicate.LinLog) (logs []*model.LinLog, err error) {
+	logs, err = GetDB().LinLog.Query().Where(query...).Limit(p.Size).Offset(p.Offset).All(ctx)
+	return
+}
 func (p *Paging) FindLogsByUsernameAndRangeAndKeyword(ctx context.Context, name string, keyword string, start time.Time, end time.Time) (model []*model.LinLog, err error) {
 	model, err = GetDB().LinLog.Query().Where(linlog.Username(name)).Where(linlog.And(
 		linlog.CreateTimeGT(start),
