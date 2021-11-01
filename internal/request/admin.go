@@ -18,11 +18,11 @@ type UpdateUser struct {
 	GroupIds []int `json:"group_ids" validate:"required"`
 }
 type CreateGroup struct {
-	Name          string `json:"name"`
-	Info          string `json:"info"`
+	Name          string `json:"name" validate:"required" comment:"分组名称"`
+	Info          string `json:"info" validate:"required" comment:"分组信息"`
 	PermissionIds []int  `json:"permission_ids"`
 }
 type UpdateGroup struct {
-	Name string `json:"name"`
-	Info string `json:"info"`
+	Name string `json:"name" validate:"required" comment:"分组名称" `
+	Info string `json:"info" validate:"required" comment:"分组信息" `
 }
