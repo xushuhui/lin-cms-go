@@ -34,3 +34,9 @@ func UpdateGroup(ctx context.Context, id int, name string, info string) (err err
 	_, err = GetDB().LinGroup.UpdateOneID(id).SetName(name).SetInfo(info).Save(ctx)
 	return
 }
+
+func DeleteGroup(ctx context.Context, id int) (err error) {
+
+	return nil
+
+}
