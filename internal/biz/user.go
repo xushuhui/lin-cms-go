@@ -22,7 +22,7 @@ func Login(ctx context.Context, username, password string) (res map[string]inter
 	// 正确密码验证
 	userIdentityModel, err := data.GetLinUserIdentityByIdentifier(ctx, username)
 	if model.IsNotFound(err) {
-		err = core.NewErrorCode(errcode.UserNotFound)
+		err = core.NotFoundError(errcode.UserNotFound)
 		return
 	}
 	if err != nil {
@@ -125,12 +125,15 @@ func GetMyPermissions(ctx context.Context, uid int) (res map[string]interface{},
 	//data["permissions"] = permissions
 	return
 }
-func GetMyInfomation(ctx context.Context, uid int) (res interface{}, err error) {
+type LinUser struct {
+	model.LinUser
+}
+func GetMyInfomation(ctx context.Context, uid int) (res LinUser, err error) {
 	usermodel, err := data.GetLinUserById(ctx, uid)
 	if model.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.UserNotFound)
 		return
 	}
-	res = usermodel
+	res = LinUser{*usermodel}
 	return
 }

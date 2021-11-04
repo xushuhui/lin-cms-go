@@ -17,14 +17,14 @@ import (
 
 func errorHandler(c *fiber.Ctx, err error) error {
 	// response err handle
-	if e, ok := err.(core.IError); ok {
+	if e, ok := err.(core.HttpError); ok {
 		if e.Err == nil {
-			return e.HttpError(c)
+			return e.HandleHttpError(c)
 		}
 
 	}
 
-	return core.ServerError(c, err)
+	return core.HandleServerError(c, err)
 }
 func initLog(c *conf.Config) {
 	log.SetFile(log.FileConfig{
@@ -62,11 +62,12 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	err = yaml.Unmarshal(yamlFile, &c)
+	err = yaml.Unmarshal(yamlFile, c)
 	if err != nil {
 		panic(err)
 	}
 
 	app := initApp(c)
 	app.Listen(c.Server.Http.Addr)
+	
 }

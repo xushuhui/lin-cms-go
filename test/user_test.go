@@ -1,38 +1,39 @@
 package test
 
 import (
+	"fmt"
 	"testing"
 )
+type I interface{
+   F()
+}
 
-func testAddUsers(t *testing.T) {
+type T struct {
+}
 
-	testcase := []TestCase{
-		{
-			code:     40001,
-			param:    `name=baibai&created_by=admin`,
-			errMsg:   `该名称已存在`,
-			method:   "POST",
-			desc:     "验证插入名称已存在",
-			showBody: true,
-			url:      "/api/v1/users",
-			ext1:     1,
-		},
-		{
-			code:     0,
-			param:    `name=5678999999&created_by=admin`,
-			errMsg:   `创建成功`,
-			method:   "POST",
-			desc:     "验证创建成功",
-			showBody: true,
-			url:      "/api/v1/users",
-			ext1:     1,
-		},
+func (t *T) F() {
+}
+
+func makeI() I {
+   var r *T
+   if r == nil {
+       fmt.Println("I am nil at makeI")
+   }
+   return r
+}
+
+
+func TestAddUsers(t *testing.T) {
+	i := makeI()
+	
+	if i != nil {
+	   fmt.Println("I am not nil at main")
 	}
-	call(t, testcase)
+
 
 }
 func TestUserAll(t *testing.T) {
-	t.Run("TestAddUsers", testAddUsers)
+	
 	//t.Run("TestEditUsers", testEditUsers)
 	//t.Run("TestDeleteUsers", testDeleteUsers)
 }
