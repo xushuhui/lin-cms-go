@@ -8,21 +8,19 @@ import (
 	"lin-cms-go/internal/data/model/predicate"
 	"lin-cms-go/internal/request"
 	"lin-cms-go/pkg/utils"
-	"time"
 )
 
 func GetLogs(ctx context.Context, req request.GetLogs, page int, size int) (res interface{}, total int, err error) {
 	var logs []*model.LinLog
-	var start time.Time
-	var end time.Time
+
 	paging := data.NewPaging(page, size)
 	var query []predicate.LinLog
 	if req.Name != "" {
 		query = append(query, data.WithUsername(req.Name))
 	}
 	if req.Start != "" && req.End != "" {
-		start = utils.String2time(req.Start)
-		end = utils.String2time(req.End)
+		start := utils.String2time(req.Start)
+		end := utils.String2time(req.End)
 		q := linlog.And(linlog.CreateTimeGT(start), linlog.CreateTimeLT(end))
 		query = append(query, q)
 	}
@@ -37,16 +35,15 @@ func GetLogs(ctx context.Context, req request.GetLogs, page int, size int) (res 
 
 func SearchLogs(ctx context.Context, req request.SearchLogs, page int, size int) (res interface{}, total int, err error) {
 	var logs []*model.LinLog
-	var start time.Time
-	var end time.Time
+
 	paging := data.NewPaging(page, size)
 	var query []predicate.LinLog
 	if req.Name != "" {
 		query = append(query, data.WithUsername(req.Name))
 	}
 	if req.Start != "" && req.End != "" {
-		start = utils.String2time(req.Start)
-		end = utils.String2time(req.End)
+		start := utils.String2time(req.Start)
+		end := utils.String2time(req.End)
 		q := linlog.And(linlog.CreateTimeGT(start), linlog.CreateTimeLT(end))
 		query = append(query, q)
 	}

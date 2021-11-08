@@ -8,7 +8,7 @@ import (
 )
 
 func GetAllPermissions(c *fiber.Ctx) error {
-	data, err := biz.GetAllPermissions()
+	data, err := biz.GetAllPermissions(c.Context())
 	if err != nil {
 
 		return err
@@ -42,7 +42,7 @@ func RemovePermissions(c *fiber.Ctx) error {
 
 		return err
 	}
-	err := biz.RemovePermissions(req)
+	err := biz.RemovePermissions(c.Context(), req.GroupId, req.PermissionIds)
 	if err != nil {
 
 		return err

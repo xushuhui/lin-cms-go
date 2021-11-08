@@ -20,6 +20,21 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:3000/cms/admin/permissions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+POST http://localhost:3000/cms/admin/permissions/remove
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "group_id": 1,
+  "permission_ids": [1,2]
+}
+
+###
 POST http://localhost:3000/cms/admin/permissions/dispatch
 Content-Type: application/json
 Authorization: Bearer {{token}}
