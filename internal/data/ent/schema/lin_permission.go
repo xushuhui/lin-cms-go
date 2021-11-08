@@ -26,6 +26,8 @@ func (LinPermission) Fields() []ent.Field {
 }
 func (LinPermission) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("lin_group", LinGroup.Type),
+		edge.To("lin_group", LinGroup.Type).StorageKey(
+			edge.Table("lin_group_permission"), edge.Columns("permission_id", "group_id"),
+		),
 	}
 }

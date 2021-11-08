@@ -197,5 +197,13 @@ VALUES (2, 'guest', '游客组', 2);
 
 INSERT INTO lin_user_group(id, user_id, group_id)
 VALUES (1, 1, 1);
+INSERT INTO `lin_permission` VALUES (1, '查看lin的信息', '信息',1, '2020-04-23 09:11:16', '2020-04-23 09:11:16', NULL);
+INSERT INTO `lin_permission` VALUES (2, '查询自己信息', '用户',1, '2020-04-23 09:11:16.531', '2020-04-23 09:11:16.531', NULL);
+INSERT INTO `lin_permission` VALUES (3, '查询自己拥有的权限', '用户',1, '2020-04-23 09:11:16.544', '2020-04-23 09:11:16.544', NULL);
+INSERT INTO `lin_permission` VALUES (4, '查询日志记录的用户', '日志',1, '2020-04-23 09:11:16.554', '2020-04-23 09:11:16.554', NULL);
+INSERT INTO `lin_permission` VALUES (5, '删除图书', '图书',1, '2020-04-23 09:11:16.562', '2020-04-23 09:11:16.562', NULL);
+INSERT INTO `lin_permission` VALUES (6, '查询所有日志', '日志',1, '2020-04-23 09:11:16.571', '2020-04-23 09:11:16.571', NULL);
+INSERT INTO `lin_permission` VALUES (7, '测试日志记录', '信息',1, '2020-04-23 09:11:16.580', '2020-04-23 09:11:16.580', NULL);
+INSERT INTO `lin_permission` VALUES (8, '搜索日志', '日志',1, '2020-04-23 09:11:16.590', '2020-04-23 09:11:16.590', NULL);
 
 COMMIT;
