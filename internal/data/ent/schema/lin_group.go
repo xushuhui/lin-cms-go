@@ -27,8 +27,13 @@ func (LinGroup) Fields() []ent.Field {
 func (LinGroup) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("lin_user", LinUser.Type).StorageKey(
-			edge.Table("lin_user_group"), edge.Columns("user_id", "group_id"),
+			edge.Table("lin_user_group"), edge.Columns("group_id", "user_id"),
 		),
 		edge.From("lin_permission", LinPermission.Type).Ref("lin_group"),
+	}
+}
+func (LinGroup) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		TimeMixin{},
 	}
 }

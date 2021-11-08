@@ -9,6 +9,7 @@ import (
 	"lin-cms-go/internal/data/model/linpermission"
 	"lin-cms-go/internal/data/model/linuser"
 	"lin-cms-go/internal/data/model/predicate"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -25,6 +26,26 @@ type LinGroupUpdate struct {
 // Where appends a list predicates to the LinGroupUpdate builder.
 func (lgu *LinGroupUpdate) Where(ps ...predicate.LinGroup) *LinGroupUpdate {
 	lgu.mutation.Where(ps...)
+	return lgu
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (lgu *LinGroupUpdate) SetUpdateTime(t time.Time) *LinGroupUpdate {
+	lgu.mutation.SetUpdateTime(t)
+	return lgu
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (lgu *LinGroupUpdate) SetDeleteTime(t time.Time) *LinGroupUpdate {
+	lgu.mutation.SetDeleteTime(t)
+	return lgu
+}
+
+// SetNillableDeleteTime sets the "delete_time" field if the given value is not nil.
+func (lgu *LinGroupUpdate) SetNillableDeleteTime(t *time.Time) *LinGroupUpdate {
+	if t != nil {
+		lgu.SetDeleteTime(*t)
+	}
 	return lgu
 }
 
@@ -136,6 +157,7 @@ func (lgu *LinGroupUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	lgu.defaults()
 	if len(lgu.hooks) == 0 {
 		affected, err = lgu.sqlSave(ctx)
 	} else {
@@ -184,6 +206,14 @@ func (lgu *LinGroupUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (lgu *LinGroupUpdate) defaults() {
+	if _, ok := lgu.mutation.UpdateTime(); !ok {
+		v := lingroup.UpdateDefaultUpdateTime()
+		lgu.mutation.SetUpdateTime(v)
+	}
+}
+
 func (lgu *LinGroupUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -201,6 +231,20 @@ func (lgu *LinGroupUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := lgu.mutation.UpdateTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: lingroup.FieldUpdateTime,
+		})
+	}
+	if value, ok := lgu.mutation.DeleteTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: lingroup.FieldDeleteTime,
+		})
 	}
 	if value, ok := lgu.mutation.Name(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -357,6 +401,26 @@ type LinGroupUpdateOne struct {
 	mutation *LinGroupMutation
 }
 
+// SetUpdateTime sets the "update_time" field.
+func (lguo *LinGroupUpdateOne) SetUpdateTime(t time.Time) *LinGroupUpdateOne {
+	lguo.mutation.SetUpdateTime(t)
+	return lguo
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (lguo *LinGroupUpdateOne) SetDeleteTime(t time.Time) *LinGroupUpdateOne {
+	lguo.mutation.SetDeleteTime(t)
+	return lguo
+}
+
+// SetNillableDeleteTime sets the "delete_time" field if the given value is not nil.
+func (lguo *LinGroupUpdateOne) SetNillableDeleteTime(t *time.Time) *LinGroupUpdateOne {
+	if t != nil {
+		lguo.SetDeleteTime(*t)
+	}
+	return lguo
+}
+
 // SetName sets the "name" field.
 func (lguo *LinGroupUpdateOne) SetName(s string) *LinGroupUpdateOne {
 	lguo.mutation.SetName(s)
@@ -472,6 +536,7 @@ func (lguo *LinGroupUpdateOne) Save(ctx context.Context) (*LinGroup, error) {
 		err  error
 		node *LinGroup
 	)
+	lguo.defaults()
 	if len(lguo.hooks) == 0 {
 		node, err = lguo.sqlSave(ctx)
 	} else {
@@ -520,6 +585,14 @@ func (lguo *LinGroupUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (lguo *LinGroupUpdateOne) defaults() {
+	if _, ok := lguo.mutation.UpdateTime(); !ok {
+		v := lingroup.UpdateDefaultUpdateTime()
+		lguo.mutation.SetUpdateTime(v)
+	}
+}
+
 func (lguo *LinGroupUpdateOne) sqlSave(ctx context.Context) (_node *LinGroup, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -554,6 +627,20 @@ func (lguo *LinGroupUpdateOne) sqlSave(ctx context.Context) (_node *LinGroup, er
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := lguo.mutation.UpdateTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: lingroup.FieldUpdateTime,
+		})
+	}
+	if value, ok := lguo.mutation.DeleteTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: lingroup.FieldDeleteTime,
+		})
 	}
 	if value, ok := lguo.mutation.Name(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

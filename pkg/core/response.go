@@ -24,16 +24,16 @@ func (err IError) Error() (re string) {
 }
 
 func NewErrorCode(code int) (err error) {
-	err = IError{
-		Code:    code,
-		Message: errcode.GetMsg(code),
+	err = HttpError{
+		NewIError(code, errcode.GetMsg(code)),
+		fiber.StatusBadRequest,
 	}
 	return
 }
 func NewErrorMessage(code int, message string) (err error) {
-	err = IError{
-		Code:    code,
-		Message: message,
+	err = HttpError{
+		NewIError(code, message),
+		fiber.StatusBadRequest,
 	}
 	return
 }
@@ -122,7 +122,7 @@ func HandleServerError(c *fiber.Ctx, err error) error {
 }
 func (err *HttpError) HandleHttpError(c *fiber.Ctx) error {
 
-	return c.JSON(HttpError{IError{
+	return c.Status(err.Status).JSON(IError{
 		Code: err.Code, Message: err.Message,
-	}, err.Status})
+	})
 }

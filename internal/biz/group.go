@@ -26,7 +26,7 @@ func GetGroups(ctx context.Context) (res interface{}, err error) {
 
 func GetGroup(ctx context.Context, id int) (res interface{}, err error) {
 	var linGroupModel *model.LinGroup
-	linGroupModel, err = data.GetLinGroupById(ctx, id, enum.ROOT)
+	linGroupModel, err = data.GetLinGroupById(ctx, id)
 	if model.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.GroupNotFound)
 		return
@@ -69,7 +69,7 @@ func CreateGroup(ctx context.Context, name string, info string, permissionIds []
 }
 
 func UpdateGroup(ctx context.Context, id int, req request.UpdateGroup) (err error) {
-	_, err = data.GetLinGroupById(ctx, id, enum.ROOT)
+	_, err = data.GetLinGroupById(ctx, id)
 	if model.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.GroupNotFound)
 		return
@@ -80,7 +80,7 @@ func UpdateGroup(ctx context.Context, id int, req request.UpdateGroup) (err erro
 
 func DeleteGroup(ctx context.Context, id int) (err error) {
 	var linGroup *model.LinGroup
-	linGroup, err = data.GetLinGroupById(ctx, id, enum.ROOT)
+	linGroup, err = data.GetLinGroupById(ctx, id)
 	if model.IsNotFound(err) {
 		err = core.NewErrorCode(errcode.GroupNotFound)
 		return
@@ -90,15 +90,15 @@ func DeleteGroup(ctx context.Context, id int) (err error) {
 	}
 	if linGroup.Level == enum.ROOT {
 		err = core.NewErrorCode(errcode.RootGroupNotAllowDelete)
+		return
 	}
 
 	if linGroup.Level == enum.GUEST {
 		err = core.NewErrorCode(errcode.GuestGroupNotAllowDelete)
+		return
 	}
 
-	//err = data.DeleteGroupPermission(ctx, id)
-
-	// lin_group删除这个表的  lin_group_permission 删除这个表数据  lin_user_group 删除这个表的数据
+	err = data.DeleteGroup(ctx, id)
 
 	return
 }

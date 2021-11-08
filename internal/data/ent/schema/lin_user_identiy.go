@@ -25,8 +25,8 @@ func (LinUserIdentiy) Fields() []ent.Field {
 	}
 }
 
-//func (LinUserIdentiy) Mixin() []ent.Mixin {
-//	return []ent.Mixin{
-//		mixin.Time{},
-//	}
-//}
+func (LinUserIdentiy) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		TimeMixin{},
+	}
+}

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"lin-cms-go/internal/data/model/linuseridentiy"
 	"lin-cms-go/internal/data/model/predicate"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -23,6 +24,26 @@ type LinUserIdentiyUpdate struct {
 // Where appends a list predicates to the LinUserIdentiyUpdate builder.
 func (luiu *LinUserIdentiyUpdate) Where(ps ...predicate.LinUserIdentiy) *LinUserIdentiyUpdate {
 	luiu.mutation.Where(ps...)
+	return luiu
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (luiu *LinUserIdentiyUpdate) SetUpdateTime(t time.Time) *LinUserIdentiyUpdate {
+	luiu.mutation.SetUpdateTime(t)
+	return luiu
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (luiu *LinUserIdentiyUpdate) SetDeleteTime(t time.Time) *LinUserIdentiyUpdate {
+	luiu.mutation.SetDeleteTime(t)
+	return luiu
+}
+
+// SetNillableDeleteTime sets the "delete_time" field if the given value is not nil.
+func (luiu *LinUserIdentiyUpdate) SetNillableDeleteTime(t *time.Time) *LinUserIdentiyUpdate {
+	if t != nil {
+		luiu.SetDeleteTime(*t)
+	}
 	return luiu
 }
 
@@ -68,6 +89,7 @@ func (luiu *LinUserIdentiyUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	luiu.defaults()
 	if len(luiu.hooks) == 0 {
 		affected, err = luiu.sqlSave(ctx)
 	} else {
@@ -116,6 +138,14 @@ func (luiu *LinUserIdentiyUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (luiu *LinUserIdentiyUpdate) defaults() {
+	if _, ok := luiu.mutation.UpdateTime(); !ok {
+		v := linuseridentiy.UpdateDefaultUpdateTime()
+		luiu.mutation.SetUpdateTime(v)
+	}
+}
+
 func (luiu *LinUserIdentiyUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -133,6 +163,20 @@ func (luiu *LinUserIdentiyUpdate) sqlSave(ctx context.Context) (n int, err error
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := luiu.mutation.UpdateTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: linuseridentiy.FieldUpdateTime,
+		})
+	}
+	if value, ok := luiu.mutation.DeleteTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: linuseridentiy.FieldDeleteTime,
+		})
 	}
 	if value, ok := luiu.mutation.UserID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -188,6 +232,26 @@ type LinUserIdentiyUpdateOne struct {
 	mutation *LinUserIdentiyMutation
 }
 
+// SetUpdateTime sets the "update_time" field.
+func (luiuo *LinUserIdentiyUpdateOne) SetUpdateTime(t time.Time) *LinUserIdentiyUpdateOne {
+	luiuo.mutation.SetUpdateTime(t)
+	return luiuo
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (luiuo *LinUserIdentiyUpdateOne) SetDeleteTime(t time.Time) *LinUserIdentiyUpdateOne {
+	luiuo.mutation.SetDeleteTime(t)
+	return luiuo
+}
+
+// SetNillableDeleteTime sets the "delete_time" field if the given value is not nil.
+func (luiuo *LinUserIdentiyUpdateOne) SetNillableDeleteTime(t *time.Time) *LinUserIdentiyUpdateOne {
+	if t != nil {
+		luiuo.SetDeleteTime(*t)
+	}
+	return luiuo
+}
+
 // SetUserID sets the "user_id" field.
 func (luiuo *LinUserIdentiyUpdateOne) SetUserID(i int) *LinUserIdentiyUpdateOne {
 	luiuo.mutation.ResetUserID()
@@ -237,6 +301,7 @@ func (luiuo *LinUserIdentiyUpdateOne) Save(ctx context.Context) (*LinUserIdentiy
 		err  error
 		node *LinUserIdentiy
 	)
+	luiuo.defaults()
 	if len(luiuo.hooks) == 0 {
 		node, err = luiuo.sqlSave(ctx)
 	} else {
@@ -285,6 +350,14 @@ func (luiuo *LinUserIdentiyUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (luiuo *LinUserIdentiyUpdateOne) defaults() {
+	if _, ok := luiuo.mutation.UpdateTime(); !ok {
+		v := linuseridentiy.UpdateDefaultUpdateTime()
+		luiuo.mutation.SetUpdateTime(v)
+	}
+}
+
 func (luiuo *LinUserIdentiyUpdateOne) sqlSave(ctx context.Context) (_node *LinUserIdentiy, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -319,6 +392,20 @@ func (luiuo *LinUserIdentiyUpdateOne) sqlSave(ctx context.Context) (_node *LinUs
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := luiuo.mutation.UpdateTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: linuseridentiy.FieldUpdateTime,
+		})
+	}
+	if value, ok := luiuo.mutation.DeleteTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: linuseridentiy.FieldDeleteTime,
+		})
 	}
 	if value, ok := luiuo.mutation.UserID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

@@ -372,12 +372,12 @@ func (lgq *LinGroupQuery) WithLinPermission(opts ...func(*LinPermissionQuery)) *
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		CreateTime time.Time `json:"create_time,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.LinGroup.Query().
-//		GroupBy(lingroup.FieldName).
+//		GroupBy(lingroup.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
 //
@@ -399,11 +399,11 @@ func (lgq *LinGroupQuery) GroupBy(field string, fields ...string) *LinGroupGroup
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		CreateTime time.Time `json:"create_time,omitempty"`
 //	}
 //
 //	client.LinGroup.Query().
-//		Select(lingroup.FieldName).
+//		Select(lingroup.FieldCreateTime).
 //		Scan(ctx, &v)
 //
 func (lgq *LinGroupQuery) Select(fields ...string) *LinGroupSelect {

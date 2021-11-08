@@ -1128,6 +1128,9 @@ type LinGroupMutation struct {
 	op                    Op
 	typ                   string
 	id                    *int
+	create_time           *time.Time
+	update_time           *time.Time
+	delete_time           *time.Time
 	name                  *string
 	info                  *string
 	level                 *int8
@@ -1221,6 +1224,114 @@ func (m *LinGroupMutation) ID() (id int, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetCreateTime sets the "create_time" field.
+func (m *LinGroupMutation) SetCreateTime(t time.Time) {
+	m.create_time = &t
+}
+
+// CreateTime returns the value of the "create_time" field in the mutation.
+func (m *LinGroupMutation) CreateTime() (r time.Time, exists bool) {
+	v := m.create_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateTime returns the old "create_time" field's value of the LinGroup entity.
+// If the LinGroup object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LinGroupMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCreateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCreateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
+	}
+	return oldValue.CreateTime, nil
+}
+
+// ResetCreateTime resets all changes to the "create_time" field.
+func (m *LinGroupMutation) ResetCreateTime() {
+	m.create_time = nil
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (m *LinGroupMutation) SetUpdateTime(t time.Time) {
+	m.update_time = &t
+}
+
+// UpdateTime returns the value of the "update_time" field in the mutation.
+func (m *LinGroupMutation) UpdateTime() (r time.Time, exists bool) {
+	v := m.update_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateTime returns the old "update_time" field's value of the LinGroup entity.
+// If the LinGroup object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LinGroupMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldUpdateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldUpdateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
+	}
+	return oldValue.UpdateTime, nil
+}
+
+// ResetUpdateTime resets all changes to the "update_time" field.
+func (m *LinGroupMutation) ResetUpdateTime() {
+	m.update_time = nil
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (m *LinGroupMutation) SetDeleteTime(t time.Time) {
+	m.delete_time = &t
+}
+
+// DeleteTime returns the value of the "delete_time" field in the mutation.
+func (m *LinGroupMutation) DeleteTime() (r time.Time, exists bool) {
+	v := m.delete_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteTime returns the old "delete_time" field's value of the LinGroup entity.
+// If the LinGroup object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LinGroupMutation) OldDeleteTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDeleteTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDeleteTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteTime: %w", err)
+	}
+	return oldValue.DeleteTime, nil
+}
+
+// ResetDeleteTime resets all changes to the "delete_time" field.
+func (m *LinGroupMutation) ResetDeleteTime() {
+	m.delete_time = nil
 }
 
 // SetName sets the "name" field.
@@ -1478,7 +1589,16 @@ func (m *LinGroupMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *LinGroupMutation) Fields() []string {
-	fields := make([]string, 0, 3)
+	fields := make([]string, 0, 6)
+	if m.create_time != nil {
+		fields = append(fields, lingroup.FieldCreateTime)
+	}
+	if m.update_time != nil {
+		fields = append(fields, lingroup.FieldUpdateTime)
+	}
+	if m.delete_time != nil {
+		fields = append(fields, lingroup.FieldDeleteTime)
+	}
 	if m.name != nil {
 		fields = append(fields, lingroup.FieldName)
 	}
@@ -1496,6 +1616,12 @@ func (m *LinGroupMutation) Fields() []string {
 // schema.
 func (m *LinGroupMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case lingroup.FieldCreateTime:
+		return m.CreateTime()
+	case lingroup.FieldUpdateTime:
+		return m.UpdateTime()
+	case lingroup.FieldDeleteTime:
+		return m.DeleteTime()
 	case lingroup.FieldName:
 		return m.Name()
 	case lingroup.FieldInfo:
@@ -1511,6 +1637,12 @@ func (m *LinGroupMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *LinGroupMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case lingroup.FieldCreateTime:
+		return m.OldCreateTime(ctx)
+	case lingroup.FieldUpdateTime:
+		return m.OldUpdateTime(ctx)
+	case lingroup.FieldDeleteTime:
+		return m.OldDeleteTime(ctx)
 	case lingroup.FieldName:
 		return m.OldName(ctx)
 	case lingroup.FieldInfo:
@@ -1526,6 +1658,27 @@ func (m *LinGroupMutation) OldField(ctx context.Context, name string) (ent.Value
 // type.
 func (m *LinGroupMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case lingroup.FieldCreateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateTime(v)
+		return nil
+	case lingroup.FieldUpdateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateTime(v)
+		return nil
+	case lingroup.FieldDeleteTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteTime(v)
+		return nil
 	case lingroup.FieldName:
 		v, ok := value.(string)
 		if !ok {
@@ -1611,6 +1764,15 @@ func (m *LinGroupMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *LinGroupMutation) ResetField(name string) error {
 	switch name {
+	case lingroup.FieldCreateTime:
+		m.ResetCreateTime()
+		return nil
+	case lingroup.FieldUpdateTime:
+		m.ResetUpdateTime()
+		return nil
+	case lingroup.FieldDeleteTime:
+		m.ResetDeleteTime()
+		return nil
 	case lingroup.FieldName:
 		m.ResetName()
 		return nil
@@ -3908,6 +4070,9 @@ type LinUserIdentiyMutation struct {
 	op            Op
 	typ           string
 	id            *int
+	create_time   *time.Time
+	update_time   *time.Time
+	delete_time   *time.Time
 	user_id       *int
 	adduser_id    *int
 	identity_type *string
@@ -3996,6 +4161,114 @@ func (m *LinUserIdentiyMutation) ID() (id int, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetCreateTime sets the "create_time" field.
+func (m *LinUserIdentiyMutation) SetCreateTime(t time.Time) {
+	m.create_time = &t
+}
+
+// CreateTime returns the value of the "create_time" field in the mutation.
+func (m *LinUserIdentiyMutation) CreateTime() (r time.Time, exists bool) {
+	v := m.create_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateTime returns the old "create_time" field's value of the LinUserIdentiy entity.
+// If the LinUserIdentiy object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LinUserIdentiyMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCreateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCreateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
+	}
+	return oldValue.CreateTime, nil
+}
+
+// ResetCreateTime resets all changes to the "create_time" field.
+func (m *LinUserIdentiyMutation) ResetCreateTime() {
+	m.create_time = nil
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (m *LinUserIdentiyMutation) SetUpdateTime(t time.Time) {
+	m.update_time = &t
+}
+
+// UpdateTime returns the value of the "update_time" field in the mutation.
+func (m *LinUserIdentiyMutation) UpdateTime() (r time.Time, exists bool) {
+	v := m.update_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateTime returns the old "update_time" field's value of the LinUserIdentiy entity.
+// If the LinUserIdentiy object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LinUserIdentiyMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldUpdateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldUpdateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
+	}
+	return oldValue.UpdateTime, nil
+}
+
+// ResetUpdateTime resets all changes to the "update_time" field.
+func (m *LinUserIdentiyMutation) ResetUpdateTime() {
+	m.update_time = nil
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (m *LinUserIdentiyMutation) SetDeleteTime(t time.Time) {
+	m.delete_time = &t
+}
+
+// DeleteTime returns the value of the "delete_time" field in the mutation.
+func (m *LinUserIdentiyMutation) DeleteTime() (r time.Time, exists bool) {
+	v := m.delete_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteTime returns the old "delete_time" field's value of the LinUserIdentiy entity.
+// If the LinUserIdentiy object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LinUserIdentiyMutation) OldDeleteTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDeleteTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDeleteTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteTime: %w", err)
+	}
+	return oldValue.DeleteTime, nil
+}
+
+// ResetDeleteTime resets all changes to the "delete_time" field.
+func (m *LinUserIdentiyMutation) ResetDeleteTime() {
+	m.delete_time = nil
 }
 
 // SetUserID sets the "user_id" field.
@@ -4181,7 +4454,16 @@ func (m *LinUserIdentiyMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *LinUserIdentiyMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 7)
+	if m.create_time != nil {
+		fields = append(fields, linuseridentiy.FieldCreateTime)
+	}
+	if m.update_time != nil {
+		fields = append(fields, linuseridentiy.FieldUpdateTime)
+	}
+	if m.delete_time != nil {
+		fields = append(fields, linuseridentiy.FieldDeleteTime)
+	}
 	if m.user_id != nil {
 		fields = append(fields, linuseridentiy.FieldUserID)
 	}
@@ -4202,6 +4484,12 @@ func (m *LinUserIdentiyMutation) Fields() []string {
 // schema.
 func (m *LinUserIdentiyMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case linuseridentiy.FieldCreateTime:
+		return m.CreateTime()
+	case linuseridentiy.FieldUpdateTime:
+		return m.UpdateTime()
+	case linuseridentiy.FieldDeleteTime:
+		return m.DeleteTime()
 	case linuseridentiy.FieldUserID:
 		return m.UserID()
 	case linuseridentiy.FieldIdentityType:
@@ -4219,6 +4507,12 @@ func (m *LinUserIdentiyMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *LinUserIdentiyMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case linuseridentiy.FieldCreateTime:
+		return m.OldCreateTime(ctx)
+	case linuseridentiy.FieldUpdateTime:
+		return m.OldUpdateTime(ctx)
+	case linuseridentiy.FieldDeleteTime:
+		return m.OldDeleteTime(ctx)
 	case linuseridentiy.FieldUserID:
 		return m.OldUserID(ctx)
 	case linuseridentiy.FieldIdentityType:
@@ -4236,6 +4530,27 @@ func (m *LinUserIdentiyMutation) OldField(ctx context.Context, name string) (ent
 // type.
 func (m *LinUserIdentiyMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case linuseridentiy.FieldCreateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateTime(v)
+		return nil
+	case linuseridentiy.FieldUpdateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateTime(v)
+		return nil
+	case linuseridentiy.FieldDeleteTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteTime(v)
+		return nil
 	case linuseridentiy.FieldUserID:
 		v, ok := value.(int)
 		if !ok {
@@ -4328,6 +4643,15 @@ func (m *LinUserIdentiyMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *LinUserIdentiyMutation) ResetField(name string) error {
 	switch name {
+	case linuseridentiy.FieldCreateTime:
+		m.ResetCreateTime()
+		return nil
+	case linuseridentiy.FieldUpdateTime:
+		m.ResetUpdateTime()
+		return nil
+	case linuseridentiy.FieldDeleteTime:
+		m.ResetDeleteTime()
+		return nil
 	case linuseridentiy.FieldUserID:
 		m.ResetUserID()
 		return nil

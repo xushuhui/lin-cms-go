@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"lin-cms-go/internal/data/model/linuseridentiy"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 )
@@ -15,6 +16,12 @@ type LinUserIdentiy struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// CreateTime holds the value of the "create_time" field.
+	CreateTime time.Time `json:"create_time,omitempty"`
+	// UpdateTime holds the value of the "update_time" field.
+	UpdateTime time.Time `json:"update_time,omitempty"`
+	// DeleteTime holds the value of the "delete_time" field.
+	DeleteTime time.Time `json:"delete_time,omitempty"`
 	// UserID holds the value of the "user_id" field.
 	// 用户id
 	UserID int `json:"user_id,omitempty"`
@@ -36,6 +43,8 @@ func (*LinUserIdentiy) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case linuseridentiy.FieldIdentityType, linuseridentiy.FieldIdentifier, linuseridentiy.FieldCredential:
 			values[i] = new(sql.NullString)
+		case linuseridentiy.FieldCreateTime, linuseridentiy.FieldUpdateTime, linuseridentiy.FieldDeleteTime:
+			values[i] = new(sql.NullTime)
 		case linuseridentiy.ForeignKeys[0]: // lin_user_lin_user_identiy
 			values[i] = new(sql.NullInt64)
 		default:
@@ -59,6 +68,24 @@ func (lui *LinUserIdentiy) assignValues(columns []string, values []interface{}) 
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			lui.ID = int(value.Int64)
+		case linuseridentiy.FieldCreateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field create_time", values[i])
+			} else if value.Valid {
+				lui.CreateTime = value.Time
+			}
+		case linuseridentiy.FieldUpdateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field update_time", values[i])
+			} else if value.Valid {
+				lui.UpdateTime = value.Time
+			}
+		case linuseridentiy.FieldDeleteTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field delete_time", values[i])
+			} else if value.Valid {
+				lui.DeleteTime = value.Time
+			}
 		case linuseridentiy.FieldUserID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
@@ -118,6 +145,12 @@ func (lui *LinUserIdentiy) String() string {
 	var builder strings.Builder
 	builder.WriteString("LinUserIdentiy(")
 	builder.WriteString(fmt.Sprintf("id=%v", lui.ID))
+	builder.WriteString(", create_time=")
+	builder.WriteString(lui.CreateTime.Format(time.ANSIC))
+	builder.WriteString(", update_time=")
+	builder.WriteString(lui.UpdateTime.Format(time.ANSIC))
+	builder.WriteString(", delete_time=")
+	builder.WriteString(lui.DeleteTime.Format(time.ANSIC))
 	builder.WriteString(", user_id=")
 	builder.WriteString(fmt.Sprintf("%v", lui.UserID))
 	builder.WriteString(", identity_type=")

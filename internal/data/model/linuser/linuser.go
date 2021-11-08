@@ -60,7 +60,7 @@ var Columns = []string{
 var (
 	// LinGroupPrimaryKey and LinGroupColumn2 are the table columns denoting the
 	// primary key for the lin_group relation (M2M).
-	LinGroupPrimaryKey = []string{"user_id", "group_id"}
+	LinGroupPrimaryKey = []string{"group_id", "user_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).
