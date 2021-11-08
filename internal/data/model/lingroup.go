@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"lin-cms-go/internal/data/model/lingroup"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 )
@@ -15,6 +16,12 @@ type LinGroup struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// CreateTime holds the value of the "create_time" field.
+	CreateTime time.Time `json:"create_time,omitempty"`
+	// UpdateTime holds the value of the "update_time" field.
+	UpdateTime time.Time `json:"update_time,omitempty"`
+	// DeleteTime holds the value of the "delete_time" field.
+	DeleteTime time.Time `json:"delete_time,omitempty"`
 	// Name holds the value of the "name" field.
 	// 分组名称，例如：搬砖者
 	Name string `json:"name,omitempty"`
@@ -67,6 +74,8 @@ func (*LinGroup) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case lingroup.FieldName, lingroup.FieldInfo:
 			values[i] = new(sql.NullString)
+		case lingroup.FieldCreateTime, lingroup.FieldUpdateTime, lingroup.FieldDeleteTime:
+			values[i] = new(sql.NullTime)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type LinGroup", columns[i])
 		}
@@ -88,6 +97,24 @@ func (lg *LinGroup) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			lg.ID = int(value.Int64)
+		case lingroup.FieldCreateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field create_time", values[i])
+			} else if value.Valid {
+				lg.CreateTime = value.Time
+			}
+		case lingroup.FieldUpdateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field update_time", values[i])
+			} else if value.Valid {
+				lg.UpdateTime = value.Time
+			}
+		case lingroup.FieldDeleteTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field delete_time", values[i])
+			} else if value.Valid {
+				lg.DeleteTime = value.Time
+			}
 		case lingroup.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
@@ -144,6 +171,12 @@ func (lg *LinGroup) String() string {
 	var builder strings.Builder
 	builder.WriteString("LinGroup(")
 	builder.WriteString(fmt.Sprintf("id=%v", lg.ID))
+	builder.WriteString(", create_time=")
+	builder.WriteString(lg.CreateTime.Format(time.ANSIC))
+	builder.WriteString(", update_time=")
+	builder.WriteString(lg.UpdateTime.Format(time.ANSIC))
+	builder.WriteString(", delete_time=")
+	builder.WriteString(lg.DeleteTime.Format(time.ANSIC))
 	builder.WriteString(", name=")
 	builder.WriteString(lg.Name)
 	builder.WriteString(", info=")

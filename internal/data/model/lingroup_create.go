@@ -9,6 +9,7 @@ import (
 	"lin-cms-go/internal/data/model/lingroup"
 	"lin-cms-go/internal/data/model/linpermission"
 	"lin-cms-go/internal/data/model/linuser"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -19,6 +20,48 @@ type LinGroupCreate struct {
 	config
 	mutation *LinGroupMutation
 	hooks    []Hook
+}
+
+// SetCreateTime sets the "create_time" field.
+func (lgc *LinGroupCreate) SetCreateTime(t time.Time) *LinGroupCreate {
+	lgc.mutation.SetCreateTime(t)
+	return lgc
+}
+
+// SetNillableCreateTime sets the "create_time" field if the given value is not nil.
+func (lgc *LinGroupCreate) SetNillableCreateTime(t *time.Time) *LinGroupCreate {
+	if t != nil {
+		lgc.SetCreateTime(*t)
+	}
+	return lgc
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (lgc *LinGroupCreate) SetUpdateTime(t time.Time) *LinGroupCreate {
+	lgc.mutation.SetUpdateTime(t)
+	return lgc
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (lgc *LinGroupCreate) SetNillableUpdateTime(t *time.Time) *LinGroupCreate {
+	if t != nil {
+		lgc.SetUpdateTime(*t)
+	}
+	return lgc
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (lgc *LinGroupCreate) SetDeleteTime(t time.Time) *LinGroupCreate {
+	lgc.mutation.SetDeleteTime(t)
+	return lgc
+}
+
+// SetNillableDeleteTime sets the "delete_time" field if the given value is not nil.
+func (lgc *LinGroupCreate) SetNillableDeleteTime(t *time.Time) *LinGroupCreate {
+	if t != nil {
+		lgc.SetDeleteTime(*t)
+	}
+	return lgc
 }
 
 // SetName sets the "name" field.
@@ -80,6 +123,7 @@ func (lgc *LinGroupCreate) Save(ctx context.Context) (*LinGroup, error) {
 		err  error
 		node *LinGroup
 	)
+	lgc.defaults()
 	if len(lgc.hooks) == 0 {
 		if err = lgc.check(); err != nil {
 			return nil, err
@@ -137,8 +181,33 @@ func (lgc *LinGroupCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (lgc *LinGroupCreate) defaults() {
+	if _, ok := lgc.mutation.CreateTime(); !ok {
+		v := lingroup.DefaultCreateTime()
+		lgc.mutation.SetCreateTime(v)
+	}
+	if _, ok := lgc.mutation.UpdateTime(); !ok {
+		v := lingroup.DefaultUpdateTime()
+		lgc.mutation.SetUpdateTime(v)
+	}
+	if _, ok := lgc.mutation.DeleteTime(); !ok {
+		v := lingroup.DefaultDeleteTime()
+		lgc.mutation.SetDeleteTime(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (lgc *LinGroupCreate) check() error {
+	if _, ok := lgc.mutation.CreateTime(); !ok {
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+	}
+	if _, ok := lgc.mutation.UpdateTime(); !ok {
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+	}
+	if _, ok := lgc.mutation.DeleteTime(); !ok {
+		return &ValidationError{Name: "delete_time", err: errors.New(`model: missing required field "delete_time"`)}
+	}
 	if _, ok := lgc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "name"`)}
 	}
@@ -175,6 +244,30 @@ func (lgc *LinGroupCreate) createSpec() (*LinGroup, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := lgc.mutation.CreateTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: lingroup.FieldCreateTime,
+		})
+		_node.CreateTime = value
+	}
+	if value, ok := lgc.mutation.UpdateTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: lingroup.FieldUpdateTime,
+		})
+		_node.UpdateTime = value
+	}
+	if value, ok := lgc.mutation.DeleteTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: lingroup.FieldDeleteTime,
+		})
+		_node.DeleteTime = value
+	}
 	if value, ok := lgc.mutation.Name(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -254,6 +347,7 @@ func (lgcb *LinGroupCreateBulk) Save(ctx context.Context) ([]*LinGroup, error) {
 	for i := range lgcb.builders {
 		func(i int, root context.Context) {
 			builder := lgcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*LinGroupMutation)
 				if !ok {

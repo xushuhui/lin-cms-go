@@ -47,3 +47,7 @@ Authorization: Bearer {{token}}
 GET http://localhost:3000/cms/user/permissions
 Content-Type: application/json
 Authorization: Bearer {{token}}
+###
+DELETE http://localhost:3000/cms/admin/group/1
+Content-Type: application/json
+Authorization: Bearer {{token}}

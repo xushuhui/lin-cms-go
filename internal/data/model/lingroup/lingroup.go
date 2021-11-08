@@ -2,11 +2,21 @@
 
 package lingroup
 
+import (
+	"time"
+)
+
 const (
 	// Label holds the string label denoting the lingroup type in the database.
 	Label = "lin_group"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldCreateTime holds the string denoting the create_time field in the database.
+	FieldCreateTime = "create_time"
+	// FieldUpdateTime holds the string denoting the update_time field in the database.
+	FieldUpdateTime = "update_time"
+	// FieldDeleteTime holds the string denoting the delete_time field in the database.
+	FieldDeleteTime = "delete_time"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldInfo holds the string denoting the info field in the database.
@@ -34,6 +44,9 @@ const (
 // Columns holds all SQL columns for lingroup fields.
 var Columns = []string{
 	FieldID,
+	FieldCreateTime,
+	FieldUpdateTime,
+	FieldDeleteTime,
 	FieldName,
 	FieldInfo,
 	FieldLevel,
@@ -42,7 +55,7 @@ var Columns = []string{
 var (
 	// LinUserPrimaryKey and LinUserColumn2 are the table columns denoting the
 	// primary key for the lin_user relation (M2M).
-	LinUserPrimaryKey = []string{"user_id", "group_id"}
+	LinUserPrimaryKey = []string{"group_id", "user_id"}
 	// LinPermissionPrimaryKey and LinPermissionColumn2 are the table columns denoting the
 	// primary key for the lin_permission relation (M2M).
 	LinPermissionPrimaryKey = []string{"permission_id", "group_id"}
@@ -57,3 +70,14 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// DefaultCreateTime holds the default value on creation for the "create_time" field.
+	DefaultCreateTime func() time.Time
+	// DefaultUpdateTime holds the default value on creation for the "update_time" field.
+	DefaultUpdateTime func() time.Time
+	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
+	UpdateDefaultUpdateTime func() time.Time
+	// DefaultDeleteTime holds the default value on creation for the "delete_time" field.
+	DefaultDeleteTime func() time.Time
+)

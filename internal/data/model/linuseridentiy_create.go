@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"lin-cms-go/internal/data/model/linuseridentiy"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -17,6 +18,48 @@ type LinUserIdentiyCreate struct {
 	config
 	mutation *LinUserIdentiyMutation
 	hooks    []Hook
+}
+
+// SetCreateTime sets the "create_time" field.
+func (luic *LinUserIdentiyCreate) SetCreateTime(t time.Time) *LinUserIdentiyCreate {
+	luic.mutation.SetCreateTime(t)
+	return luic
+}
+
+// SetNillableCreateTime sets the "create_time" field if the given value is not nil.
+func (luic *LinUserIdentiyCreate) SetNillableCreateTime(t *time.Time) *LinUserIdentiyCreate {
+	if t != nil {
+		luic.SetCreateTime(*t)
+	}
+	return luic
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (luic *LinUserIdentiyCreate) SetUpdateTime(t time.Time) *LinUserIdentiyCreate {
+	luic.mutation.SetUpdateTime(t)
+	return luic
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (luic *LinUserIdentiyCreate) SetNillableUpdateTime(t *time.Time) *LinUserIdentiyCreate {
+	if t != nil {
+		luic.SetUpdateTime(*t)
+	}
+	return luic
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (luic *LinUserIdentiyCreate) SetDeleteTime(t time.Time) *LinUserIdentiyCreate {
+	luic.mutation.SetDeleteTime(t)
+	return luic
+}
+
+// SetNillableDeleteTime sets the "delete_time" field if the given value is not nil.
+func (luic *LinUserIdentiyCreate) SetNillableDeleteTime(t *time.Time) *LinUserIdentiyCreate {
+	if t != nil {
+		luic.SetDeleteTime(*t)
+	}
+	return luic
 }
 
 // SetUserID sets the "user_id" field.
@@ -54,6 +97,7 @@ func (luic *LinUserIdentiyCreate) Save(ctx context.Context) (*LinUserIdentiy, er
 		err  error
 		node *LinUserIdentiy
 	)
+	luic.defaults()
 	if len(luic.hooks) == 0 {
 		if err = luic.check(); err != nil {
 			return nil, err
@@ -111,8 +155,33 @@ func (luic *LinUserIdentiyCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (luic *LinUserIdentiyCreate) defaults() {
+	if _, ok := luic.mutation.CreateTime(); !ok {
+		v := linuseridentiy.DefaultCreateTime()
+		luic.mutation.SetCreateTime(v)
+	}
+	if _, ok := luic.mutation.UpdateTime(); !ok {
+		v := linuseridentiy.DefaultUpdateTime()
+		luic.mutation.SetUpdateTime(v)
+	}
+	if _, ok := luic.mutation.DeleteTime(); !ok {
+		v := linuseridentiy.DefaultDeleteTime()
+		luic.mutation.SetDeleteTime(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (luic *LinUserIdentiyCreate) check() error {
+	if _, ok := luic.mutation.CreateTime(); !ok {
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+	}
+	if _, ok := luic.mutation.UpdateTime(); !ok {
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+	}
+	if _, ok := luic.mutation.DeleteTime(); !ok {
+		return &ValidationError{Name: "delete_time", err: errors.New(`model: missing required field "delete_time"`)}
+	}
 	if _, ok := luic.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`model: missing required field "user_id"`)}
 	}
@@ -152,6 +221,30 @@ func (luic *LinUserIdentiyCreate) createSpec() (*LinUserIdentiy, *sqlgraph.Creat
 			},
 		}
 	)
+	if value, ok := luic.mutation.CreateTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: linuseridentiy.FieldCreateTime,
+		})
+		_node.CreateTime = value
+	}
+	if value, ok := luic.mutation.UpdateTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: linuseridentiy.FieldUpdateTime,
+		})
+		_node.UpdateTime = value
+	}
+	if value, ok := luic.mutation.DeleteTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: linuseridentiy.FieldDeleteTime,
+		})
+		_node.DeleteTime = value
+	}
 	if value, ok := luic.mutation.UserID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeInt,
@@ -201,6 +294,7 @@ func (luicb *LinUserIdentiyCreateBulk) Save(ctx context.Context) ([]*LinUserIden
 	for i := range luicb.builders {
 		func(i int, root context.Context) {
 			builder := luicb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*LinUserIdentiyMutation)
 				if !ok {

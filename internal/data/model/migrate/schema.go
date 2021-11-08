@@ -42,6 +42,9 @@ var (
 	// LinGroupColumns holds the columns for the "lin_group" table.
 	LinGroupColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "delete_time", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "info", Type: field.TypeString},
 		{Name: "level", Type: field.TypeInt8},
@@ -105,6 +108,9 @@ var (
 	// LinUserIdentiyColumns holds the columns for the "lin_user_identiy" table.
 	LinUserIdentiyColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "create_time", Type: field.TypeTime},
+		{Name: "update_time", Type: field.TypeTime},
+		{Name: "delete_time", Type: field.TypeTime},
 		{Name: "user_id", Type: field.TypeInt},
 		{Name: "identity_type", Type: field.TypeString},
 		{Name: "identifier", Type: field.TypeString},
@@ -119,7 +125,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "lin_user_identiy_lin_user_lin_user_identiy",
-				Columns:    []*schema.Column{LinUserIdentiyColumns[5]},
+				Columns:    []*schema.Column{LinUserIdentiyColumns[8]},
 				RefColumns: []*schema.Column{LinUserColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -127,8 +133,8 @@ var (
 	}
 	// LinUserGroupColumns holds the columns for the "lin_user_group" table.
 	LinUserGroupColumns = []*schema.Column{
-		{Name: "user_id", Type: field.TypeInt},
 		{Name: "group_id", Type: field.TypeInt},
+		{Name: "user_id", Type: field.TypeInt},
 	}
 	// LinUserGroupTable holds the schema information for the "lin_user_group" table.
 	LinUserGroupTable = &schema.Table{
@@ -137,13 +143,13 @@ var (
 		PrimaryKey: []*schema.Column{LinUserGroupColumns[0], LinUserGroupColumns[1]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "lin_user_group_user_id",
+				Symbol:     "lin_user_group_group_id",
 				Columns:    []*schema.Column{LinUserGroupColumns[0]},
 				RefColumns: []*schema.Column{LinGroupColumns[0]},
 				OnDelete:   schema.Cascade,
 			},
 			{
-				Symbol:     "lin_user_group_group_id",
+				Symbol:     "lin_user_group_user_id",
 				Columns:    []*schema.Column{LinUserGroupColumns[1]},
 				RefColumns: []*schema.Column{LinUserColumns[0]},
 				OnDelete:   schema.Cascade,

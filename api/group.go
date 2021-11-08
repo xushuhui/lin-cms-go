@@ -62,7 +62,6 @@ func DeleteGroup(c *fiber.Ctx) error {
 		return err
 	}
 
-	// TODO 删除分组功能还没写完
 	err = biz.DeleteGroup(c.Context(), id)
 	if err != nil {
 		return err

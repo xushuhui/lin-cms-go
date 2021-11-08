@@ -299,12 +299,12 @@ func (luiq *LinUserIdentiyQuery) Clone() *LinUserIdentiyQuery {
 // Example:
 //
 //	var v []struct {
-//		UserID int `json:"user_id,omitempty"`
+//		CreateTime time.Time `json:"create_time,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.LinUserIdentiy.Query().
-//		GroupBy(linuseridentiy.FieldUserID).
+//		GroupBy(linuseridentiy.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
 //
@@ -326,11 +326,11 @@ func (luiq *LinUserIdentiyQuery) GroupBy(field string, fields ...string) *LinUse
 // Example:
 //
 //	var v []struct {
-//		UserID int `json:"user_id,omitempty"`
+//		CreateTime time.Time `json:"create_time,omitempty"`
 //	}
 //
 //	client.LinUserIdentiy.Query().
-//		Select(linuseridentiy.FieldUserID).
+//		Select(linuseridentiy.FieldCreateTime).
 //		Scan(ctx, &v)
 //
 func (luiq *LinUserIdentiyQuery) Select(fields ...string) *LinUserIdentiySelect {
