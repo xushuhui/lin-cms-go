@@ -13,14 +13,14 @@ type IError struct {
 	Message string      `json:"message"` // 提示信息
 	Data    interface{} `json:"data"`    // 返回数据 (业务接口定义具体数据结构)
 	Err     error       `json:"-"`
-
 }
 type HttpError struct {
 	IError
 	Status int
 }
+
 func (err IError) Error() (re string) {
-	return fmt.Sprintf("code=%v, Message=%v,Err=%v", err.Code, err.Message,err.Err)
+	return fmt.Sprintf("code=%v, Message=%v,Err=%v", err.Code, err.Message, err.Err)
 }
 
 func NewErrorCode(code int) (err error) {
@@ -71,25 +71,17 @@ func ParseRequest(c *fiber.Ctx, request interface{}) (err error) {
 	return
 }
 
-func NewIError(code int,message string) IError {
+func NewIError(code int, message string) IError {
 	return IError{
 		Code:    code,
 		Message: message,
 	}
 }
-func InvalidParamsError(c *fiber.Ctx, msg string) error {
 
-	return c.JSON(IError{
-		Code:    errcode.InvalidParams,
-		Message: errcode.GetMsg(errcode.InvalidParams),
-	})
-
-}
-
-func NotFoundError( code int) error {
+func NotFoundError(code int) error {
 
 	return HttpError{
-		 NewIError(code,errcode.GetMsg(code)),
+		NewIError(code, errcode.GetMsg(code)),
 		fiber.StatusNotFound,
 	}
 
@@ -131,6 +123,6 @@ func HandleServerError(c *fiber.Ctx, err error) error {
 func (err *HttpError) HandleHttpError(c *fiber.Ctx) error {
 
 	return c.JSON(HttpError{IError{
-		Code: err.Code,Message: err.Message,
-	},err.Status})
+		Code: err.Code, Message: err.Message,
+	}, err.Status})
 }
