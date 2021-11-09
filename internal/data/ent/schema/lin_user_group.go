@@ -23,6 +23,6 @@ func (TimeMixin) Fields() []ent.Field {
 			Default(time.Now).
 			UpdateDefault(time.Now),
 		field.Time("delete_time").
-			Default(nil),
+			Optional(),
 	}
 }

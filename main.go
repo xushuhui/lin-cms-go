@@ -4,7 +4,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/gofiber/fiber/v2/middleware/recover"
 	log "github.com/grestful/logs"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
@@ -12,7 +11,6 @@ import (
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/server"
 	"lin-cms-go/pkg/core"
-	"os"
 )
 
 func errorHandler(c *fiber.Ctx, err error) error {
@@ -21,7 +19,6 @@ func errorHandler(c *fiber.Ctx, err error) error {
 		if e.Err == nil {
 			return e.HandleHttpError(c)
 		}
-
 	}
 
 	return core.HandleServerError(c, err)
@@ -41,11 +38,9 @@ func initLog(c *conf.Config) {
 }
 func initApp(c *conf.Config) *fiber.App {
 	app := fiber.New(fiber.Config{ErrorHandler: errorHandler})
-	w, _ := os.Create(c.Log.Path + "/access.log")
-	app.Use(logger.New(logger.Config{
-		TimeFormat: "2006-01-02 15:04:05.000", Format: "[${time}] ${method} ${path} - ${status} ${latency} \n ${body} \n ${resBody} \n ${error}", Output: w,
-	}))
-	app.Use(recover.New(), cors.New())
+
+	app.Use(logger.New())
+	app.Use(cors.New(), server.UserLog)
 	initLog(c)
 	data.NewDataSource(&c.Data)
 	//TODO clean source
@@ -69,5 +64,5 @@ func main() {
 
 	app := initApp(c)
 	app.Listen(c.Server.Http.Addr)
-	
+
 }

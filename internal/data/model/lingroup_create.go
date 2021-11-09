@@ -191,10 +191,6 @@ func (lgc *LinGroupCreate) defaults() {
 		v := lingroup.DefaultUpdateTime()
 		lgc.mutation.SetUpdateTime(v)
 	}
-	if _, ok := lgc.mutation.DeleteTime(); !ok {
-		v := lingroup.DefaultDeleteTime()
-		lgc.mutation.SetDeleteTime(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -204,9 +200,6 @@ func (lgc *LinGroupCreate) check() error {
 	}
 	if _, ok := lgc.mutation.UpdateTime(); !ok {
 		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
-	}
-	if _, ok := lgc.mutation.DeleteTime(); !ok {
-		return &ValidationError{Name: "delete_time", err: errors.New(`model: missing required field "delete_time"`)}
 	}
 	if _, ok := lgc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`model: missing required field "name"`)}

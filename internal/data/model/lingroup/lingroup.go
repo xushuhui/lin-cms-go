@@ -78,6 +78,4 @@ var (
 	DefaultUpdateTime func() time.Time
 	// UpdateDefaultUpdateTime holds the default value on update for the "update_time" field.
 	UpdateDefaultUpdateTime func() time.Time
-	// DefaultDeleteTime holds the default value on creation for the "delete_time" field.
-	DefaultDeleteTime func() time.Time
 )

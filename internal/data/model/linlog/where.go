@@ -390,6 +390,20 @@ func DeleteTimeLTE(v time.Time) predicate.LinLog {
 	})
 }
 
+// DeleteTimeIsNil applies the IsNil predicate on the "delete_time" field.
+func DeleteTimeIsNil() predicate.LinLog {
+	return predicate.LinLog(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldDeleteTime)))
+	})
+}
+
+// DeleteTimeNotNil applies the NotNil predicate on the "delete_time" field.
+func DeleteTimeNotNil() predicate.LinLog {
+	return predicate.LinLog(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldDeleteTime)))
+	})
+}
+
 // MessageEQ applies the EQ predicate on the "message" field.
 func MessageEQ(v string) predicate.LinLog {
 	return predicate.LinLog(func(s *sql.Selector) {

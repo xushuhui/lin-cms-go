@@ -38,3 +38,9 @@ func GetLogUsersTotal(ctx context.Context) (total int, err error) {
 	total, err = GetDB().LinLog.Query().Select(linlog.FieldUsername).Count(ctx)
 	return
 }
+func CreateLog(ctx context.Context, statusCode, userId int, username, message, method, path, permission string) (err error) {
+
+	_, err = GetDB().LinLog.Create().SetStatusCode(statusCode).SetUserID(userId).SetUsername(username).SetMessage(message).
+		SetMethod(method).SetPath(path).SetPermission(permission).Save(ctx)
+	return
+}

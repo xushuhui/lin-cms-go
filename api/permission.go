@@ -8,6 +8,8 @@ import (
 )
 
 func GetAllPermissions(c *fiber.Ctx) error {
+	c.Locals("logMessage", "this is a message")
+
 	data, err := biz.GetAllPermissions(c.Context())
 	if err != nil {
 

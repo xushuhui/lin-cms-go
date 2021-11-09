@@ -205,10 +205,6 @@ func (luc *LinUserCreate) defaults() {
 		v := linuser.DefaultUpdateTime()
 		luc.mutation.SetUpdateTime(v)
 	}
-	if _, ok := luc.mutation.DeleteTime(); !ok {
-		v := linuser.DefaultDeleteTime()
-		luc.mutation.SetDeleteTime(v)
-	}
 	if _, ok := luc.mutation.Avatar(); !ok {
 		v := linuser.DefaultAvatar
 		luc.mutation.SetAvatar(v)
@@ -222,9 +218,6 @@ func (luc *LinUserCreate) check() error {
 	}
 	if _, ok := luc.mutation.UpdateTime(); !ok {
 		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
-	}
-	if _, ok := luc.mutation.DeleteTime(); !ok {
-		return &ValidationError{Name: "delete_time", err: errors.New(`model: missing required field "delete_time"`)}
 	}
 	if _, ok := luc.mutation.Username(); !ok {
 		return &ValidationError{Name: "username", err: errors.New(`model: missing required field "username"`)}

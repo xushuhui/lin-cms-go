@@ -165,10 +165,6 @@ func (luic *LinUserIdentiyCreate) defaults() {
 		v := linuseridentiy.DefaultUpdateTime()
 		luic.mutation.SetUpdateTime(v)
 	}
-	if _, ok := luic.mutation.DeleteTime(); !ok {
-		v := linuseridentiy.DefaultDeleteTime()
-		luic.mutation.SetDeleteTime(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -178,9 +174,6 @@ func (luic *LinUserIdentiyCreate) check() error {
 	}
 	if _, ok := luic.mutation.UpdateTime(); !ok {
 		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
-	}
-	if _, ok := luic.mutation.DeleteTime(); !ok {
-		return &ValidationError{Name: "delete_time", err: errors.New(`model: missing required field "delete_time"`)}
 	}
 	if _, ok := luic.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`model: missing required field "user_id"`)}
