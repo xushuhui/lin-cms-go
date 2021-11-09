@@ -17,6 +17,7 @@ func GetLogs(c *fiber.Ctx) error {
 	if err := core.ParseQuery(c, &req); err != nil {
 		return err
 	}
+
 	data, total, err := biz.GetLogs(c.Context(), req, page, size)
 	if err != nil {
 		return err

@@ -183,10 +183,6 @@ func (llc *LinLogCreate) defaults() {
 		v := linlog.DefaultUpdateTime()
 		llc.mutation.SetUpdateTime(v)
 	}
-	if _, ok := llc.mutation.DeleteTime(); !ok {
-		v := linlog.DefaultDeleteTime()
-		llc.mutation.SetDeleteTime(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -196,9 +192,6 @@ func (llc *LinLogCreate) check() error {
 	}
 	if _, ok := llc.mutation.UpdateTime(); !ok {
 		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
-	}
-	if _, ok := llc.mutation.DeleteTime(); !ok {
-		return &ValidationError{Name: "delete_time", err: errors.New(`model: missing required field "delete_time"`)}
 	}
 	if _, ok := llc.mutation.Message(); !ok {
 		return &ValidationError{Name: "message", err: errors.New(`model: missing required field "message"`)}

@@ -30,10 +30,6 @@ func init() {
 	lingroup.DefaultUpdateTime = lingroupDescUpdateTime.Default.(func() time.Time)
 	// lingroup.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	lingroup.UpdateDefaultUpdateTime = lingroupDescUpdateTime.UpdateDefault.(func() time.Time)
-	// lingroupDescDeleteTime is the schema descriptor for delete_time field.
-	lingroupDescDeleteTime := lingroupMixinFields0[2].Descriptor()
-	// lingroup.DefaultDeleteTime holds the default value on creation for the delete_time field.
-	lingroup.DefaultDeleteTime = lingroupDescDeleteTime.Default.(func() time.Time)
 	linlogMixin := schema.LinLog{}.Mixin()
 	linlogMixinFields0 := linlogMixin[0].Fields()
 	_ = linlogMixinFields0
@@ -49,10 +45,6 @@ func init() {
 	linlog.DefaultUpdateTime = linlogDescUpdateTime.Default.(func() time.Time)
 	// linlog.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	linlog.UpdateDefaultUpdateTime = linlogDescUpdateTime.UpdateDefault.(func() time.Time)
-	// linlogDescDeleteTime is the schema descriptor for delete_time field.
-	linlogDescDeleteTime := linlogMixinFields0[2].Descriptor()
-	// linlog.DefaultDeleteTime holds the default value on creation for the delete_time field.
-	linlog.DefaultDeleteTime = linlogDescDeleteTime.Default.(func() time.Time)
 	linuserMixin := schema.LinUser{}.Mixin()
 	linuserMixinFields0 := linuserMixin[0].Fields()
 	_ = linuserMixinFields0
@@ -68,10 +60,6 @@ func init() {
 	linuser.DefaultUpdateTime = linuserDescUpdateTime.Default.(func() time.Time)
 	// linuser.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	linuser.UpdateDefaultUpdateTime = linuserDescUpdateTime.UpdateDefault.(func() time.Time)
-	// linuserDescDeleteTime is the schema descriptor for delete_time field.
-	linuserDescDeleteTime := linuserMixinFields0[2].Descriptor()
-	// linuser.DefaultDeleteTime holds the default value on creation for the delete_time field.
-	linuser.DefaultDeleteTime = linuserDescDeleteTime.Default.(func() time.Time)
 	// linuserDescAvatar is the schema descriptor for avatar field.
 	linuserDescAvatar := linuserFields[2].Descriptor()
 	// linuser.DefaultAvatar holds the default value on creation for the avatar field.
@@ -91,8 +79,4 @@ func init() {
 	linuseridentiy.DefaultUpdateTime = linuseridentiyDescUpdateTime.Default.(func() time.Time)
 	// linuseridentiy.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
 	linuseridentiy.UpdateDefaultUpdateTime = linuseridentiyDescUpdateTime.UpdateDefault.(func() time.Time)
-	// linuseridentiyDescDeleteTime is the schema descriptor for delete_time field.
-	linuseridentiyDescDeleteTime := linuseridentiyMixinFields0[2].Descriptor()
-	// linuseridentiy.DefaultDeleteTime holds the default value on creation for the delete_time field.
-	linuseridentiy.DefaultDeleteTime = linuseridentiyDescDeleteTime.Default.(func() time.Time)
 }

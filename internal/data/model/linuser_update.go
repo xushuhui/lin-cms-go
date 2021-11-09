@@ -49,6 +49,12 @@ func (luu *LinUserUpdate) SetNillableDeleteTime(t *time.Time) *LinUserUpdate {
 	return luu
 }
 
+// ClearDeleteTime clears the value of the "delete_time" field.
+func (luu *LinUserUpdate) ClearDeleteTime() *LinUserUpdate {
+	luu.mutation.ClearDeleteTime()
+	return luu
+}
+
 // SetUsername sets the "username" field.
 func (luu *LinUserUpdate) SetUsername(s string) *LinUserUpdate {
 	luu.mutation.SetUsername(s)
@@ -253,6 +259,12 @@ func (luu *LinUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: linuser.FieldDeleteTime,
 		})
 	}
+	if luu.mutation.DeleteTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: linuser.FieldDeleteTime,
+		})
+	}
 	if value, ok := luu.mutation.Username(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -425,6 +437,12 @@ func (luuo *LinUserUpdateOne) SetNillableDeleteTime(t *time.Time) *LinUserUpdate
 	if t != nil {
 		luuo.SetDeleteTime(*t)
 	}
+	return luuo
+}
+
+// ClearDeleteTime clears the value of the "delete_time" field.
+func (luuo *LinUserUpdateOne) ClearDeleteTime() *LinUserUpdateOne {
+	luuo.mutation.ClearDeleteTime()
 	return luuo
 }
 
@@ -653,6 +671,12 @@ func (luuo *LinUserUpdateOne) sqlSave(ctx context.Context) (_node *LinUser, err 
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
+			Column: linuser.FieldDeleteTime,
+		})
+	}
+	if luuo.mutation.DeleteTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
 			Column: linuser.FieldDeleteTime,
 		})
 	}

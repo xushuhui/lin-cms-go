@@ -369,6 +369,20 @@ func DeleteTimeLTE(v time.Time) predicate.LinUserIdentiy {
 	})
 }
 
+// DeleteTimeIsNil applies the IsNil predicate on the "delete_time" field.
+func DeleteTimeIsNil() predicate.LinUserIdentiy {
+	return predicate.LinUserIdentiy(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldDeleteTime)))
+	})
+}
+
+// DeleteTimeNotNil applies the NotNil predicate on the "delete_time" field.
+func DeleteTimeNotNil() predicate.LinUserIdentiy {
+	return predicate.LinUserIdentiy(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldDeleteTime)))
+	})
+}
+
 // UserIDEQ applies the EQ predicate on the "user_id" field.
 func UserIDEQ(v int) predicate.LinUserIdentiy {
 	return predicate.LinUserIdentiy(func(s *sql.Selector) {

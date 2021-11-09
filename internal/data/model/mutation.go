@@ -1329,9 +1329,22 @@ func (m *LinGroupMutation) OldDeleteTime(ctx context.Context) (v time.Time, err 
 	return oldValue.DeleteTime, nil
 }
 
+// ClearDeleteTime clears the value of the "delete_time" field.
+func (m *LinGroupMutation) ClearDeleteTime() {
+	m.delete_time = nil
+	m.clearedFields[lingroup.FieldDeleteTime] = struct{}{}
+}
+
+// DeleteTimeCleared returns if the "delete_time" field was cleared in this mutation.
+func (m *LinGroupMutation) DeleteTimeCleared() bool {
+	_, ok := m.clearedFields[lingroup.FieldDeleteTime]
+	return ok
+}
+
 // ResetDeleteTime resets all changes to the "delete_time" field.
 func (m *LinGroupMutation) ResetDeleteTime() {
 	m.delete_time = nil
+	delete(m.clearedFields, lingroup.FieldDeleteTime)
 }
 
 // SetName sets the "name" field.
@@ -1744,7 +1757,11 @@ func (m *LinGroupMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *LinGroupMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(lingroup.FieldDeleteTime) {
+		fields = append(fields, lingroup.FieldDeleteTime)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -1757,6 +1774,11 @@ func (m *LinGroupMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *LinGroupMutation) ClearField(name string) error {
+	switch name {
+	case lingroup.FieldDeleteTime:
+		m.ClearDeleteTime()
+		return nil
+	}
 	return fmt.Errorf("unknown LinGroup nullable field %s", name)
 }
 
@@ -2102,9 +2124,22 @@ func (m *LinLogMutation) OldDeleteTime(ctx context.Context) (v time.Time, err er
 	return oldValue.DeleteTime, nil
 }
 
+// ClearDeleteTime clears the value of the "delete_time" field.
+func (m *LinLogMutation) ClearDeleteTime() {
+	m.delete_time = nil
+	m.clearedFields[linlog.FieldDeleteTime] = struct{}{}
+}
+
+// DeleteTimeCleared returns if the "delete_time" field was cleared in this mutation.
+func (m *LinLogMutation) DeleteTimeCleared() bool {
+	_, ok := m.clearedFields[linlog.FieldDeleteTime]
+	return ok
+}
+
 // ResetDeleteTime resets all changes to the "delete_time" field.
 func (m *LinLogMutation) ResetDeleteTime() {
 	m.delete_time = nil
+	delete(m.clearedFields, linlog.FieldDeleteTime)
 }
 
 // SetMessage sets the "message" field.
@@ -2641,7 +2676,11 @@ func (m *LinLogMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *LinLogMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(linlog.FieldDeleteTime) {
+		fields = append(fields, linlog.FieldDeleteTime)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -2654,6 +2693,11 @@ func (m *LinLogMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *LinLogMutation) ClearField(name string) error {
+	switch name {
+	case linlog.FieldDeleteTime:
+		m.ClearDeleteTime()
+		return nil
+	}
 	return fmt.Errorf("unknown LinLog nullable field %s", name)
 }
 
@@ -3479,9 +3523,22 @@ func (m *LinUserMutation) OldDeleteTime(ctx context.Context) (v time.Time, err e
 	return oldValue.DeleteTime, nil
 }
 
+// ClearDeleteTime clears the value of the "delete_time" field.
+func (m *LinUserMutation) ClearDeleteTime() {
+	m.delete_time = nil
+	m.clearedFields[linuser.FieldDeleteTime] = struct{}{}
+}
+
+// DeleteTimeCleared returns if the "delete_time" field was cleared in this mutation.
+func (m *LinUserMutation) DeleteTimeCleared() bool {
+	_, ok := m.clearedFields[linuser.FieldDeleteTime]
+	return ok
+}
+
 // ResetDeleteTime resets all changes to the "delete_time" field.
 func (m *LinUserMutation) ResetDeleteTime() {
 	m.delete_time = nil
+	delete(m.clearedFields, linuser.FieldDeleteTime)
 }
 
 // SetUsername sets the "username" field.
@@ -3909,7 +3966,11 @@ func (m *LinUserMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *LinUserMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(linuser.FieldDeleteTime) {
+		fields = append(fields, linuser.FieldDeleteTime)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -3922,6 +3983,11 @@ func (m *LinUserMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *LinUserMutation) ClearField(name string) error {
+	switch name {
+	case linuser.FieldDeleteTime:
+		m.ClearDeleteTime()
+		return nil
+	}
 	return fmt.Errorf("unknown LinUser nullable field %s", name)
 }
 
@@ -4266,9 +4332,22 @@ func (m *LinUserIdentiyMutation) OldDeleteTime(ctx context.Context) (v time.Time
 	return oldValue.DeleteTime, nil
 }
 
+// ClearDeleteTime clears the value of the "delete_time" field.
+func (m *LinUserIdentiyMutation) ClearDeleteTime() {
+	m.delete_time = nil
+	m.clearedFields[linuseridentiy.FieldDeleteTime] = struct{}{}
+}
+
+// DeleteTimeCleared returns if the "delete_time" field was cleared in this mutation.
+func (m *LinUserIdentiyMutation) DeleteTimeCleared() bool {
+	_, ok := m.clearedFields[linuseridentiy.FieldDeleteTime]
+	return ok
+}
+
 // ResetDeleteTime resets all changes to the "delete_time" field.
 func (m *LinUserIdentiyMutation) ResetDeleteTime() {
 	m.delete_time = nil
+	delete(m.clearedFields, linuseridentiy.FieldDeleteTime)
 }
 
 // SetUserID sets the "user_id" field.
@@ -4623,7 +4702,11 @@ func (m *LinUserIdentiyMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *LinUserIdentiyMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(linuseridentiy.FieldDeleteTime) {
+		fields = append(fields, linuseridentiy.FieldDeleteTime)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -4636,6 +4719,11 @@ func (m *LinUserIdentiyMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *LinUserIdentiyMutation) ClearField(name string) error {
+	switch name {
+	case linuseridentiy.FieldDeleteTime:
+		m.ClearDeleteTime()
+		return nil
+	}
 	return fmt.Errorf("unknown LinUserIdentiy nullable field %s", name)
 }
 
