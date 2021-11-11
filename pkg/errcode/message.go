@@ -1,52 +1,38 @@
 package errcode
 
-const (
-	SUCCESS = iota
-	InvalidParams
-	DBError
-	ServerError
-	AuthCheckTokenFail
-	AuthCheckTokenTimeout
-	ErrorAuthToken
-	TimeoutAuthToken
-	ErrorPassWord
-	UserFound
-	UserNotFound
-	BookNotFound
-	BookTitleRepetition
-	GroupNotFound
-	GroupFound
-	RootGroupNotAllowDelete
-	GuestGroupNotAllowDelete
+import "github.com/xushuhui/goal/core"
 
-	PermissionNotFound
+const (
+	AuthCheckTokenFail       = 10000
+	AuthCheckTokenTimeout    = 10001
+	ErrorAuthToken           = 10002
+	TimeoutAuthToken         = 10003
+	ErrorPassWord            = 10004
+	UserFound                = 10005
+	UserNotFound             = 10006
+	BookNotFound             = 20000
+	BookTitleRepetition      = 20001
+	GroupNotFound            = 30000
+	GroupFound               = 30001
+	RootGroupNotAllowDelete  = 30002
+	GuestGroupNotAllowDelete = 30003
+	PermissionNotFound       = 30004
 )
 
-var MsgFlags = map[int]string{
-	SUCCESS:                  "ok",
-	InvalidParams:            "请求参数错误",
-	DBError:                  "数据库错误",
-	ServerError:              "系统异常，请联系管理员！",
-	AuthCheckTokenFail:       "Token鉴权失败",
-	AuthCheckTokenTimeout:    "Token已超时",
-	ErrorAuthToken:           "Token错误",
-	ErrorPassWord:            "密码错误",
-	UserFound:                "用户已存在",
-	UserNotFound:             "用户不存在",
-	BookNotFound:             "书籍不存在",
-	BookTitleRepetition:      "书籍标题重复",
-	GroupNotFound:            "分组不存在",
-	RootGroupNotAllowDelete:  "root分组不允许删除",
-	GuestGroupNotAllowDelete: "guest分组不允许删除",
-	GroupFound:               "分组已存在",
-	PermissionNotFound:       "权限不存在",
-}
-
-func GetMsg(code int) string {
-	msg, ok := MsgFlags[code]
-	if ok {
-		return msg
+func init() {
+	core.CodeMapping = map[int]string{
+		AuthCheckTokenFail:       "Token鉴权失败",
+		AuthCheckTokenTimeout:    "Token已超时",
+		ErrorAuthToken:           "Token错误",
+		ErrorPassWord:            "密码错误",
+		UserFound:                "用户已存在",
+		UserNotFound:             "用户不存在",
+		BookNotFound:             "书籍不存在",
+		BookTitleRepetition:      "书籍标题重复",
+		GroupNotFound:            "分组不存在",
+		RootGroupNotAllowDelete:  "root分组不允许删除",
+		GuestGroupNotAllowDelete: "guest分组不允许删除",
+		GroupFound:               "分组已存在",
+		PermissionNotFound:       "权限不存在",
 	}
-
-	return MsgFlags[InvalidParams]
 }
