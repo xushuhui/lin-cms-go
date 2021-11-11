@@ -3,8 +3,8 @@ package biz
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/xushuhui/goal/utils"
 	"lin-cms-go/internal/data/model"
-	"lin-cms-go/pkg/utils"
 )
 
 func LocalUser(c *fiber.Ctx) (user model.LinUser) {

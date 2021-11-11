@@ -2,9 +2,9 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/xushuhui/goal/core"
 	"lin-cms-go/internal/biz"
 	"lin-cms-go/internal/request"
-	"lin-cms-go/pkg/core"
 )
 
 func Upload(c *fiber.Ctx) error {

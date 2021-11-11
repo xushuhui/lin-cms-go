@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io"
 
-	"lin-cms-go/pkg/core"
+	"github.com/xushuhui/goal/core"
 	"net/http"
 	"net/http/httptest"
 
