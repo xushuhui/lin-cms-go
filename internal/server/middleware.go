@@ -8,15 +8,17 @@ import (
 
 func UserLog(c *fiber.Ctx) error {
 
-	c.Next()
-
+	err := c.Next()
+	if err != nil {
+		return err
+	}
 	user := biz.LocalUser(c)
 
 	msg := c.Locals("logMessage")
 	if msg == nil {
 		return nil
 	}
-	err := data.CreateLog(c.Context(), c.Response().StatusCode(), user.ID, user.Username, user.Username+msg.(string), c.Method(), c.Path(), "")
+	err = data.CreateLog(c.Context(), c.Response().StatusCode(), user.ID, user.Username, user.Username+msg.(string), c.Method(), c.Path(), "")
 
 	return err
 }
