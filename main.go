@@ -5,12 +5,12 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	log "github.com/grestful/logs"
+	"github.com/xushuhui/goal/core"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"lin-cms-go/internal/conf"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/server"
-	"lin-cms-go/pkg/core"
 )
 
 func errorHandler(c *fiber.Ctx, err error) error {

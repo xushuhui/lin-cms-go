@@ -4,17 +4,20 @@ go 1.14
 
 require (
 	entgo.io/ent v0.9.1
-	github.com/go-playground/locales v0.13.0
-	github.com/go-playground/universal-translator v0.17.0
-	github.com/go-playground/validator/v10 v10.2.0
+	github.com/andybalholm/brotli v1.0.3 // indirect
+
 	github.com/go-sql-driver/mysql v1.5.1-0.20200311113236-681ffa848bae
-	github.com/gofiber/fiber/v2 v2.20.2
-	github.com/gofiber/jwt/v3 v3.1.2
+	github.com/gofiber/fiber/v2 v2.21.0
 	github.com/golang-jwt/jwt/v4 v4.1.0
 	github.com/grestful/logs v1.0.7
-	github.com/pkg/errors v0.8.1
+	github.com/klauspost/compress v1.13.5 // indirect
+	github.com/pkg/errors v0.9.1
+	github.com/rogpeppe/go-internal v1.8.1-0.20211023094830-115ce09fd6b4 // indirect
 	github.com/stretchr/testify v1.7.0
-	golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a
+	github.com/xushuhui/goal v0.0.0-20211111060939-51802987d271
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
+	golang.org/x/sys v0.0.0-20211110154304-99a53858aa08 // indirect
+	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0
 
 )

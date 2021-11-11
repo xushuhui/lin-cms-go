@@ -5,8 +5,8 @@ import (
 	"github.com/pkg/errors"
 	"lin-cms-go/internal/conf"
 
+	"github.com/xushuhui/goal/core"
 	"lin-cms-go/internal/data/model"
-	"lin-cms-go/pkg/core"
 	"sync"
 
 	_ "github.com/go-sql-driver/mysql"

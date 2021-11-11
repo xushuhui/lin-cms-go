@@ -2,10 +2,10 @@ package api
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/xushuhui/goal/core"
+	"github.com/xushuhui/goal/utils"
 	"lin-cms-go/internal/biz"
 	"lin-cms-go/internal/request"
-	"lin-cms-go/pkg/core"
-	"lin-cms-go/pkg/utils"
 )
 
 func GetGroups(c *fiber.Ctx) error {

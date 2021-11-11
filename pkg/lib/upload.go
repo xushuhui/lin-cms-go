@@ -4,7 +4,6 @@ import (
 	"io"
 	"io/ioutil"
 
-	"lin-cms-go/pkg/utils"
 	"mime/multipart"
 	"os"
 	"path"
@@ -21,20 +20,12 @@ const (
 func GetFileName(name string) string {
 	ext := GetFileExt(name)
 	fileName := strings.TrimSuffix(name, ext)
-	fileName = utils.EncodeMD5(fileName)
+	//fileName = utils.EncodeMD5(fileName)
 	return fileName + ext
 }
 
 func GetFileExt(name string) string {
 	return path.Ext(name)
-}
-
-func GetSavePath() string {
-	return ""
-}
-
-func GetServerUrl() string {
-	return ""
 }
 
 func CheckSavePath(dst string) bool {

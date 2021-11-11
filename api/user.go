@@ -1,13 +1,12 @@
 package api
 
 import (
+	"github.com/xushuhui/goal/core"
 	"lin-cms-go/internal/biz"
 	"lin-cms-go/internal/request"
-	"lin-cms-go/pkg/core"
 
 	"github.com/gofiber/fiber/v2"
 )
-
 
 func Hello(ctx *fiber.Ctx) error {
 	return ctx.JSON("Hello")

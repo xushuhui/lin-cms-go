@@ -6,8 +6,8 @@ import (
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/data/model"
 
+	"github.com/xushuhui/goal/core"
 	"lin-cms-go/internal/request"
-	"lin-cms-go/pkg/core"
 	"lin-cms-go/pkg/errcode"
 	"lin-cms-go/pkg/lib"
 	"time"
@@ -125,9 +125,11 @@ func GetMyPermissions(ctx context.Context, uid int) (res map[string]interface{},
 	//data["permissions"] = permissions
 	return
 }
+
 type LinUser struct {
 	model.LinUser
 }
+
 func GetMyInfomation(ctx context.Context, uid int) (res LinUser, err error) {
 	usermodel, err := data.GetLinUserById(ctx, uid)
 	if model.IsNotFound(err) {
