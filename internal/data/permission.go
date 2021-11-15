@@ -10,3 +10,6 @@ func GetLinPermissionById(ctx context.Context, id int) (permission *model.LinPer
 	permission, err = GetDB().LinPermission.Query().Where(linpermission.ID(id)).First(ctx)
 	return
 }
+func GetUserPermission(ctx context.Context, userId int, name, module string) {
+
+}

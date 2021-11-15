@@ -30,7 +30,7 @@ func ChangeUserPassword(c *fiber.Ctx) error {
 		return err
 	}
 
-	err := biz.ChangeUserPassword(req)
+	err := biz.ChangeUserPassword(c.Context(), req.Id, req.NewPassword)
 	if err != nil {
 		return err
 	}
@@ -44,7 +44,7 @@ func DeleteUser(c *fiber.Ctx) error {
 	if err != nil {
 		return err
 	}
-	err = biz.DeleteUser(id)
+	err = biz.DeleteUser(c.Context(), id)
 	if err != nil {
 		return err
 	}

@@ -5,6 +5,7 @@ import (
 	"lin-cms-go/internal/data/model"
 	"lin-cms-go/internal/data/model/linuser"
 	"lin-cms-go/internal/data/model/linuseridentiy"
+	"time"
 )
 
 func GetLinUserIdentityByIdentifier(ctx context.Context, identifier string) (model *model.LinUserIdentiy, err error) {
@@ -59,6 +60,12 @@ func UpdateLinUser(ctx context.Context, uid int, avatar, nickname, email string)
 func UpdateLinUserIdentityPassword(ctx context.Context, username, password string) (err error) {
 	_, err = GetDB().LinUserIdentiy.Update().Where(linuseridentiy.Identifier(username)).
 		SetCredential(password).Save(ctx)
+
+	return
+}
+func SoftDeleteUser(ctx context.Context, userId int) (err error) {
+	_, err = GetDB().LinUser.Update().Where(linuser.ID(userId)).
+		SetDeleteTime(time.Now()).Save(ctx)
 
 	return
 }

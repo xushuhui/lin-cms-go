@@ -1,9 +1,12 @@
 package biz
 
 import (
+	"context"
+	"github.com/xushuhui/goal/core"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/data/model"
 	"lin-cms-go/pkg/enum"
+	"lin-cms-go/pkg/errcode"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
@@ -29,7 +32,9 @@ func IsAdmin(c *fiber.Ctx) (is bool, err error) {
 	if err != nil {
 		return
 	}
+
 	for _, v := range u.Edges.LinGroup {
+
 		if v.Level == enum.ROOT {
 			is = true
 		}
@@ -37,5 +42,34 @@ func IsAdmin(c *fiber.Ctx) (is bool, err error) {
 	return
 }
 
-func UserHasPermission(userId int) {
+type Permission struct {
+	Name   string `json:"name"`
+	Module string `json:"module"`
+}
+
+func UserHasPermission(c *fiber.Ctx) (has bool, err error) {
+	user := LocalUser(c)
+
+	u, err := data.GetLinUserWithGroupById(context.Background(), user.ID)
+	if err != nil {
+		return
+	}
+	local := c.Locals("permission")
+	if local == nil {
+		return false, core.NewErrorCode(errcode.UserPermissionRequired)
+	}
+	userPermission := local.(Permission)
+	var ps []model.LinPermission
+	for _, v := range u.Edges.LinGroup {
+		for _, p := range v.Edges.LinPermission {
+			ps = append(ps, *p)
+		}
+
+	}
+	for _, p := range ps {
+		if p.Module == userPermission.Module && p.Name == userPermission.Name {
+			has = true
+		}
+	}
+	return
 }
