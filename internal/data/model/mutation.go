@@ -43,6 +43,9 @@ type BookMutation struct {
 	op            Op
 	typ           string
 	id            *int
+	create_time   *time.Time
+	update_time   *time.Time
+	delete_time   *time.Time
 	title         *string
 	author        *string
 	summary       *string
@@ -130,6 +133,127 @@ func (m *BookMutation) ID() (id int, exists bool) {
 		return
 	}
 	return *m.id, true
+}
+
+// SetCreateTime sets the "create_time" field.
+func (m *BookMutation) SetCreateTime(t time.Time) {
+	m.create_time = &t
+}
+
+// CreateTime returns the value of the "create_time" field in the mutation.
+func (m *BookMutation) CreateTime() (r time.Time, exists bool) {
+	v := m.create_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateTime returns the old "create_time" field's value of the Book entity.
+// If the Book object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BookMutation) OldCreateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCreateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCreateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateTime: %w", err)
+	}
+	return oldValue.CreateTime, nil
+}
+
+// ResetCreateTime resets all changes to the "create_time" field.
+func (m *BookMutation) ResetCreateTime() {
+	m.create_time = nil
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (m *BookMutation) SetUpdateTime(t time.Time) {
+	m.update_time = &t
+}
+
+// UpdateTime returns the value of the "update_time" field in the mutation.
+func (m *BookMutation) UpdateTime() (r time.Time, exists bool) {
+	v := m.update_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateTime returns the old "update_time" field's value of the Book entity.
+// If the Book object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BookMutation) OldUpdateTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldUpdateTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldUpdateTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateTime: %w", err)
+	}
+	return oldValue.UpdateTime, nil
+}
+
+// ResetUpdateTime resets all changes to the "update_time" field.
+func (m *BookMutation) ResetUpdateTime() {
+	m.update_time = nil
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (m *BookMutation) SetDeleteTime(t time.Time) {
+	m.delete_time = &t
+}
+
+// DeleteTime returns the value of the "delete_time" field in the mutation.
+func (m *BookMutation) DeleteTime() (r time.Time, exists bool) {
+	v := m.delete_time
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteTime returns the old "delete_time" field's value of the Book entity.
+// If the Book object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *BookMutation) OldDeleteTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDeleteTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDeleteTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteTime: %w", err)
+	}
+	return oldValue.DeleteTime, nil
+}
+
+// ClearDeleteTime clears the value of the "delete_time" field.
+func (m *BookMutation) ClearDeleteTime() {
+	m.delete_time = nil
+	m.clearedFields[book.FieldDeleteTime] = struct{}{}
+}
+
+// DeleteTimeCleared returns if the "delete_time" field was cleared in this mutation.
+func (m *BookMutation) DeleteTimeCleared() bool {
+	_, ok := m.clearedFields[book.FieldDeleteTime]
+	return ok
+}
+
+// ResetDeleteTime resets all changes to the "delete_time" field.
+func (m *BookMutation) ResetDeleteTime() {
+	m.delete_time = nil
+	delete(m.clearedFields, book.FieldDeleteTime)
 }
 
 // SetTitle sets the "title" field.
@@ -295,7 +419,16 @@ func (m *BookMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *BookMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 7)
+	if m.create_time != nil {
+		fields = append(fields, book.FieldCreateTime)
+	}
+	if m.update_time != nil {
+		fields = append(fields, book.FieldUpdateTime)
+	}
+	if m.delete_time != nil {
+		fields = append(fields, book.FieldDeleteTime)
+	}
 	if m.title != nil {
 		fields = append(fields, book.FieldTitle)
 	}
@@ -316,6 +449,12 @@ func (m *BookMutation) Fields() []string {
 // schema.
 func (m *BookMutation) Field(name string) (ent.Value, bool) {
 	switch name {
+	case book.FieldCreateTime:
+		return m.CreateTime()
+	case book.FieldUpdateTime:
+		return m.UpdateTime()
+	case book.FieldDeleteTime:
+		return m.DeleteTime()
 	case book.FieldTitle:
 		return m.Title()
 	case book.FieldAuthor:
@@ -333,6 +472,12 @@ func (m *BookMutation) Field(name string) (ent.Value, bool) {
 // database failed.
 func (m *BookMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
 	switch name {
+	case book.FieldCreateTime:
+		return m.OldCreateTime(ctx)
+	case book.FieldUpdateTime:
+		return m.OldUpdateTime(ctx)
+	case book.FieldDeleteTime:
+		return m.OldDeleteTime(ctx)
 	case book.FieldTitle:
 		return m.OldTitle(ctx)
 	case book.FieldAuthor:
@@ -350,6 +495,27 @@ func (m *BookMutation) OldField(ctx context.Context, name string) (ent.Value, er
 // type.
 func (m *BookMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case book.FieldCreateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateTime(v)
+		return nil
+	case book.FieldUpdateTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateTime(v)
+		return nil
+	case book.FieldDeleteTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteTime(v)
+		return nil
 	case book.FieldTitle:
 		v, ok := value.(string)
 		if !ok {
@@ -407,7 +573,11 @@ func (m *BookMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *BookMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(book.FieldDeleteTime) {
+		fields = append(fields, book.FieldDeleteTime)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -420,6 +590,11 @@ func (m *BookMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *BookMutation) ClearField(name string) error {
+	switch name {
+	case book.FieldDeleteTime:
+		m.ClearDeleteTime()
+		return nil
+	}
 	return fmt.Errorf("unknown Book nullable field %s", name)
 }
 
@@ -427,6 +602,15 @@ func (m *BookMutation) ClearField(name string) error {
 // It returns an error if the field is not defined in the schema.
 func (m *BookMutation) ResetField(name string) error {
 	switch name {
+	case book.FieldCreateTime:
+		m.ResetCreateTime()
+		return nil
+	case book.FieldUpdateTime:
+		m.ResetUpdateTime()
+		return nil
+	case book.FieldDeleteTime:
+		m.ResetDeleteTime()
+		return nil
 	case book.FieldTitle:
 		m.ResetTitle()
 		return nil

@@ -16,11 +16,18 @@ func (Book) Annotations() []schema.Annotation {
 		entsql.Annotation{Table: "book"},
 	}
 }
+
 func (Book) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("title").Comment(""),
 		field.String("author").Comment(""),
 		field.String("summary").Comment(""),
 		field.String("image").Comment(""),
+	}
+}
+
+func (Book) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		TimeMixin{},
 	}
 }

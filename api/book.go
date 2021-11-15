@@ -1,11 +1,12 @@
 package api
 
 import (
+	"lin-cms-go/internal/biz"
+	"lin-cms-go/internal/request"
+
 	"github.com/gofiber/fiber/v2"
 	"github.com/xushuhui/goal/core"
 	"github.com/xushuhui/goal/utils"
-	"lin-cms-go/internal/biz"
-	"lin-cms-go/internal/request"
 )
 
 func GetBooks(c *fiber.Ctx) error {
@@ -55,7 +56,6 @@ func CreateBook(c *fiber.Ctx) error {
 }
 
 func DeleteBook(c *fiber.Ctx) error {
-	// TODO 没有软删除，ent默认没有软删除待加强
 	id, err := utils.StringToInt(c.Params("id"))
 	if err != nil {
 		return err

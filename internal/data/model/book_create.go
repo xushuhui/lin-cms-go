@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"lin-cms-go/internal/data/model/book"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -17,6 +18,48 @@ type BookCreate struct {
 	config
 	mutation *BookMutation
 	hooks    []Hook
+}
+
+// SetCreateTime sets the "create_time" field.
+func (bc *BookCreate) SetCreateTime(t time.Time) *BookCreate {
+	bc.mutation.SetCreateTime(t)
+	return bc
+}
+
+// SetNillableCreateTime sets the "create_time" field if the given value is not nil.
+func (bc *BookCreate) SetNillableCreateTime(t *time.Time) *BookCreate {
+	if t != nil {
+		bc.SetCreateTime(*t)
+	}
+	return bc
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (bc *BookCreate) SetUpdateTime(t time.Time) *BookCreate {
+	bc.mutation.SetUpdateTime(t)
+	return bc
+}
+
+// SetNillableUpdateTime sets the "update_time" field if the given value is not nil.
+func (bc *BookCreate) SetNillableUpdateTime(t *time.Time) *BookCreate {
+	if t != nil {
+		bc.SetUpdateTime(*t)
+	}
+	return bc
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (bc *BookCreate) SetDeleteTime(t time.Time) *BookCreate {
+	bc.mutation.SetDeleteTime(t)
+	return bc
+}
+
+// SetNillableDeleteTime sets the "delete_time" field if the given value is not nil.
+func (bc *BookCreate) SetNillableDeleteTime(t *time.Time) *BookCreate {
+	if t != nil {
+		bc.SetDeleteTime(*t)
+	}
+	return bc
 }
 
 // SetTitle sets the "title" field.
@@ -54,6 +97,7 @@ func (bc *BookCreate) Save(ctx context.Context) (*Book, error) {
 		err  error
 		node *Book
 	)
+	bc.defaults()
 	if len(bc.hooks) == 0 {
 		if err = bc.check(); err != nil {
 			return nil, err
@@ -111,8 +155,26 @@ func (bc *BookCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (bc *BookCreate) defaults() {
+	if _, ok := bc.mutation.CreateTime(); !ok {
+		v := book.DefaultCreateTime()
+		bc.mutation.SetCreateTime(v)
+	}
+	if _, ok := bc.mutation.UpdateTime(); !ok {
+		v := book.DefaultUpdateTime()
+		bc.mutation.SetUpdateTime(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (bc *BookCreate) check() error {
+	if _, ok := bc.mutation.CreateTime(); !ok {
+		return &ValidationError{Name: "create_time", err: errors.New(`model: missing required field "create_time"`)}
+	}
+	if _, ok := bc.mutation.UpdateTime(); !ok {
+		return &ValidationError{Name: "update_time", err: errors.New(`model: missing required field "update_time"`)}
+	}
 	if _, ok := bc.mutation.Title(); !ok {
 		return &ValidationError{Name: "title", err: errors.New(`model: missing required field "title"`)}
 	}
@@ -152,6 +214,30 @@ func (bc *BookCreate) createSpec() (*Book, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := bc.mutation.CreateTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: book.FieldCreateTime,
+		})
+		_node.CreateTime = value
+	}
+	if value, ok := bc.mutation.UpdateTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: book.FieldUpdateTime,
+		})
+		_node.UpdateTime = value
+	}
+	if value, ok := bc.mutation.DeleteTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: book.FieldDeleteTime,
+		})
+		_node.DeleteTime = value
+	}
 	if value, ok := bc.mutation.Title(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -201,6 +287,7 @@ func (bcb *BookCreateBulk) Save(ctx context.Context) ([]*Book, error) {
 	for i := range bcb.builders {
 		func(i int, root context.Context) {
 			builder := bcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*BookMutation)
 				if !ok {

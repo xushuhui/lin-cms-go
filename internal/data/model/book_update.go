@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"lin-cms-go/internal/data/model/book"
 	"lin-cms-go/internal/data/model/predicate"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -23,6 +24,32 @@ type BookUpdate struct {
 // Where appends a list predicates to the BookUpdate builder.
 func (bu *BookUpdate) Where(ps ...predicate.Book) *BookUpdate {
 	bu.mutation.Where(ps...)
+	return bu
+}
+
+// SetUpdateTime sets the "update_time" field.
+func (bu *BookUpdate) SetUpdateTime(t time.Time) *BookUpdate {
+	bu.mutation.SetUpdateTime(t)
+	return bu
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (bu *BookUpdate) SetDeleteTime(t time.Time) *BookUpdate {
+	bu.mutation.SetDeleteTime(t)
+	return bu
+}
+
+// SetNillableDeleteTime sets the "delete_time" field if the given value is not nil.
+func (bu *BookUpdate) SetNillableDeleteTime(t *time.Time) *BookUpdate {
+	if t != nil {
+		bu.SetDeleteTime(*t)
+	}
+	return bu
+}
+
+// ClearDeleteTime clears the value of the "delete_time" field.
+func (bu *BookUpdate) ClearDeleteTime() *BookUpdate {
+	bu.mutation.ClearDeleteTime()
 	return bu
 }
 
@@ -61,6 +88,7 @@ func (bu *BookUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	bu.defaults()
 	if len(bu.hooks) == 0 {
 		affected, err = bu.sqlSave(ctx)
 	} else {
@@ -109,6 +137,14 @@ func (bu *BookUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (bu *BookUpdate) defaults() {
+	if _, ok := bu.mutation.UpdateTime(); !ok {
+		v := book.UpdateDefaultUpdateTime()
+		bu.mutation.SetUpdateTime(v)
+	}
+}
+
 func (bu *BookUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -126,6 +162,26 @@ func (bu *BookUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := bu.mutation.UpdateTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: book.FieldUpdateTime,
+		})
+	}
+	if value, ok := bu.mutation.DeleteTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: book.FieldDeleteTime,
+		})
+	}
+	if bu.mutation.DeleteTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: book.FieldDeleteTime,
+		})
 	}
 	if value, ok := bu.mutation.Title(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -174,6 +230,32 @@ type BookUpdateOne struct {
 	mutation *BookMutation
 }
 
+// SetUpdateTime sets the "update_time" field.
+func (buo *BookUpdateOne) SetUpdateTime(t time.Time) *BookUpdateOne {
+	buo.mutation.SetUpdateTime(t)
+	return buo
+}
+
+// SetDeleteTime sets the "delete_time" field.
+func (buo *BookUpdateOne) SetDeleteTime(t time.Time) *BookUpdateOne {
+	buo.mutation.SetDeleteTime(t)
+	return buo
+}
+
+// SetNillableDeleteTime sets the "delete_time" field if the given value is not nil.
+func (buo *BookUpdateOne) SetNillableDeleteTime(t *time.Time) *BookUpdateOne {
+	if t != nil {
+		buo.SetDeleteTime(*t)
+	}
+	return buo
+}
+
+// ClearDeleteTime clears the value of the "delete_time" field.
+func (buo *BookUpdateOne) ClearDeleteTime() *BookUpdateOne {
+	buo.mutation.ClearDeleteTime()
+	return buo
+}
+
 // SetTitle sets the "title" field.
 func (buo *BookUpdateOne) SetTitle(s string) *BookUpdateOne {
 	buo.mutation.SetTitle(s)
@@ -216,6 +298,7 @@ func (buo *BookUpdateOne) Save(ctx context.Context) (*Book, error) {
 		err  error
 		node *Book
 	)
+	buo.defaults()
 	if len(buo.hooks) == 0 {
 		node, err = buo.sqlSave(ctx)
 	} else {
@@ -264,6 +347,14 @@ func (buo *BookUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (buo *BookUpdateOne) defaults() {
+	if _, ok := buo.mutation.UpdateTime(); !ok {
+		v := book.UpdateDefaultUpdateTime()
+		buo.mutation.SetUpdateTime(v)
+	}
+}
+
 func (buo *BookUpdateOne) sqlSave(ctx context.Context) (_node *Book, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -298,6 +389,26 @@ func (buo *BookUpdateOne) sqlSave(ctx context.Context) (_node *Book, err error) 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := buo.mutation.UpdateTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: book.FieldUpdateTime,
+		})
+	}
+	if value, ok := buo.mutation.DeleteTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: book.FieldDeleteTime,
+		})
+	}
+	if buo.mutation.DeleteTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: book.FieldDeleteTime,
+		})
 	}
 	if value, ok := buo.mutation.Title(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

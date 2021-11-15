@@ -2,11 +2,12 @@ package biz
 
 import (
 	"context"
-	"github.com/xushuhui/goal/core"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/data/model"
 	"lin-cms-go/internal/request"
 	"lin-cms-go/pkg/errcode"
+
+	"github.com/xushuhui/goal/core"
 )
 
 func GetBookAll(ctx context.Context, page int, size int) (res interface{}, err error) {
@@ -55,7 +56,7 @@ func DeleteBook(ctx context.Context, id int) (err error) {
 		err = core.NewErrorCode(errcode.BookNotFound)
 		return
 	}
-	err = data.DeleteBook(ctx, id)
+	err = data.SoftDeleteBook(ctx, id)
 	return
 }
 

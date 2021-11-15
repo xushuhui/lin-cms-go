@@ -4,6 +4,7 @@ import (
 	"context"
 	"lin-cms-go/internal/data/model"
 	"lin-cms-go/internal/data/model/book"
+	"time"
 )
 
 func GetBookById(ctx context.Context, id int) (model *model.Book, err error) {
@@ -26,8 +27,8 @@ func CreateBook(ctx context.Context, title string, author string, summary string
 	return
 }
 
-func DeleteBook(ctx context.Context, id int) (err error) {
-	err = GetDB().Book.DeleteOneID(id).Exec(ctx)
+func SoftDeleteBook(ctx context.Context, id int) (err error) {
+	_, err = GetDB().Book.Update().Where(book.ID(id)).SetDeleteTime(time.Now()).Save(ctx)
 	return
 }
 
