@@ -11,7 +11,7 @@ func InitRoute(app *fiber.App) {
 	app.Static("/upload", "storage/upload")
 	app.Get("/", api.Hello)
 	cms := app.Group("/cms")
-	// v1 := app.Group("/v1")
+	v1 := app.Group("/v1")
 
 	cms.Post("/file", api.Upload)
 	cms.Post("/user/login", api.Login)
@@ -19,21 +19,18 @@ func InitRoute(app *fiber.App) {
 	// FIXME 开发阶段先注释jwt
 	cms.Use(LoginRequired)
 
-	//v1.Use(jwtware.New(jwtware.Config{
-	//	SigningKey: []byte("secret"),
-	//}))
-	userRouter := cms.Group("/user")
-	adminRouter := cms.Group("/admin")
-	logRouter := cms.Group("/log")
-
-	bookRouter := app.Group("/v1/book").Use(GroupRequired)
+	bookRouter := v1.Group("/book").Use(GroupRequired).Use(SetPermission("book", "图书"))
 	{
-		bookRouter.Use(SetPermission("book", "图书")).Get("/", api.GetBooks)
+		bookRouter.Get("/", api.GetBooks)
 		bookRouter.Get("/:id", api.GetBook)
 		bookRouter.Put("/:id", api.UpdateBook)
 		bookRouter.Post("/", api.CreateBook)
 		bookRouter.Delete("/:id", api.DeleteBook)
 	}
+
+	userRouter := cms.Group("/user")
+	adminRouter := cms.Group("/admin")
+	logRouter := cms.Group("/log")
 	{
 		userRouter.Use(AdminRequired).Post("/register", api.Register)
 		userRouter.Put("/", api.UpdateMe)

@@ -1,15 +1,12 @@
 package server
 
 import (
-	"fmt"
+	"github.com/gofiber/fiber/v2"
+	jwtware "github.com/gofiber/jwt/v3"
+	"github.com/xushuhui/goal/core"
 	"lin-cms-go/internal/biz"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/pkg/errcode"
-
-	jwtware "github.com/gofiber/jwt/v3"
-	"github.com/xushuhui/goal/core"
-
-	"github.com/gofiber/fiber/v2"
 )
 
 func UserLog(c *fiber.Ctx) error {
@@ -28,21 +25,22 @@ func UserLog(c *fiber.Ctx) error {
 	return err
 }
 
-type Permission struct {
-	Name   string `json:"name"`
-	Module string `json:"module"`
-}
-
 func SetPermission(name, module string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		c.Locals("permission", Permission{Name: name, Module: module})
+		c.Locals("permission", biz.Permission{Name: name, Module: module})
 		return c.Next()
 	}
 }
 
 func AdminRequired(c *fiber.Ctx) error {
-	fmt.Println("-------------------admin require middle+")
-	fmt.Println(c.Locals("permission"))
+
+	isAdmin, err := biz.IsAdmin(c)
+	if err != nil {
+		return err
+	}
+	if !isAdmin {
+		return core.NewErrorCode(errcode.UserNoPermission)
+	}
 	return c.Next()
 }
 
@@ -65,67 +63,16 @@ func GroupRequired(c *fiber.Ctx) error {
 		return c.Next()
 	}
 
-	local := c.Locals("permission")
-	if local == nil {
-		return core.NewErrorCode(errcode.UserPermissionRequired)
+	has, err := biz.UserHasPermission(c)
+	if err != nil {
+		return err
 	}
-	p := local.(Permission)
-	fmt.Println(p)
+	if !has {
+		return core.NewErrorCode(errcode.UserNoPermission)
+	}
 	return c.Next()
 }
 
-//
-//func (a *Auth) GroupRequired(c *gin.Context) {
-//	user, _ := c.Get("currentUser")
-//	userId := user.(model.User).ID
-//	// admin直接通过
-//	admin, _ := a.UserService.IsAdmin(userId)
-//	if admin {
-//		c.Next()
-//	} else {
-//		meta, ok := c.Get("meta")
-//		if !ok {
-//			return
-//		}
-//		routeMeta := meta.(router.Meta)
-//		if !routeMeta.Mount {
-//			c.Next()
-//		} else {
-//			hasPermission := a.GroupService.GetUserHasPermission(userId, routeMeta)
-//			if !hasPermission {
-//				_ = c.Error(response.UnifyResponse(10001, c))
-//				c.Abort()
-//				return
-//			} else {
-//				c.Next()
-//			}
-//		}
-//	}
-//}
-
-//
-//func (a *Auth) AdminRequired(c *gin.Context) {
-//	if err := a.mountUser(c); err != nil {
-//		_ = c.Error(err)
-//		c.Abort()
-//		return
-//	}
-//	user, _ := c.Get("currentUser")
-//	currentUser := user.(model.User)
-//	admin, err := a.UserService.IsAdmin(currentUser.ID)
-//	if err != nil {
-//		_ = c.Error(response.UnifyResponse(10021, c))
-//		c.Abort()
-//		return
-//	}
-//	if admin {
-//		c.Next()
-//	} else {
-//		_ = c.Error(response.UnifyResponse(10001, c))
-//		c.Abort()
-//		return
-//	}
-//}
 //
 //func (a *Auth) RefreshRequired(ctx *gin.Context) {
 //	refreshToken, tokenErr := getHeaderToken(ctx)
