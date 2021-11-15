@@ -17,6 +17,7 @@ const (
 	RootGroupNotAllowDelete  = 30002
 	GuestGroupNotAllowDelete = 30003
 	PermissionNotFound       = 30004
+	UserPermissionRequired   = 40000
 )
 
 func init() {
@@ -34,5 +35,6 @@ func init() {
 		GuestGroupNotAllowDelete: "guest分组不允许删除",
 		GroupFound:               "分组已存在",
 		PermissionNotFound:       "权限不存在",
+		UserPermissionRequired:   "用户权限必须存在",
 	}
 }

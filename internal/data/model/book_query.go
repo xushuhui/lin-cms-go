@@ -298,12 +298,12 @@ func (bq *BookQuery) Clone() *BookQuery {
 // Example:
 //
 //	var v []struct {
-//		Title string `json:"title,omitempty"`
+//		CreateTime time.Time `json:"create_time,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.Book.Query().
-//		GroupBy(book.FieldTitle).
+//		GroupBy(book.FieldCreateTime).
 //		Aggregate(model.Count()).
 //		Scan(ctx, &v)
 //
@@ -325,11 +325,11 @@ func (bq *BookQuery) GroupBy(field string, fields ...string) *BookGroupBy {
 // Example:
 //
 //	var v []struct {
-//		Title string `json:"title,omitempty"`
+//		CreateTime time.Time `json:"create_time,omitempty"`
 //	}
 //
 //	client.Book.Query().
-//		Select(book.FieldTitle).
+//		Select(book.FieldCreateTime).
 //		Scan(ctx, &v)
 //
 func (bq *BookQuery) Select(fields ...string) *BookSelect {

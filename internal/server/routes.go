@@ -1,33 +1,41 @@
 package server
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"lin-cms-go/api"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func InitRoute(app *fiber.App) {
-	//加载静态资源，一般是上传的资源，例如用户上传的图片
+	// 加载静态资源，一般是上传的资源，例如用户上传的图片
 	app.Static("/upload", "storage/upload")
 	app.Get("/", api.Hello)
 	cms := app.Group("/cms")
-	v1 := app.Group("/v1")
+	// v1 := app.Group("/v1")
+
 	cms.Post("/file", api.Upload)
 	cms.Post("/user/login", api.Login)
-	cms.Post("/user/register", api.Register)
+
 	// FIXME 开发阶段先注释jwt
-	//cms.Use(jwtware.New(jwtware.Config{
-	//	SigningKey: []byte("secret"),
-	//}))
+	cms.Use(LoginRequired)
 
 	//v1.Use(jwtware.New(jwtware.Config{
 	//	SigningKey: []byte("secret"),
 	//}))
-	{
-		userRouter := cms.Group("/user")
-		adminRouter := cms.Group("/admin")
-		logRouter := cms.Group("/log")
-		bookRouter := v1.Group("/book")
+	userRouter := cms.Group("/user")
+	adminRouter := cms.Group("/admin")
+	logRouter := cms.Group("/log")
 
+	bookRouter := app.Group("/v1/book").Use(GroupRequired)
+	{
+		bookRouter.Use(SetPermission("book", "图书")).Get("/", api.GetBooks)
+		bookRouter.Get("/:id", api.GetBook)
+		bookRouter.Put("/:id", api.UpdateBook)
+		bookRouter.Post("/", api.CreateBook)
+		bookRouter.Delete("/:id", api.DeleteBook)
+	}
+	{
+		userRouter.Use(AdminRequired).Post("/register", api.Register)
 		userRouter.Put("/", api.UpdateMe)
 		userRouter.Put("/change_password", api.ChangeMyPassword)
 		userRouter.Get("/permissions", api.GetMyPermissions)
@@ -53,11 +61,5 @@ func InitRoute(app *fiber.App) {
 		logRouter.Get("/search", api.SearchLogs)
 		logRouter.Get("/users", api.GetLogUsers)
 
-		bookRouter.Get("/", api.GetBooks)
-		bookRouter.Get("/:id", api.GetBook)
-		bookRouter.Put("/:id", api.UpdateBook)
-		bookRouter.Post("/", api.CreateBook)
-		bookRouter.Delete("/:id", api.DeleteBook)
 	}
-
 }

@@ -4,6 +4,7 @@ package model
 
 import (
 	"lin-cms-go/internal/data/ent/schema"
+	"lin-cms-go/internal/data/model/book"
 	"lin-cms-go/internal/data/model/lingroup"
 	"lin-cms-go/internal/data/model/linlog"
 	"lin-cms-go/internal/data/model/linuser"
@@ -15,6 +16,21 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	bookMixin := schema.Book{}.Mixin()
+	bookMixinFields0 := bookMixin[0].Fields()
+	_ = bookMixinFields0
+	bookFields := schema.Book{}.Fields()
+	_ = bookFields
+	// bookDescCreateTime is the schema descriptor for create_time field.
+	bookDescCreateTime := bookMixinFields0[0].Descriptor()
+	// book.DefaultCreateTime holds the default value on creation for the create_time field.
+	book.DefaultCreateTime = bookDescCreateTime.Default.(func() time.Time)
+	// bookDescUpdateTime is the schema descriptor for update_time field.
+	bookDescUpdateTime := bookMixinFields0[1].Descriptor()
+	// book.DefaultUpdateTime holds the default value on creation for the update_time field.
+	book.DefaultUpdateTime = bookDescUpdateTime.Default.(func() time.Time)
+	// book.UpdateDefaultUpdateTime holds the default value on update for the update_time field.
+	book.UpdateDefaultUpdateTime = bookDescUpdateTime.UpdateDefault.(func() time.Time)
 	lingroupMixin := schema.LinGroup{}.Mixin()
 	lingroupMixinFields0 := lingroupMixin[0].Fields()
 	_ = lingroupMixinFields0
