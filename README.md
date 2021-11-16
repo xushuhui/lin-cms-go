@@ -22,7 +22,7 @@
 
 ## 专栏教程 (todo)
 
-* [《lin cms go&vue 教程》](https://github.com/xushuhui/lin-cms-go) 专栏教程连载更新中，通过实战开源前后端分离 cms——lin cms 全家桶（lin-cms-vue & lin-cms-go）为一个前端应用实现内容管理系统。一套教程入门上手 vue、fiber 两大框架，自用、工作、私单一次打通。
+* lin cms 全家桶（lin-cms-vue & lin-cms-go）为一个前端应用实现内容管理系统。一套教程入门上手 vue、fiber 两大框架。
 
 * 读者反馈：[《lin cms php&vue 教程》读者反馈贴](https://github.com/xushuhui/lin-cms-go/issues/47)
 

@@ -27,7 +27,13 @@ func UserLog(c *fiber.Ctx) error {
 
 func SetPermission(name, module string) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		c.Locals("permission", biz.Permission{Name: name, Module: module})
+		p := biz.Permission{Name: name, Module: module}
+		err := biz.CreateIfNoPermissions(c.Context(), p)
+		if err != nil {
+			return err
+		}
+		c.Locals("permission", p)
+
 		return c.Next()
 	}
 }
