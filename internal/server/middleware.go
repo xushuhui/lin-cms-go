@@ -5,8 +5,6 @@ import (
 	"lin-cms-go/internal/data"
 	"lin-cms-go/pkg/errcode"
 
-	jwtware "github.com/gofiber/jwt/v3"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/xushuhui/goal/core"
 )
@@ -46,13 +44,12 @@ func AdminRequired(c *fiber.Ctx) error {
 }
 
 func LoginRequired(c *fiber.Ctx) error {
-	if c.Method() != fiber.MethodOptions {
-		jwtware.New(jwtware.Config{
-			SigningKey: []byte("secret"),
-		})
-		return c.Next()
+	user := biz.LocalUser(c)
+	if user.ID == 0 {
+		return core.NewErrorCode(errcode.AuthCheckTokenFail)
 	}
-	return core.NewErrorCode(errcode.UserNoPermission)
+
+	return c.Next()
 }
 
 func GroupRequired(c *fiber.Ctx) error {

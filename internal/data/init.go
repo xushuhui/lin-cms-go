@@ -2,18 +2,21 @@ package data
 
 import (
 	"context"
-	"github.com/pkg/errors"
 	"lin-cms-go/internal/conf"
-
-	"github.com/xushuhui/goal/core"
 	"lin-cms-go/internal/data/model"
 	"sync"
+
+	"github.com/pkg/errors"
+
+	"github.com/xushuhui/goal/core"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var ds *DataSource
-var once sync.Once
+var (
+	ds   *DataSource
+	once sync.Once
+)
 
 type Paging struct {
 	Page   int
@@ -38,15 +41,13 @@ func NewDataSource(conf *conf.Data) {
 	ds = &DataSource{
 		Db: make(map[string]*model.Client),
 	}
-	db := NewDBClient(conf)
-	ds.Db["default"] = db
+
+	ds.Db["default"] = NewDBClient(conf)
 }
 
 func NewDBClient(conf *conf.Data) (db *model.Client) {
-
 	var err error
 	once.Do(func() {
-
 		db, err = model.Open(conf.Database.Driver, conf.Database.Source, model.Debug())
 		if err != nil {
 			panic(err)
@@ -66,6 +67,7 @@ func (d *DataSource) GetDb(name string) *model.Client {
 func GetDB() *model.Client {
 	return ds.GetDb("default")
 }
+
 func WithTx(ctx context.Context, client *model.Client, fn func(tx *model.Tx) error) error {
 	tx, err := client.Tx(ctx)
 	if err != nil {
@@ -80,7 +82,6 @@ func WithTx(ctx context.Context, client *model.Client, fn func(tx *model.Tx) err
 	if err := fn(tx); err != nil {
 		if rerr := tx.Rollback(); rerr != nil {
 			err = errors.Wrapf(err, "rolling back transaction: %v", rerr)
-
 		}
 		return err
 	}
