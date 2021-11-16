@@ -45,8 +45,10 @@ func GetLinUserById(ctx context.Context, uid int) (model *model.LinUser, err err
 	return
 }
 
-func GetLinUserWithGroupById(ctx context.Context, uid int) (model *model.LinUser, err error) {
-	model, err = GetDB().LinUser.Query().Where(linuser.ID(uid)).WithLinGroup().First(ctx)
+func GetLinUserWithGroupById(ctx context.Context, uid int) (users *model.LinUser, err error) {
+	users, err = GetDB().LinUser.Query().Where(linuser.ID(uid)).WithLinGroup(func(query *model.LinGroupQuery) {
+		query.WithLinPermission()
+	}).First(ctx)
 
 	return
 }

@@ -2,6 +2,7 @@ package server
 
 import (
 	"lin-cms-go/api"
+	"lin-cms-go/pkg/lib"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,10 +17,9 @@ func InitRoute(app *fiber.App) {
 	cms.Post("/file", api.Upload)
 	cms.Post("/user/login", api.Login)
 
-	// FIXME 开发阶段先注释jwt
-	cms.Use(LoginRequired)
-
-	bookRouter := v1.Group("/book").Use(GroupRequired).Use(SetPermission("book", "图书"))
+	cms.Use(lib.ParseJwt(), LoginRequired)
+	v1.Use(lib.ParseJwt(), LoginRequired)
+	bookRouter := v1.Group("/book").Use(SetPermission("book", "图书")).Use(GroupRequired)
 	{
 		bookRouter.Get("/", api.GetBooks)
 		bookRouter.Get("/:id", api.GetBook)
