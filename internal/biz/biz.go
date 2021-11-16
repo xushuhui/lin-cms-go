@@ -2,11 +2,12 @@ package biz
 
 import (
 	"context"
-	"github.com/xushuhui/goal/core"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/data/model"
 	"lin-cms-go/pkg/enum"
 	"lin-cms-go/pkg/errcode"
+
+	"github.com/xushuhui/goal/core"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
@@ -34,7 +35,6 @@ func IsAdmin(c *fiber.Ctx) (is bool, err error) {
 	}
 
 	for _, v := range u.Edges.LinGroup {
-
 		if v.Level == enum.ROOT {
 			is = true
 		}
@@ -64,7 +64,6 @@ func UserHasPermission(c *fiber.Ctx) (has bool, err error) {
 		for _, p := range v.Edges.LinPermission {
 			ps = append(ps, *p)
 		}
-
 	}
 	for _, p := range ps {
 		if p.Module == userPermission.Module && p.Name == userPermission.Name {

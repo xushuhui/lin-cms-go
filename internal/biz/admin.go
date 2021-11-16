@@ -2,17 +2,20 @@ package biz
 
 import (
 	"context"
-	"github.com/xushuhui/goal/core"
-	"golang.org/x/crypto/bcrypt"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/data/model"
-	"lin-cms-go/internal/request"
 	"lin-cms-go/pkg/errcode"
+
+	"github.com/xushuhui/goal/core"
+	"golang.org/x/crypto/bcrypt"
 )
 
-func GetUsers(req request.GetUsers) (res interface{}, err error) {
+func GetUsers(ctx context.Context, groupId int, page, size int) (res interface{}, err error) {
+	list, err := data.NewPaging(page, size).ListUserByGroupId(ctx, groupId)
+	res = list
 	return
 }
+
 func ChangeUserPassword(ctx context.Context, userId int, password string) (err error) {
 	user, err := data.GetLinUserIdentityByUserId(ctx, userId)
 	if err != nil {
@@ -30,6 +33,7 @@ func ChangeUserPassword(ctx context.Context, userId int, password string) (err e
 	}
 	return
 }
+
 func DeleteUser(ctx context.Context, userId int) (err error) {
 	_, err = data.GetLinUserById(ctx, userId)
 	if model.IsNotFound(err) {
@@ -39,6 +43,13 @@ func DeleteUser(ctx context.Context, userId int) (err error) {
 	err = data.SoftDeleteUser(ctx, userId)
 	return
 }
-func UpdateUser(req request.UpdateUser) (err error) {
+
+func UpdateUser(ctx context.Context, userId int, groupId []int) (err error) {
+	_, err = data.GetLinUserById(ctx, userId)
+	if model.IsNotFound(err) {
+		err = core.NewErrorCode(errcode.UserNotFound)
+		return
+	}
+	err = data.AddLinUserGroupIDs(ctx, userId, groupId)
 	return
 }
