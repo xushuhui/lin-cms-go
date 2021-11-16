@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"lin-cms-go/internal/data/model"
+	"lin-cms-go/internal/data/model/lingroup"
 	"lin-cms-go/internal/data/model/linuser"
 	"lin-cms-go/internal/data/model/linuseridentiy"
 	"time"
@@ -63,9 +64,34 @@ func UpdateLinUserIdentityPassword(ctx context.Context, username, password strin
 
 	return
 }
+
 func SoftDeleteUser(ctx context.Context, userId int) (err error) {
 	_, err = GetDB().LinUser.Update().Where(linuser.ID(userId)).
 		SetDeleteTime(time.Now()).Save(ctx)
 
+	return
+}
+
+func (p *Paging) ListUser(ctx context.Context) (users []*model.LinUser, err error) {
+	users, err = GetDB().LinUser.Query().WithLinGroup().Limit(p.Size).Offset(p.Offset).All(ctx)
+	return
+}
+
+func (p *Paging) ListUserByGroupId(ctx context.Context, groupId int) (users []*model.LinUser, err error) {
+	groups, err := GetDB().LinGroup.Query().Where(lingroup.ID(groupId)).WithLinUser(func(query *model.LinUserQuery) {
+		query.Limit(p.Size).Offset(p.Offset).WithLinGroup()
+	}).All(ctx)
+	if err != nil {
+		return
+	}
+	for _, g := range groups {
+		users = append(users, g.Edges.LinUser...)
+	}
+
+	return
+}
+
+func AddLinUserGroupIDs(ctx context.Context, userId int, groupIds []int) (err error) {
+	_, err = GetDB().LinUser.Update().Where(linuser.ID(userId)).ClearLinGroup().AddLinGroupIDs(groupIds...).Save(ctx)
 	return
 }

@@ -2,15 +2,14 @@ package biz
 
 import (
 	"context"
-	"errors"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/data/model"
-
-	"github.com/xushuhui/goal/core"
 	"lin-cms-go/internal/request"
 	"lin-cms-go/pkg/errcode"
 	"lin-cms-go/pkg/lib"
 	"time"
+
+	"github.com/xushuhui/goal/core"
 
 	"github.com/golang-jwt/jwt/v4"
 
@@ -18,7 +17,6 @@ import (
 )
 
 func Login(ctx context.Context, username, password string) (res map[string]interface{}, err error) {
-
 	// 正确密码验证
 	userIdentityModel, err := data.GetLinUserIdentityByIdentifier(ctx, username)
 	if model.IsNotFound(err) {
@@ -50,13 +48,14 @@ func Login(ctx context.Context, username, password string) (res map[string]inter
 	res["access_token"] = token
 	return
 }
+
 func Register(ctx context.Context, req request.Register) (err error) {
 	userIdentityModel, err := data.GetLinUserIdentityByIdentifier(ctx, req.Username)
 	if model.MaskNotFound(err) != nil {
 		return err
 	}
 	if userIdentityModel != nil && userIdentityModel.ID > 0 {
-		err = errors.New("user is found")
+		err = core.NewErrorCode(errcode.UserNotFound)
 		return
 	}
 
@@ -66,8 +65,8 @@ func Register(ctx context.Context, req request.Register) (err error) {
 	}
 	err = data.CreateLinUser(ctx, req.Username, string(hash), req.Email, req.GroupId)
 	return
-
 }
+
 func UpdateMe(ctx context.Context, req request.UpdateMe, uid int) (err error) {
 	_, err = data.GetLinUserById(ctx, uid)
 	if model.IsNotFound(err) {
@@ -80,8 +79,8 @@ func UpdateMe(ctx context.Context, req request.UpdateMe, uid int) (err error) {
 	err = data.UpdateLinUser(ctx, uid, req.Avatar, req.Nickname, req.Email)
 	return
 }
-func ChangeMyPassword(ctx context.Context, req request.ChangeMyPassword, username string) (err error) {
 
+func ChangeMyPassword(ctx context.Context, req request.ChangeMyPassword, username string) (err error) {
 	userIdentityModel, err := data.GetLinUserIdentityByIdentifier(ctx, username)
 	if err != nil {
 		return err
@@ -102,6 +101,7 @@ func ChangeMyPassword(ctx context.Context, req request.ChangeMyPassword, usernam
 
 	return
 }
+
 func GetMyPermissions(ctx context.Context, uid int) (res map[string]interface{}, err error) {
 	user, err := data.GetLinUserById(ctx, uid)
 	if model.IsNotFound(err) {
@@ -122,7 +122,7 @@ func GetMyPermissions(ctx context.Context, uid int) (res map[string]interface{},
 
 	res = make(map[string]interface{})
 	res["is_admin"] = isRoot
-	//data["permissions"] = permissions
+	// data["permissions"] = permissions
 	return
 }
 

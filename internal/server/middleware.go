@@ -1,12 +1,14 @@
 package server
 
 import (
-	"github.com/gofiber/fiber/v2"
-	jwtware "github.com/gofiber/jwt/v3"
-	"github.com/xushuhui/goal/core"
 	"lin-cms-go/internal/biz"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/pkg/errcode"
+
+	jwtware "github.com/gofiber/jwt/v3"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/xushuhui/goal/core"
 )
 
 func UserLog(c *fiber.Ctx) error {
@@ -33,7 +35,6 @@ func SetPermission(name, module string) fiber.Handler {
 }
 
 func AdminRequired(c *fiber.Ctx) error {
-
 	isAdmin, err := biz.IsAdmin(c)
 	if err != nil {
 		return err
@@ -51,7 +52,7 @@ func LoginRequired(c *fiber.Ctx) error {
 		})
 		return c.Next()
 	}
-	return c.Next()
+	return core.NewErrorCode(errcode.UserNoPermission)
 }
 
 func GroupRequired(c *fiber.Ctx) error {
