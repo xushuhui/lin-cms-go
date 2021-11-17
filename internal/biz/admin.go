@@ -37,7 +37,7 @@ func ChangeUserPassword(ctx context.Context, userId int, password string) (err e
 func DeleteUser(ctx context.Context, userId int) (err error) {
 	_, err = data.GetLinUserById(ctx, userId)
 	if model.IsNotFound(err) {
-		err = core.NewErrorCode(errcode.UserNotFound)
+		err = core.NotFoundError(errcode.UserNotFound)
 		return
 	}
 	err = data.SoftDeleteUser(ctx, userId)
@@ -47,7 +47,7 @@ func DeleteUser(ctx context.Context, userId int) (err error) {
 func UpdateUser(ctx context.Context, userId int, groupId []int) (err error) {
 	_, err = data.GetLinUserById(ctx, userId)
 	if model.IsNotFound(err) {
-		err = core.NewErrorCode(errcode.UserNotFound)
+		err = core.NotFoundError(errcode.UserNotFound)
 		return
 	}
 	err = data.AddLinUserGroupIDs(ctx, userId, groupId)

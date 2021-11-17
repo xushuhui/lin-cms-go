@@ -29,7 +29,7 @@ func LocalUser(c *fiber.Ctx) (user model.LinUser) {
 func IsAdmin(c *fiber.Ctx) (is bool, err error) {
 	user := LocalUser(c)
 	if user.ID == 0 {
-		err = core.NewErrorCode(errcode.ErrorAuthToken)
+		err = core.UnAuthenticatedError(errcode.ErrorAuthToken)
 		return
 	}
 	u, err := data.GetLinUserWithGroupById(c.Context(), user.ID)
@@ -55,13 +55,13 @@ func UserHasPermission(c *fiber.Ctx) (has bool, err error) {
 
 	u, err := data.GetLinUserWithGroupById(context.Background(), user.ID)
 	if model.IsNotFound(err) {
-		err = core.NewErrorCode(errcode.UserNotFound)
+		err = core.NotFoundError(errcode.UserNotFound)
 		return
 	}
 
 	local := c.Locals("permission")
 	if local == nil {
-		return false, core.NewErrorCode(errcode.UserPermissionRequired)
+		return false, core.UnAuthenticatedError(errcode.UserPermissionRequired)
 	}
 	userPermission := local.(Permission)
 	var ps []model.LinPermission
