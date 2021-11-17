@@ -14,7 +14,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rogpeppe/go-internal v1.8.1-0.20211023094830-115ce09fd6b4 // indirect
 	github.com/stretchr/testify v1.7.0
-	github.com/xushuhui/goal v0.0.0-20211111072059-9e0980ea752d
+	github.com/xushuhui/goal v0.0.0-20211117054211-7316adac0e40
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 	golang.org/x/sys v0.0.0-20211110154304-99a53858aa08 // indirect
 	golang.org/x/text v0.3.7 // indirect

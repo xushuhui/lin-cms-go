@@ -29,7 +29,7 @@ func Login(ctx context.Context, username, password string) (res map[string]inter
 
 	err = bcrypt.CompareHashAndPassword([]byte(userIdentityModel.Credential), []byte(password))
 	if err != nil {
-		err = core.NewErrorCode(errcode.ErrorPassWord)
+		err = core.ParamsError(errcode.ErrorPassWord)
 		return
 	}
 	user, err := data.GetLinUserById(ctx, userIdentityModel.UserID)
@@ -55,7 +55,7 @@ func Register(ctx context.Context, req request.Register) (err error) {
 		return err
 	}
 	if userIdentityModel != nil && userIdentityModel.ID > 0 {
-		err = core.NewErrorCode(errcode.UserNotFound)
+		err = core.ParamsError(errcode.UserFound)
 		return
 	}
 
@@ -70,7 +70,7 @@ func Register(ctx context.Context, req request.Register) (err error) {
 func UpdateMe(ctx context.Context, req request.UpdateMe, uid int) (err error) {
 	_, err = data.GetLinUserById(ctx, uid)
 	if model.IsNotFound(err) {
-		err = core.NewErrorCode(errcode.UserNotFound)
+		err = core.NotFoundError(errcode.UserNotFound)
 		return
 	}
 	if err != nil {
@@ -87,7 +87,7 @@ func ChangeMyPassword(ctx context.Context, req request.ChangeMyPassword, usernam
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(userIdentityModel.Credential), []byte(req.OldPassword))
 	if err != nil {
-		err = core.NewErrorCode(errcode.ErrorPassWord)
+		err = core.ParamsError(errcode.ErrorPassWord)
 		return
 	}
 	hash, err := bcrypt.GenerateFromPassword([]byte(req.NewPassword), bcrypt.DefaultCost)
@@ -105,7 +105,7 @@ func ChangeMyPassword(ctx context.Context, req request.ChangeMyPassword, usernam
 func GetMyPermissions(ctx context.Context, uid int) (res map[string]interface{}, err error) {
 	user, err := data.GetLinUserById(ctx, uid)
 	if model.IsNotFound(err) {
-		err = core.NewErrorCode(errcode.UserNotFound)
+		err = core.NotFoundError(errcode.UserNotFound)
 		return
 	}
 	if err != nil {
@@ -133,7 +133,7 @@ type LinUser struct {
 func GetMyInfomation(ctx context.Context, uid int) (res LinUser, err error) {
 	usermodel, err := data.GetLinUserById(ctx, uid)
 	if model.IsNotFound(err) {
-		err = core.NewErrorCode(errcode.UserNotFound)
+		err = core.NotFoundError(errcode.UserNotFound)
 		return
 	}
 	res = LinUser{*usermodel}

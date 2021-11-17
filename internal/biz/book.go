@@ -27,7 +27,7 @@ func GetBookTotal(ctx context.Context) (total int, err error) {
 func UpdateBook(ctx context.Context, id int, req request.UpdateBook) (err error) {
 	_, err = data.GetBookById(ctx, id)
 	if model.IsNotFound(err) {
-		err = core.NewErrorCode(errcode.BookNotFound)
+		err = core.NotFoundError(errcode.BookNotFound)
 		return
 	}
 	if err != nil {
@@ -43,7 +43,7 @@ func CreateBook(ctx context.Context, req request.CreateBook) (err error) {
 		return err
 	}
 	if book != nil {
-		err = core.NewErrorCode(errcode.BookTitleRepetition)
+		err = core.ParamsError(errcode.BookTitleRepetition)
 		return
 	}
 	err = data.CreateBook(ctx, req.Title, req.Author, req.Summary, req.Image)
@@ -53,7 +53,7 @@ func CreateBook(ctx context.Context, req request.CreateBook) (err error) {
 func DeleteBook(ctx context.Context, id int) (err error) {
 	_, err = data.GetBookById(ctx, id)
 	if model.IsNotFound(err) {
-		err = core.NewErrorCode(errcode.BookNotFound)
+		err = core.NotFoundError(errcode.BookNotFound)
 		return
 	}
 	err = data.SoftDeleteBook(ctx, id)
@@ -63,7 +63,7 @@ func DeleteBook(ctx context.Context, id int) (err error) {
 func GetBook(ctx context.Context, id int) (res interface{}, err error) {
 	book, err := data.GetBookById(ctx, id)
 	if model.IsNotFound(err) {
-		err = core.NewErrorCode(errcode.BookNotFound)
+		err = core.NotFoundError(errcode.BookNotFound)
 		return
 	}
 	res = book

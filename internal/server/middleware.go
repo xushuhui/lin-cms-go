@@ -44,7 +44,7 @@ func AdminRequired(c *fiber.Ctx) error {
 		return err
 	}
 	if !isAdmin {
-		return core.NewErrorCode(errcode.UserNoPermission)
+		return core.UnAuthenticatedError(errcode.UserNoPermission)
 	}
 	return c.Next()
 }
@@ -52,7 +52,7 @@ func AdminRequired(c *fiber.Ctx) error {
 func LoginRequired(c *fiber.Ctx) error {
 	user := biz.LocalUser(c)
 	if user.ID == 0 {
-		return core.NewErrorCode(errcode.AuthCheckTokenFail)
+		return core.UnAuthenticatedError(errcode.AuthCheckTokenFail)
 	}
 
 	return c.Next()
@@ -72,7 +72,7 @@ func GroupRequired(c *fiber.Ctx) error {
 		return err
 	}
 	if !has {
-		return core.NewErrorCode(errcode.UserNoPermission)
+		return core.UnAuthenticatedError(errcode.UserNoPermission)
 	}
 	return c.Next()
 }
