@@ -7,7 +7,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/go-%3e%3d1.14-blue.svg" alt="php version" data-canonical-src="https://img.shields.io/badge/go-%3e%3d1.14-blue.svg" style="max-width:100%;"></a>
-  <a href="https://www.kancloud.cn/manual/fiber5_1/353946" rel="nofollow"><img src="https://img.shields.io/badge/fiber-5.1.*-green.svg" alt="fiber version" data-canonical-src="https://img.shields.io/badge/fiber-5.1.*-green.svg" style="max-width:100%;"></a>
+  <a href="" rel="nofollow"><img src="https://img.shields.io/badge/fiber-2.21.*-green.svg" alt="fiber version" data-canonical-src="https://img.shields.io/badge/fiber-2.21.*-green.svg" style="max-width:100%;"></a>
   <img src="https://img.shields.io/badge/license-license--2.0-lightgrey.svg" alt="lisence" data-canonical-src="https://img.shields.io/badge/license-license--2.0-lightgrey.svg" style="max-width:100%;"></a>
 </p>
 

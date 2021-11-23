@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	"github.com/pkg/errors"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/data/model"
 	"lin-cms-go/internal/request"
@@ -32,6 +33,7 @@ func GetGroup(ctx context.Context, id int) (res interface{}, err error) {
 		err = core.NotFoundError(errcode.GroupNotFound)
 		return
 	}
+
 	res = Group{Id: linGroupModel.ID, Name: linGroupModel.Name, Info: linGroupModel.Info, Level: linGroupModel.Level}
 	return
 }
@@ -56,14 +58,20 @@ func CreateGroup(ctx context.Context, name string, info string, permissionIds []
 			err = core.NotFoundError(errcode.PermissionNotFound)
 			return
 		}
+		if err != nil {
+			err = errors.Wrap(err, "GetLinPermissionById err")
+			return
+		}
 	}
 	groupModel, err := data.CreateGroup(ctx, name, info, enum.USER)
 	if err != nil {
+		err = errors.Wrap(err, "CreateGroup err")
 		return
 	}
 
 	err = data.BatchCreateGroupPermission(ctx, groupModel.ID, permissionIds)
 	if err != nil {
+		err = errors.Wrap(err, "BatchCreateGroupPermission err")
 		return
 	}
 	return
@@ -75,7 +83,15 @@ func UpdateGroup(ctx context.Context, id int, req request.UpdateGroup) (err erro
 		err = core.NotFoundError(errcode.GroupNotFound)
 		return
 	}
+	if err != nil {
+		err = errors.Wrap(err, "GetLinGroupById")
+		return
+	}
 	err = data.UpdateGroup(ctx, id, req.Name, req.Info)
+	if err != nil {
+		err = errors.Wrap(err, "UpdateGroup")
+		return
+	}
 	return
 }
 
@@ -87,6 +103,7 @@ func DeleteGroup(ctx context.Context, id int) (err error) {
 		return
 	}
 	if err != nil {
+		err = errors.Wrap(err, "GetLinGroupById ")
 		return
 	}
 	if linGroup.Level == enum.ROOT {
@@ -100,6 +117,9 @@ func DeleteGroup(ctx context.Context, id int) (err error) {
 	}
 
 	err = data.DeleteGroup(ctx, id)
-
+	if err != nil {
+		err = errors.Wrap(err, "DeleteGroup ")
+		return
+	}
 	return
 }

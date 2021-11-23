@@ -2,6 +2,7 @@ package biz
 
 import (
 	"context"
+	"github.com/pkg/errors"
 	"github.com/xushuhui/goal/utils"
 	"lin-cms-go/internal/data"
 	"lin-cms-go/internal/data/model"
@@ -25,10 +26,12 @@ func GetLogs(ctx context.Context, req request.GetLogs, page int, size int) (res 
 		query = append(query, q)
 	}
 	logs, err = paging.Search(ctx, query)
-	total = data.GetSearchTotal(ctx, query)
 	if err != nil {
+		err = errors.Wrap(err, "Search ")
 		return
 	}
+	total = data.GetSearchTotal(ctx, query)
+
 	res = logs
 	return
 }
@@ -51,6 +54,10 @@ func SearchLogs(ctx context.Context, req request.SearchLogs, page int, size int)
 		query = append(query, data.WithKeyword(req.Name))
 	}
 	logs, err = paging.Search(ctx, query)
+	if err != nil {
+		err = errors.Wrap(err, "Search ")
+		return
+	}
 	total = data.GetSearchTotal(ctx, query)
 	res = logs
 	return
@@ -59,8 +66,13 @@ func GetLogUsers(ctx context.Context, page, size int) (res interface{}, total in
 	paging := data.NewPaging(page, size)
 	res, err = paging.GetLogUsers(ctx)
 	if err != nil {
+		err = errors.Wrap(err, "GetLogUsers ")
 		return
 	}
-	total, _ = data.GetLogUsersTotal(ctx)
+	total, err = data.GetLogUsersTotal(ctx)
+	if err != nil {
+		err = errors.Wrap(err, "GetLogUsersTotal ")
+		return
+	}
 	return
 }
