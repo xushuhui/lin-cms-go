@@ -22,6 +22,7 @@ func LocalUser(c *fiber.Ctx) (user model.LinUser) {
 	jwtToken := local.(*jwt.Token)
 	claims := jwtToken.Claims.(jwt.MapClaims)
 	bytes, _ := utils.JSONEncode(claims["user"])
+
 	utils.JSONDecode(bytes, &user)
 	return
 }

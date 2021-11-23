@@ -257,8 +257,6 @@ github.com/valyala/fasthttp v1.31.0/go.mod h1:2rsYD01CKFrjjsvFxx75KlEUNpWNBY9JWD
 github.com/valyala/tcplisten v1.0.0 h1:rBHj/Xf+E1tRGZyWIWwJDiRY0zc1Js+CV5DqwacVSA8=
 github.com/valyala/tcplisten v1.0.0/go.mod h1:T0xQ8SeCZGxckz9qRXTfG43PvQ/mcWh7FwZEA7Ioqkc=
 github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2/go.mod h1:UETIi67q53MR2AWcXfiuqkDkRtnGDLqkBTpCHuJHxtU=
-github.com/xushuhui/goal v0.0.0-20211116121521-afb3872f881c h1:yKTjapqcNjriF9Gy84glT68nQIwfrb8AL6M2H87FVGU=
-github.com/xushuhui/goal v0.0.0-20211116121521-afb3872f881c/go.mod h1:tt/FlyU4tD/Zhg1ncrgGfmgwd0PMykAgShbSR5sDMWc=
 github.com/xushuhui/goal v0.0.0-20211117054211-7316adac0e40 h1:vcKaNC1maKJUsm9aVqg4hSaXFAvzqV9rrXf+N8YdB1A=
 github.com/xushuhui/goal v0.0.0-20211117054211-7316adac0e40/go.mod h1:tt/FlyU4tD/Zhg1ncrgGfmgwd0PMykAgShbSR5sDMWc=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
