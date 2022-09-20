@@ -6,7 +6,7 @@
 </h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/go-%3e%3d1.14-blue.svg" alt="php version" data-canonical-src="https://img.shields.io/badge/go-%3e%3d1.14-blue.svg" style="max-width:100%;"></a>
+  <img src="https://img.shields.io/badge/go-%3e%3d1.14-blue.svg" alt="go version" data-canonical-src="https://img.shields.io/badge/go-%3e%3d1.14-blue.svg" style="max-width:100%;"></a>
   <a href="" rel="nofollow"><img src="https://img.shields.io/badge/fiber-2.21.*-green.svg" alt="fiber version" data-canonical-src="https://img.shields.io/badge/fiber-2.21.*-green.svg" style="max-width:100%;"></a>
   <img src="https://img.shields.io/badge/license-license--2.0-lightgrey.svg" alt="lisence" data-canonical-src="https://img.shields.io/badge/license-license--2.0-lightgrey.svg" style="max-width:100%;"></a>
 </p>
@@ -24,7 +24,7 @@
 
 * lin cms 全家桶（lin-cms-vue & lin-cms-go）为一个前端应用实现内容管理系统。一套教程入门上手 vue、fiber 两大框架。
 
-* 读者反馈：[《lin cms php&vue 教程》读者反馈贴](https://github.com/xushuhui/lin-cms-go/issues/47)
+* 读者反馈：[《lin cms go &vue 教程》读者反馈贴](https://github.com/xushuhui/lin-cms-go/issues/47)
 
 ## 线上文档地址（完善中）
 
@@ -95,6 +95,7 @@ git clone https://github.com/xushuhui/lin-cms-go.git
 ## 安装依赖包
 
 ```bash
+
 go mod tidy
 
 ```
