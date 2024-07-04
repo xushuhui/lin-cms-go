@@ -6,7 +6,11 @@ import (
 	"lin-cms-go/api"
 )
 
-type LogRepo interface{}
+type LogRepo interface {
+	ListLog(ctx context.Context, page, size int) ([]*Log, int64, error)
+	SearchLog(ctx context.Context, req api.SearchLogRequest) ([]*Log, int64, error)
+}
+type Log struct{}
 
 func GetLogs(ctx context.Context, req *api.ListLogRequest) (res interface{}, total int, err error) {
 	// var logs []*model.LinLog

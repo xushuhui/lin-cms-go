@@ -30,6 +30,7 @@ type (
 	}
 )
 
+
 type BookUsecase struct {
 	log *log.Helper
 	br  BookRepo

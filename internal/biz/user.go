@@ -6,6 +6,7 @@ import (
 	"lin-cms-go/api"
 )
 
+
 func Login(ctx context.Context, username, password string) (res map[string]interface{}, err error) {
 	// 正确密码验证
 	// userIdentityModel, err := data.GetLinUserIdentityByIdentifier(ctx, username)

@@ -1,6 +1,8 @@
 package data
 
 import (
+	"context"
+
 	"lin-cms-go/internal/biz"
 	"lin-cms-go/internal/data/model"
 
@@ -18,6 +20,26 @@ func NewBookRepo(data *Data, logger log.Logger) biz.BookRepo {
 		data: data,
 		log:  log.NewHelper(logger),
 	}
+}
+
+func (r *bookRepo) GetBook(ctx context.Context, id int64) (*biz.Book, error) {
+	panic("not implemented") // TODO: Implement
+}
+
+func (r *bookRepo) ListBook(ctx context.Context, page int32, size int32) ([]*biz.Book, int64, error) {
+	panic("not implemented") // TODO: Implement
+}
+
+func (r *bookRepo) CreateBook(ctx context.Context, book *biz.Book) error {
+	panic("not implemented") // TODO: Implement
+}
+
+func (r *bookRepo) UpdateBook(ctx context.Context, book *biz.Book) error {
+	panic("not implemented") // TODO: Implement
+}
+
+func (r *bookRepo) DeleteBook(ctx context.Context, id int64) error {
+	panic("not implemented") // TODO: Implement
 }
 
 func ToBook(model *model.Book) *biz.Book {

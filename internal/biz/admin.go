@@ -4,8 +4,16 @@ import (
 	"context"
 )
 
-type UserRepo interface{}
-
+type UserRepo interface{
+	ListUser(ctx context.Context, page, size int) ([]*User, int64,error)
+	GetUser(ctx context.Context, userId int) (*User, error)
+	CreateUser(ctx context.Context, user *User) error
+	ChangeUserPassword(ctx context.Context, userId int, password string) error
+	UpdateUser(ctx context.Context,  user *User) error
+}
+type User struct {
+	
+}
 func GetUsers(ctx context.Context, groupId int, page, size int) (res interface{}, err error) {
 	// list, err := data.NewPaging(page, size).ListUserByGroupId(ctx, groupId)
 	// res = list

@@ -7,12 +7,18 @@ import (
 )
 
 type (
-	GroupRepo interface{}
-	Group     struct {
-		Id    int    `json:"id"`
-		Name  string `json:"name"`
-		Info  string `json:"info"`
-		Level int8   `json:"level"`
+	GroupRepo interface {
+		CreateGroup(ctx context.Context, g *Group) error
+		GetGroup(ctx context.Context, id int) (*Group, error)
+		UpdateGroup(ctx context.Context, g *Group) error
+		DeleteGroup(ctx context.Context, id int) error
+		ListGroup(ctx context.Context, page, size int) ([]*Group, error)
+	}
+	Group struct {
+		Id    int64   
+		Name  string 
+		Info  string 
+		Level int8  
 	}
 )
 
@@ -32,7 +38,7 @@ func GetGroup(ctx context.Context, id int) (res interface{}, err error) {
 	// }
 
 	// res = Group{Id: linGroupModel.ID, Name: linGroupModel.Name, Info: linGroupModel.Info, Level: linGroupModel.Level}
-	 return
+	return
 }
 
 // func simplifyGroup(groupModel []*model.LinGroup) []Group {

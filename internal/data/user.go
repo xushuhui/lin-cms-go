@@ -1,6 +1,8 @@
 package data
 
 import (
+	"lin-cms-go/internal/biz"
+
 	"github.com/go-kratos/kratos/v2/log"
 )
 
@@ -9,7 +11,7 @@ type userRepo struct {
 	log  *log.Helper
 }
 
-func NewUserRepo(data *Data, logger log.Logger) *userRepo {
+func NewUserRepo(data *Data, logger log.Logger) biz.UserRepo {
 	return &userRepo{data: data, log: log.NewHelper(logger)}
 }
 
