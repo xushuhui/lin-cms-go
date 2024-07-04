@@ -1,12 +1,12 @@
 package test
 
 import (
+	"fmt"
 	"testing"
-
-
 )
 
 func TestGetLogUsers(t *testing.T) {
+	fmt.Printf("\033[35mGoal run %s.\033[0m\n", "dir")
 	// type args struct {
 	// 	c *fiber.Ctx
 	// }

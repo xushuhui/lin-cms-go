@@ -2,7 +2,7 @@ package lib
 
 import (
 	"io"
-	"io/ioutil"
+
 
 	"mime/multipart"
 	"os"
@@ -50,7 +50,7 @@ func CheckContainExt(t FileType, name string) bool {
 }
 
 func CheckMaxSize(t FileType, f multipart.File) bool {
-	content, _ := ioutil.ReadAll(f)
+	content, _ := io.ReadAll(f)
 	size := len(content)
 	switch t {
 	case TypeImage:

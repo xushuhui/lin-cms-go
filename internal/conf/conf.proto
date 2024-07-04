@@ -1,0 +1,29 @@
+syntax = "proto3";
+package conf;
+
+option go_package = "lin-cms-go/internal/conf;conf";
+
+message Bootstrap {
+  Server server = 1;
+  Data data = 2;
+}
+
+message Server {
+  message HTTP {
+    string addr = 1;
+    uint32 timeout = 3;
+  }
+  HTTP http = 1;
+}
+
+message Data {
+  message Database { string main = 1; }
+  message Redis {
+    string addr = 1;
+    string password = 2;
+    int32 db = 3;
+  }
+
+  Database database = 1;
+  Redis redis = 2;
+}

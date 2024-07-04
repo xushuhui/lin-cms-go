@@ -1,81 +1,72 @@
 package server
 
-import (
-	"lin-cms-go/internal/biz"
-	"lin-cms-go/internal/data"
-	"lin-cms-go/pkg/errcode"
+// func UserLog(c *fiber.Ctx) error {
+// 	err := c.Next()
+// 	if err != nil {
+// 		return err
+// 	}
+// 	user := biz.LocalUser(c)
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/xushuhui/goal/core"
-)
+// 	msg := c.Locals("logMessage")
+// 	if msg == nil {
+// 		return nil
+// 	}
+// 	err = data.CreateLog(c.Context(), c.Response().StatusCode(), user.ID, user.Username, user.Username+msg.(string), c.Method(), c.Path(), "")
 
-func UserLog(c *fiber.Ctx) error {
-	err := c.Next()
-	if err != nil {
-		return err
-	}
-	user := biz.LocalUser(c)
+// 	return err
+// }
 
-	msg := c.Locals("logMessage")
-	if msg == nil {
-		return nil
-	}
-	err = data.CreateLog(c.Context(), c.Response().StatusCode(), user.ID, user.Username, user.Username+msg.(string), c.Method(), c.Path(), "")
+// func SetPermission(name, module string) fiber.Handler {
+// 	return func(c *fiber.Ctx) error {
+// 		p := biz.Permission{Name: name, Module: module}
+// 		err := biz.CreateIfNoPermissions(c.Context(), p)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		c.Locals("permission", p)
 
-	return err
-}
+// 		return c.Next()
+// 	}
+// }
 
-func SetPermission(name, module string) fiber.Handler {
-	return func(c *fiber.Ctx) error {
-		p := biz.Permission{Name: name, Module: module}
-		err := biz.CreateIfNoPermissions(c.Context(), p)
-		if err != nil {
-			return err
-		}
-		c.Locals("permission", p)
+// func AdminRequired(c *fiber.Ctx) error {
+// 	isAdmin, err := biz.IsAdmin(c)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	if !isAdmin {
+// 		return core.UnAuthenticatedError(errcode.UserNoPermission)
+// 	}
+// 	return c.Next()
+// }
 
-		return c.Next()
-	}
-}
+// func LoginRequired(c *fiber.Ctx) error {
+// 	user := biz.LocalUser(c)
+// 	if user.ID == 0 {
+// 		return core.UnAuthenticatedError(errcode.AuthCheckTokenFail)
+// 	}
 
-func AdminRequired(c *fiber.Ctx) error {
-	isAdmin, err := biz.IsAdmin(c)
-	if err != nil {
-		return err
-	}
-	if !isAdmin {
-		return core.UnAuthenticatedError(errcode.UserNoPermission)
-	}
-	return c.Next()
-}
+// 	return c.Next()
+// }
 
-func LoginRequired(c *fiber.Ctx) error {
-	user := biz.LocalUser(c)
-	if user.ID == 0 {
-		return core.UnAuthenticatedError(errcode.AuthCheckTokenFail)
-	}
+// func GroupRequired(c *fiber.Ctx) error {
+// 	isAdmin, err := biz.IsAdmin(c)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	if isAdmin {
+// 		return c.Next()
+// 	}
 
-	return c.Next()
-}
-
-func GroupRequired(c *fiber.Ctx) error {
-	isAdmin, err := biz.IsAdmin(c)
-	if err != nil {
-		return err
-	}
-	if isAdmin {
-		return c.Next()
-	}
-
-	has, err := biz.UserHasPermission(c)
-	if err != nil {
-		return err
-	}
-	if !has {
-		return core.UnAuthenticatedError(errcode.UserNoPermission)
-	}
-	return c.Next()
-}
+// 	has, err := biz.UserHasPermission(c)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	if !has {
+// 		return core.UnAuthenticatedError(errcode.UserNoPermission)
+// 	}
+// 	return c.Next()
+// }
 
 //
 //func (a *Auth) RefreshRequired(ctx *gin.Context) {
