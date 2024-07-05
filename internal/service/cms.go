@@ -21,30 +21,15 @@ func NewCmsService(bu *biz.BookUsecase) *CmsService {
 }
 
 func (s *CmsService) Ping(ctx context.Context, req *emptypb.Empty) (*pb.PingReply, error) {
-	return &pb.PingReply{}, nil
+	return &pb.PingReply{
+		Message: "pong",
+	}, nil
 }
 
 func (s *CmsService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
 	return &pb.LoginReply{}, nil
 }
-
-func (s *CmsService) CreateBook(ctx context.Context, req *pb.CreateBookRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, nil
-}
-
-func (s *CmsService) ListBook(ctx context.Context, req *pb.PageRequest) (*pb.ListBookReply, error) {
-	return &pb.ListBookReply{}, nil
-}
-
-func (s *CmsService) GetBook(ctx context.Context, req *pb.IDRequest) (*pb.GetBookReply, error) {
-	return &pb.GetBookReply{}, nil
-}
-
-func (s *CmsService) UpdateBook(ctx context.Context, req *pb.UpdateBookRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, nil
-}
-
-func (s *CmsService) DeleteBook(ctx context.Context, req *pb.IDRequest) (*emptypb.Empty, error) {
+func (s *CmsService) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil
 }
 
@@ -52,9 +37,7 @@ func (s *CmsService) Upload(ctx context.Context, req *pb.UploadRequest) (*pb.Upl
 	return &pb.UploadReply{}, nil
 }
 
-func (s *CmsService) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*emptypb.Empty, error) {
-	return &emptypb.Empty{}, nil
-}
+
 
 func (s *CmsService) UpdateMe(ctx context.Context, req *pb.UpdateMeRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil

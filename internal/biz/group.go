@@ -22,6 +22,7 @@ type (
 	}
 )
 
+
 func GetGroups(ctx context.Context) (res interface{}, err error) {
 	// var linGroupModel []*model.LinGroup
 	// linGroupModel, err = data.GetAllGroup(ctx)

@@ -111,7 +111,7 @@ CREATE TABLE lin_user
     username    varchar(24)      NOT NULL COMMENT '用户名，唯一',
     nickname    varchar(24)               DEFAULT NULL COMMENT '用户昵称',
     avatar      varchar(500)              DEFAULT NULL COMMENT '头像url',
-    email       varchar(100)              DEFAULT NULL COMMENT '邮箱',
+    phone       char(20)              DEFAULT NULL COMMENT '手机',
     created_at TIMESTAMP      DEFAULT NULL,
     updated_at TIMESTAMP       DEFAULT NULL,
     deleted_at TIMESTAMP               DEFAULT NULL,

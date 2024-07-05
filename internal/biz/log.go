@@ -12,6 +12,7 @@ type LogRepo interface {
 }
 type Log struct{}
 
+
 func GetLogs(ctx context.Context, req *api.ListLogRequest) (res interface{}, total int, err error) {
 	// var logs []*model.LinLog
 	//

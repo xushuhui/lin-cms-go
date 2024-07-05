@@ -198,9 +198,9 @@ message LoginRequest {
 }
 message CreateUserRequest {
   string username = 1;
-  string email = 2;
+  string phone = 2;
   string password = 3;
-  string confirmPassword = 4;
+
   int32 groupId = 5;
 }
 message UpdateMeRequest {
@@ -239,7 +239,7 @@ message CreateBookRequest {
   string image = 4;
 }
 message UpdateBookRequest {
-  int32 id = 1;
+  int64 id = 1;
   string title = 2;
   string author = 3;
   string summary = 4;
@@ -247,7 +247,7 @@ message UpdateBookRequest {
 }
 
 message UpdateGroupRequest {
-  int32 id = 1;
+  int64 id = 1;
   string name = 2;
   string info = 3;
 }
@@ -257,8 +257,8 @@ message GetMyInfomationReply {}
 message ListMyPermissionReply {}
 
 message UpdateUserRequest {
-  int32 id = 1;
-  repeated int32 group_ids = 2;
+  int64 id = 1;
+  repeated int64 group_ids = 2;
 }
 
 message UpdateMyPasswordRequest {}
@@ -266,8 +266,8 @@ message UpdateMyPasswordRequest {}
 message ListUserReply { repeated User users = 1; }
 
 message ListGroupReply {}
-message User { int32 id = 1; }
-message Permission { int32 id = 1; }
+message User { int64 id = 1; }
+message Permission { int64 id = 1; }
 message ListPermissionReply { repeated Permission permissions = 1; }
 
 message CreateBookReply { int64 id = 1; }
@@ -280,7 +280,7 @@ message Book {
   string created_at = 6;
 }
 message ListBookReply {
-  repeated Book books = 1;
+  repeated Book list = 1;
   int64 total = 2;
 }
 message GetBookReply { Book book = 1; }
@@ -292,7 +292,7 @@ message ListLogUserReply { repeated string users = 1; }
 message CreateGroupRequest {
   string name = 1;
   string info = 2;
-  repeated int32 permission_ids = 3;
+  repeated int64 permission_ids = 3;
 }
 
 message ListLogReply {}
@@ -301,10 +301,10 @@ message PageRequest {
   int32 page = 1;
   int32 size = 2;
 }
-message IDRequest { int32 id = 1; }
+message IDRequest { int64 id = 1; }
 message PingReply { string message = 1; }
 
 message LoginReply {
-  string token = 1;
-  int64 expires = 2;
+  string accessToken = 1;
+  string refreshToken = 2;
 }

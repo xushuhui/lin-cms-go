@@ -1,5 +1,6 @@
 package service
 
+
 // func Hello(ctx *fiber.Ctx) error {
 // 	return ctx.JSON("Hello")
 // }

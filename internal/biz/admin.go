@@ -4,15 +4,20 @@ import (
 	"context"
 )
 
-type UserRepo interface{
-	ListUser(ctx context.Context, page, size int) ([]*User, int64,error)
-	GetUser(ctx context.Context, userId int) (*User, error)
-	CreateUser(ctx context.Context, user *User) error
+type LinUserRepo interface{
+	ListUser(ctx context.Context, page, size int) ([]*LinUser, int64,error)
+	GetUser(ctx context.Context, userId int) (*LinUser, error)
+	CreateUser(ctx context.Context, user *LinUser) error
 	ChangeUserPassword(ctx context.Context, userId int, password string) error
-	UpdateUser(ctx context.Context,  user *User) error
+	UpdateUser(ctx context.Context,  user *LinUser) error
+	GetUserIdentityByIdentifier(ctx context.Context, identifier string) (*LinUser, error)
+	// userIdentityModel, err := data.GetLinUserIdentityByIdentifier(ctx, username)
 }
-type User struct {
-	
+type LinUser struct {
+	ID int64
+	Username string
+	Password string
+	Phone string
 }
 func GetUsers(ctx context.Context, groupId int, page, size int) (res interface{}, err error) {
 	// list, err := data.NewPaging(page, size).ListUserByGroupId(ctx, groupId)
@@ -25,7 +30,6 @@ func ChangeUserPassword(ctx context.Context, userId int, password string) (err e
 	// if err != nil {
 	// 	return
 	// }
-
 	// hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	// if err != nil {
 	// 	return

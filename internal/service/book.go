@@ -1,5 +1,59 @@
 package service
 
+import (
+	"context"
+
+	"lin-cms-go/api"
+
+	"google.golang.org/protobuf/types/known/emptypb"
+)
+
+func (s *CmsService) CreateBook(ctx context.Context, req *api.CreateBookRequest) (*emptypb.Empty, error) {
+	if err := s.bu.CreateBook(ctx, req); err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
+
+func (s *CmsService) ListBook(ctx context.Context, req *api.PageRequest) (*api.ListBookReply, error) {
+	// TODO 权限判断
+	list, total, err := s.bu.ListBook(ctx, req.Page, req.Size)
+	if err != nil {
+		return nil, err
+	}
+	return &api.ListBookReply{
+		List: list,
+		Total: total,
+	}, nil
+	
+}
+
+func (s *CmsService) GetBook(ctx context.Context, req *api.IDRequest) (*api.GetBookReply, error) {
+	// TODO 权限判断
+	book, err := s.bu.GetBook(ctx, req.Id)
+	if err != nil {
+		return nil, err
+	}
+	return &api.GetBookReply{
+		Book: book,
+	}, nil
+	
+}
+
+func (s *CmsService) UpdateBook(ctx context.Context, req *api.UpdateBookRequest) (*emptypb.Empty, error) {
+	if err := s.bu.UpdateBook(ctx, req); err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
+
+func (s *CmsService) DeleteBook(ctx context.Context, req *api.IDRequest) (*emptypb.Empty, error) {
+	if err := s.bu.DeleteBook(ctx, req.Id); err != nil {
+		return nil, err
+	}
+	return &emptypb.Empty{}, nil
+}
+
 // func GetBooks(c *fiber.Ctx) error {
 // 	// TODO book 接口少了权限判断
 

@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 
+	"lin-cms-go/api"
 	"lin-cms-go/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -17,6 +18,14 @@ type logRepo struct {
 
 func NewLogRepo(data *Data, logger log.Logger) biz.LogRepo {
 	return &logRepo{data: data, log: log.NewHelper(logger)}
+}
+
+func (r *logRepo) ListLog(ctx context.Context, page int, size int) ([]*biz.Log, int64, error) {
+	panic("not implemented") // TODO: Implement
+}
+
+func (r *logRepo) SearchLog(ctx context.Context, req api.SearchLogRequest) ([]*biz.Log, int64, error) {
+	panic("not implemented") // TODO: Implement
 }
 
 func (r *logRepo) Search(ctx context.Context, page, size int, keyword, name string) (logs []*model.LinLog, err error) {

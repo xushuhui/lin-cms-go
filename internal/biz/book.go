@@ -14,9 +14,9 @@ import (
 type (
 	BookRepo interface {
 		GetBook(ctx context.Context, id int64) (*Book, error)
-		ListBook(ctx context.Context, page, size int32) ([]*Book, int64, error)
-		CreateBook(ctx context.Context, book *Book) error
-		UpdateBook(ctx context.Context, book *Book) error
+		ListBook(ctx context.Context, page, size int) ([]*Book, int64, error)
+		CreateBook(ctx context.Context, req *api.CreateBookRequest) error
+		UpdateBook(ctx context.Context, req *api.UpdateBookRequest) error
 		DeleteBook(ctx context.Context, id int64) error
 	}
 	Book struct {
@@ -29,7 +29,6 @@ type (
 		Image      string
 	}
 )
-
 
 type BookUsecase struct {
 	log *log.Helper
@@ -62,7 +61,7 @@ func outBooks(bs []*Book) []*api.Book {
 }
 
 func (u *BookUsecase) ListBook(ctx context.Context, page, size int32) ([]*api.Book, int64, error) {
-	books, total, err := u.br.ListBook(ctx, page, size)
+	books, total, err := u.br.ListBook(ctx, int(page), int(size))
 	if err != nil {
 		return nil, 0, err
 	}
@@ -70,21 +69,20 @@ func (u *BookUsecase) ListBook(ctx context.Context, page, size int32) ([]*api.Bo
 	return outBooks(books), total, nil
 }
 
-func (u *BookUsecase) UpdateBook(ctx context.Context, id int, req *api.UpdateBookRequest) (err error) {
-	// if err != nil {
-	// 	return
-	// }
-	// err = data.UpdateBook(ctx, id, req.Title, req.Author, req.Summary, req.Image)
-	return
+func (u *BookUsecase) UpdateBook(ctx context.Context, req *api.UpdateBookRequest) error {
+	_, err := u.br.GetBook(ctx, req.Id)
+	if err != nil {
+		return errors.Wrap(err, "GetBookError")
+	}
+
+	err = u.br.UpdateBook(ctx, req)
+	return err
 }
 
-func (u *BookUsecase) CreateBook(ctx context.Context, req *api.CreateBookRequest) (err error) {
-	// err = data.CreateBook(ctx, req.Title, req.Author, req.Summary, req.Image)
-	// if err != nil {
-	// 	err = errors.Wrap(err, "createBookError")
-	// }
-
-	return
+func (u *BookUsecase) CreateBook(ctx context.Context, req *api.CreateBookRequest) error {
+	
+	err := u.br.CreateBook(ctx, req)
+	return err
 }
 
 func (u *BookUsecase) DeleteBook(ctx context.Context, id int64) error {

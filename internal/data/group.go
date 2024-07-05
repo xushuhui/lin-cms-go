@@ -1,6 +1,8 @@
 package data
 
 import (
+	"context"
+
 	"lin-cms-go/internal/biz"
 
 	"github.com/go-kratos/kratos/v2/log"
@@ -16,6 +18,26 @@ func NewGroupRepo(data *Data, logger log.Logger) biz.GroupRepo {
 		data: data,
 		log:  log.NewHelper(logger),
 	}
+}
+
+func (r *groupRepo) CreateGroup(ctx context.Context, g *biz.Group) error {
+	panic("not implemented") // TODO: Implement
+}
+
+func (r *groupRepo) GetGroup(ctx context.Context, id int) (*biz.Group, error) {
+	panic("not implemented") // TODO: Implement
+}
+
+func (r *groupRepo) UpdateGroup(ctx context.Context, g *biz.Group) error {
+	panic("not implemented") // TODO: Implement
+}
+
+func (r *groupRepo) DeleteGroup(ctx context.Context, id int) error {
+	panic("not implemented") // TODO: Implement
+}
+
+func (r *groupRepo) ListGroup(ctx context.Context, page int, size int) ([]*biz.Group, error) {
+	panic("not implemented") // TODO: Implement
 }
 
 // func GetAllGroup(ctx context.Context) (groups []*model.LinGroup, err error) {

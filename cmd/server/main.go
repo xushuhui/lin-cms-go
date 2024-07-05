@@ -26,7 +26,7 @@ var (
 )
 
 func init() {
-	flag.StringVar(&flagconf, "conf", "../../configs", "config path, eg: -conf config.yaml")
+	flag.StringVar(&flagconf, "conf", "../../configs/config.yaml", "config path, eg: -conf config.yaml")
 }
 
 func newApp(logger log.Logger, hs *http.Server) *kratos.App {
@@ -60,7 +60,7 @@ func main() {
 }
 
 func newLogger() *zap.Logger {
-	f, err := os.OpenFile("./log/app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModePerm)
+	f, err := os.OpenFile("./app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
