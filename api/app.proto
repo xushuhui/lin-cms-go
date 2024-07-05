@@ -1,0 +1,95 @@
+syntax = "proto3";
+package api;
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "cms.proto";
+option go_package = "lin-cms-go/api";
+
+service App {
+  rpc CreateLesson(CreateLessonRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post : "/v1/lesson"
+      body : "*"
+    };
+  }
+  rpc ListLesson(PageRequest) returns (ListLessonReply) {
+    option (google.api.http) = {
+      get : "/v1/lesson"
+    };
+  }
+  rpc GetLesson(IDRequest) returns (GetLessonReply) {
+    option (google.api.http) = {
+      get : "/v1/lesson/{id}"
+    };
+  }
+  rpc UpdateLesson(UpdateLessonRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put : "/v1/lesson/{id}"
+      body : "*"
+    };
+  }
+  rpc DeleteLesson(IDRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete : "/v1/lesson/{id}"
+    };
+  }
+  rpc CreateTeacher(CreateTeacherRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post : "/v1/teacher"
+      body : "*"
+    };
+  }
+  rpc ListTeacher(PageRequest) returns (ListTeacherReply) {
+    option (google.api.http) = {
+      get : "/v1/teacher"
+    };
+  }
+  rpc GetTeacher(IDRequest) returns (GetTeacherReply) {
+    option (google.api.http) = {
+      get : "/v1/teacher/{id}"
+    };
+  }
+  rpc UpdateTeacher(UpdateTeacherRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put : "/v1/teacher/{id}"
+      body : "*"
+    };
+  }
+  rpc DeleteTeacher(IDRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete : "/v1/teacher/{id}"
+    };
+  }
+}
+message CreateTeacherRequest { string name = 1; }
+message UpdateTeacherRequest {
+  int64 id = 1;
+  string name = 2;
+}
+message CreateLessonRequest { string title = 1; }
+message UpdateLessonRequest {
+  int64 id = 1;
+  string title = 2;
+}
+message GetLessonReply { Lesson lesson = 1; }
+message Lesson {
+  uint32 id = 1;
+  string title = 2;
+}
+message ListLessonReply {
+  repeated Lesson list = 1;
+  uint32 total = 2;
+  int32 page = 3;
+  int32 size = 4;
+}
+message ListTeacherReply{
+    repeated Teacher list = 1;
+    uint32 total = 2;
+}
+message Teacher {
+  uint32 id = 1;
+  string name = 2;
+}
+message GetTeacherReply{
+    Teacher teacher = 1;
+}

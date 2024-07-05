@@ -16,6 +16,7 @@ service Cms {
       body : "*"
     };
   }
+  
   rpc CreateBook(CreateBookRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       post : "/v1/book"
