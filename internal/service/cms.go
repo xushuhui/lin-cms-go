@@ -12,11 +12,13 @@ import (
 type CmsService struct {
 	pb.UnimplementedCmsServer
 	bu *biz.BookUsecase
+	uu *biz.Userusecase
 }
 
-func NewCmsService(bu *biz.BookUsecase) *CmsService {
+func NewCmsService(bu *biz.BookUsecase,uu *biz.Userusecase) *CmsService {
 	return &CmsService{
 		bu: bu,
+		uu: uu,
 	}
 }
 
@@ -27,7 +29,8 @@ func (s *CmsService) Ping(ctx context.Context, req *emptypb.Empty) (*pb.PingRepl
 }
 
 func (s *CmsService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
-	return &pb.LoginReply{}, nil
+	r,err := s.uu.Login(ctx,req)
+	return r,err
 }
 func (s *CmsService) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil

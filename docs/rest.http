@@ -1,5 +1,5 @@
 ###
-POST http://localhost:3000/cms/user/login
+OPTIONS  http://localhost:8000/cms/user/login
 Content-Type: application/json
 
 {
@@ -52,6 +52,6 @@ DELETE http://localhost:3000/cms/admin/group/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
-GET http://localhost:3000/v1/book
+GET http://localhost:8000/v1/book
 Content-Type: application/json
 Authorization: Bearer {{token}}

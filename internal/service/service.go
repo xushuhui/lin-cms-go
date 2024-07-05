@@ -35,11 +35,12 @@ func getTotalPages(total int64, size int32) int32 {
 }
 
 func defaultPageRequest(page, size int32) (int, int) {
+
 	if page <= 0 {
-		return 1, int(size)
+		page = 1
 	}
 	if size <= 0 {
-		return int(page), 10
+		size = 10
 	}
 	return int(page), int(size)
 }

@@ -18,29 +18,29 @@ service Cms {
   }
   rpc CreateBook(CreateBookRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      post : "/cms/book"
+      post : "/v1/book"
       body : "*"
     };
   }
   rpc ListBook(PageRequest) returns (ListBookReply) {
     option (google.api.http) = {
-      get : "/cms/book"
+      get : "/v1/book"
     };
   }
   rpc GetBook(IDRequest) returns (GetBookReply) {
     option (google.api.http) = {
-      get : "/cms/book/{id}"
+      get : "/v1/book/{id}"
     };
   }
   rpc UpdateBook(UpdateBookRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      put : "/cms/book/{id}"
+      put : "/v1/book/{id}"
       body : "*"
     };
   }
   rpc DeleteBook(IDRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
-      delete : "/cms/book/{id}"
+      delete : "/v1/book/{id}"
     };
   }
   rpc Upload(UploadRequest) returns (UploadReply) {
@@ -272,7 +272,7 @@ message ListPermissionReply { repeated Permission permissions = 1; }
 
 message CreateBookReply { int64 id = 1; }
 message Book { 
-  int64 id = 1; 
+  uint32 id = 1; 
   string title = 2;
   string author = 3;
   string summary = 4;
@@ -281,7 +281,7 @@ message Book {
 }
 message ListBookReply {
   repeated Book list = 1;
-  int64 total = 2;
+  uint32 total = 2;
 }
 message GetBookReply { Book book = 1; }
 

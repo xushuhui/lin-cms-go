@@ -44,7 +44,7 @@ func NewBookUsecase(br BookRepo, logger log.Logger) *BookUsecase {
 
 func outBook(b *Book) *api.Book {
 	return &api.Book{
-		Id:      b.ID,
+		Id:      uint32(b.ID),
 		Title:   b.Title,
 		Author:  b.Author,
 		Summary: b.Summary,
@@ -60,7 +60,7 @@ func outBooks(bs []*Book) []*api.Book {
 	return res
 }
 
-func (u *BookUsecase) ListBook(ctx context.Context, page, size int32) ([]*api.Book, int64, error) {
+func (u *BookUsecase) ListBook(ctx context.Context, page, size int) ([]*api.Book, int64, error) {
 	books, total, err := u.br.ListBook(ctx, int(page), int(size))
 	if err != nil {
 		return nil, 0, err

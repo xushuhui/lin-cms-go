@@ -17,15 +17,15 @@ func (s *CmsService) CreateBook(ctx context.Context, req *api.CreateBookRequest)
 
 func (s *CmsService) ListBook(ctx context.Context, req *api.PageRequest) (*api.ListBookReply, error) {
 	// TODO 权限判断
-	list, total, err := s.bu.ListBook(ctx, req.Page, req.Size)
+	page, size := defaultPageRequest(req.Page, req.Size)
+	list, total, err := s.bu.ListBook(ctx, page, size)
 	if err != nil {
 		return nil, err
 	}
 	return &api.ListBookReply{
-		List: list,
-		Total: total,
+		List:  list,
+		Total: uint32(total),
 	}, nil
-	
 }
 
 func (s *CmsService) GetBook(ctx context.Context, req *api.IDRequest) (*api.GetBookReply, error) {
@@ -37,7 +37,6 @@ func (s *CmsService) GetBook(ctx context.Context, req *api.IDRequest) (*api.GetB
 	return &api.GetBookReply{
 		Book: book,
 	}, nil
-	
 }
 
 func (s *CmsService) UpdateBook(ctx context.Context, req *api.UpdateBookRequest) (*emptypb.Empty, error) {

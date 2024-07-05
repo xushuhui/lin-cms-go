@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var ProviderSet = wire.NewSet(NewData, NewBookRepo)
+var ProviderSet = wire.NewSet(NewData, NewBookRepo,NewUserRepo)
 
 type Data struct {
 	db *gorm.DB

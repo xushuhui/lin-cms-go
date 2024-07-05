@@ -8,7 +8,7 @@ import (
 const ROOT int8 = 1
 const GUEST int8 = 2
 const USER int8 = 3
-var ProviderSet = wire.NewSet(NewBookUsecase)
+var ProviderSet = wire.NewSet(NewBookUsecase,NewUserUsecase)
 
 // func LocalUser(c *fiber.Ctx) (user model.LinUser) {
 // 	local := c.Locals("user")

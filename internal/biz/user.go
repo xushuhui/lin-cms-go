@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-kratos/kratos/v2/errors"
 	"github.com/go-kratos/kratos/v2/log"
+	"github.com/spf13/cast"
 
 	jwtv4 "github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
@@ -19,7 +20,11 @@ type Userusecase struct {
 }
 type UserClaims struct {
 	*jwtv4.RegisteredClaims
-	UserID int64 `json:"user_id"`
+	UserID string `json:"user_id"`
+}
+
+func NewUserUsecase(ur LinUserRepo, logger log.Logger) *Userusecase {
+	return &Userusecase{ur: ur, log: log.NewHelper(logger)}
 }
 
 func (u *Userusecase) Login(ctx context.Context, req *api.LoginRequest) (*api.LoginReply, error) {
@@ -46,25 +51,23 @@ func (u *Userusecase) Login(ctx context.Context, req *api.LoginRequest) (*api.Lo
 
 func generateToken(ctx context.Context, userID int64) (string, string, error) {
 	secret := "lincms"
-	claims := jwtv4.NewWithClaims(jwtv4.SigningMethodHS256, &UserClaims{
-		UserID: userID,
+	refreshToken, err := jwtv4.NewWithClaims(jwtv4.SigningMethodHS256, &jwtv4.RegisteredClaims{
+		ExpiresAt: jwtv4.NewNumericDate(time.Now().Add(time.Hour * 24)),
+	}).SignedString([]byte(secret))
+	if err != nil {
+		return "", "", errors.InternalServer(err.Error(), "服务器内部错误")
+	}
+
+	accessToken, err := jwtv4.NewWithClaims(jwtv4.SigningMethodHS256, &UserClaims{
+		UserID: cast.ToString(userID),
 		RegisteredClaims: &jwtv4.RegisteredClaims{
 			ExpiresAt: jwtv4.NewNumericDate(time.Now().Add(time.Hour * 72)),
 			Issuer:    "lincms",
 			Subject:   "user",
 		},
-	})
-
-	accessToken, err := claims.SignedString([]byte(secret))
+	}).SignedString([]byte(secret))
 	if err != nil {
-		return "", "", errors.InternalServer("INTERNAL_ERROR", "服务器内部错误")
-	}
-	refreshToken, err := jwtv4.NewWithClaims(jwtv4.SigningMethodHS256, jwtv4.RegisteredClaims{
-		ExpiresAt: jwtv4.NewNumericDate(time.Now().Add(time.Hour * 24 * 30)),
-		Issuer:    secret,
-	}).SignedString(secret)
-	if err != nil {
-		return "", "", errors.InternalServer("INTERNAL_ERROR", "服务器内部错误")
+		return "", "", errors.InternalServer(err.Error(), "服务器内部错误")
 	}
 
 	return accessToken, refreshToken, nil

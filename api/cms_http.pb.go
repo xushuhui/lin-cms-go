@@ -88,11 +88,11 @@ func RegisterCmsHTTPServer(s *http.Server, srv CmsHTTPServer) {
 	r := s.Route("/")
 	r.GET("/ping", _Cms_Ping0_HTTP_Handler(srv))
 	r.POST("/cms/user/login", _Cms_Login0_HTTP_Handler(srv))
-	r.POST("/cms/book", _Cms_CreateBook0_HTTP_Handler(srv))
-	r.GET("/cms/book", _Cms_ListBook0_HTTP_Handler(srv))
-	r.GET("/cms/book/{id}", _Cms_GetBook0_HTTP_Handler(srv))
-	r.PUT("/cms/book/{id}", _Cms_UpdateBook0_HTTP_Handler(srv))
-	r.DELETE("/cms/book/{id}", _Cms_DeleteBook0_HTTP_Handler(srv))
+	r.POST("/v1/book", _Cms_CreateBook0_HTTP_Handler(srv))
+	r.GET("/v1/book", _Cms_ListBook0_HTTP_Handler(srv))
+	r.GET("/v1/book/{id}", _Cms_GetBook0_HTTP_Handler(srv))
+	r.PUT("/v1/book/{id}", _Cms_UpdateBook0_HTTP_Handler(srv))
+	r.DELETE("/v1/book/{id}", _Cms_DeleteBook0_HTTP_Handler(srv))
 	r.POST("/cms/file", _Cms_Upload0_HTTP_Handler(srv))
 	r.POST("/cms/user/register", _Cms_CreateUser0_HTTP_Handler(srv))
 	r.PUT("/cms/user", _Cms_UpdateMe0_HTTP_Handler(srv))
@@ -761,7 +761,7 @@ func NewCmsHTTPClient(client *http.Client) CmsHTTPClient {
 
 func (c *CmsHTTPClientImpl) CreateBook(ctx context.Context, in *CreateBookRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
-	pattern := "/cms/book"
+	pattern := "/v1/book"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationCmsCreateBook))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -800,7 +800,7 @@ func (c *CmsHTTPClientImpl) CreateUser(ctx context.Context, in *CreateUserReques
 
 func (c *CmsHTTPClientImpl) DeleteBook(ctx context.Context, in *IDRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
-	pattern := "/cms/book/{id}"
+	pattern := "/v1/book/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationCmsDeleteBook))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -865,7 +865,7 @@ func (c *CmsHTTPClientImpl) DispatchPermissions(ctx context.Context, in *Dispatc
 
 func (c *CmsHTTPClientImpl) GetBook(ctx context.Context, in *IDRequest, opts ...http.CallOption) (*GetBookReply, error) {
 	var out GetBookReply
-	pattern := "/cms/book/{id}"
+	pattern := "/v1/book/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationCmsGetBook))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -917,7 +917,7 @@ func (c *CmsHTTPClientImpl) GetUser(ctx context.Context, in *IDRequest, opts ...
 
 func (c *CmsHTTPClientImpl) ListBook(ctx context.Context, in *PageRequest, opts ...http.CallOption) (*ListBookReply, error) {
 	var out ListBookReply
-	pattern := "/cms/book"
+	pattern := "/v1/book"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationCmsListBook))
 	opts = append(opts, http.PathTemplate(pattern))
@@ -1060,7 +1060,7 @@ func (c *CmsHTTPClientImpl) SearchLog(ctx context.Context, in *SearchLogRequest,
 
 func (c *CmsHTTPClientImpl) UpdateBook(ctx context.Context, in *UpdateBookRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
-	pattern := "/cms/book/{id}"
+	pattern := "/v1/book/{id}"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationCmsUpdateBook))
 	opts = append(opts, http.PathTemplate(pattern))
