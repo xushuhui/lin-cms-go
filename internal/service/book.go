@@ -8,14 +8,14 @@ import (
 	"google.golang.org/protobuf/types/known/emptypb"
 )
 
-func (s *CmsService) CreateBook(ctx context.Context, req *api.CreateBookRequest) (*emptypb.Empty, error) {
+func (s *AppService) CreateBook(ctx context.Context, req *api.CreateBookRequest) (*emptypb.Empty, error) {
 	if err := s.bu.CreateBook(ctx, req); err != nil {
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil
 }
 
-func (s *CmsService) ListBook(ctx context.Context, req *api.PageRequest) (*api.ListBookReply, error) {
+func (s *AppService) ListBook(ctx context.Context, req *api.PageRequest) (*api.ListBookReply, error) {
 	// TODO 权限判断
 	page, size := defaultPageRequest(req.Page, req.Size)
 	list, total, err := s.bu.ListBook(ctx, page, size)
@@ -28,7 +28,7 @@ func (s *CmsService) ListBook(ctx context.Context, req *api.PageRequest) (*api.L
 	}, nil
 }
 
-func (s *CmsService) GetBook(ctx context.Context, req *api.IDRequest) (*api.GetBookReply, error) {
+func (s *AppService) GetBook(ctx context.Context, req *api.IDRequest) (*api.GetBookReply, error) {
 	// TODO 权限判断
 	book, err := s.bu.GetBook(ctx, req.Id)
 	if err != nil {
@@ -39,14 +39,14 @@ func (s *CmsService) GetBook(ctx context.Context, req *api.IDRequest) (*api.GetB
 	}, nil
 }
 
-func (s *CmsService) UpdateBook(ctx context.Context, req *api.UpdateBookRequest) (*emptypb.Empty, error) {
+func (s *AppService) UpdateBook(ctx context.Context, req *api.UpdateBookRequest) (*emptypb.Empty, error) {
 	if err := s.bu.UpdateBook(ctx, req); err != nil {
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil
 }
 
-func (s *CmsService) DeleteBook(ctx context.Context, req *api.IDRequest) (*emptypb.Empty, error) {
+func (s *AppService) DeleteBook(ctx context.Context, req *api.IDRequest) (*emptypb.Empty, error) {
 	if err := s.bu.DeleteBook(ctx, req.Id); err != nil {
 		return nil, err
 	}

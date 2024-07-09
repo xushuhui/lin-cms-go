@@ -11,13 +11,11 @@ import (
 
 type CmsService struct {
 	pb.UnimplementedCmsServer
-	bu *biz.BookUsecase
-	uu *biz.Userusecase
+	uu *biz.LinUserusecase
 }
 
-func NewCmsService(bu *biz.BookUsecase,uu *biz.Userusecase) *CmsService {
+func NewCmsService(uu *biz.LinUserusecase) *CmsService {
 	return &CmsService{
-		bu: bu,
 		uu: uu,
 	}
 }
@@ -29,18 +27,23 @@ func (s *CmsService) Ping(ctx context.Context, req *emptypb.Empty) (*pb.PingRepl
 }
 
 func (s *CmsService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginReply, error) {
-	r,err := s.uu.Login(ctx,req)
-	return r,err
+	r, err := s.uu.Login(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return r, err
 }
-func (s *CmsService) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*emptypb.Empty, error) {
+func (s *CmsService) CreateUser(ctx context.Context, req *pb.CreateLinUserRequest) (*emptypb.Empty, error) {
+	err := s.uu.CreateUser(ctx, req)
+	if err != nil {
+		return nil, err
+	}
 	return &emptypb.Empty{}, nil
 }
 
 func (s *CmsService) Upload(ctx context.Context, req *pb.UploadRequest) (*pb.UploadReply, error) {
 	return &pb.UploadReply{}, nil
 }
-
-
 
 func (s *CmsService) UpdateMe(ctx context.Context, req *pb.UpdateMeRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil
@@ -62,15 +65,16 @@ func (s *CmsService) ListPermission(ctx context.Context, req *emptypb.Empty) (*p
 	return &pb.ListPermissionReply{}, nil
 }
 
-func (s *CmsService) ListUser(ctx context.Context, req *pb.ListUserRequest) (*pb.ListUserReply, error) {
-	return &pb.ListUserReply{}, nil
+func (s *CmsService) ListUser(ctx context.Context, req *pb.ListLinUserRequest) (*pb.ListLinUserReply, error) {
+	return &pb.ListLinUserReply{}, nil
 }
 
 func (s *CmsService) UpdateUserPassword(ctx context.Context, req *pb.UpdateUserPasswordRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil
 }
 
-func (s *CmsService) DeleteUser(ctx context.Context, req *pb.IDRequest) (*emptypb.Empty, error) {
+func (s *CmsService) DeleteUser(ctx context.Context,
+	req *pb.IDRequest) (*emptypb.Empty, error) {
 	return &emptypb.Empty{}, nil
 }
 
@@ -78,12 +82,13 @@ func (s *CmsService) UpdateUser(ctx context.Context, req *pb.UpdateUserRequest) 
 	return &emptypb.Empty{}, nil
 }
 
-func (s *CmsService) GetUser(ctx context.Context, req *pb.IDRequest) (*pb.GetUserReply, error) {
-	return &pb.GetUserReply{}, nil
+func (s *CmsService) GetUser(ctx context.Context, req *pb.IDRequest) (*pb.GetLinUserReply, error) {
+	return &pb.GetLinUserReply{}, nil
 }
 
 func (s *CmsService) GetGroup(ctx context.Context, req *pb.IDRequest) (*pb.GetGroupReply, error) {
 	return &pb.GetGroupReply{}, nil
+
 }
 
 func (s *CmsService) UpdateGroup(ctx context.Context, req *pb.UpdateGroupRequest) (*emptypb.Empty, error) {

@@ -24,12 +24,17 @@ func NewWire(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*
 	if err != nil {
 		return nil, nil, err
 	}
+	linUserRepo := data.NewLinUserRepo(dataData, logger)
+	linUserusecase := biz.NewLinUserUsecase(linUserRepo, logger)
+	cmsService := service.NewCmsService(linUserusecase)
 	bookRepo := data.NewBookRepo(dataData, logger)
 	bookUsecase := biz.NewBookUsecase(bookRepo, logger)
-	linUserRepo := data.NewUserRepo(dataData, logger)
-	userusecase := biz.NewUserUsecase(linUserRepo, logger)
-	cmsService := service.NewCmsService(bookUsecase, userusecase)
-	httpServer := server.NewHTTPServer(confServer, cmsService, logger)
+	lessonRepo := data.NewLessonRepo(dataData, logger)
+	lessonUsecase := biz.NewLessonUsecase(lessonRepo, logger)
+	teacherRepo := data.NewTeacherRepo(dataData, logger)
+	teacherUsecase := biz.NewTeacherUsecase(teacherRepo, logger)
+	appService := service.NewAppService(bookUsecase, lessonUsecase, teacherUsecase)
+	httpServer := server.NewHTTPServer(confServer, cmsService, appService, logger)
 	app := newApp(logger, httpServer)
 	return app, func() {
 		cleanup()

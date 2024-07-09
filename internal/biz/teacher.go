@@ -20,11 +20,17 @@ type (
 		DeleteTeacher(ctx context.Context, id int64) error
 	}
 	Teacher struct {
-		ID         int64
-		CreateTime time.Time
-		UpdateTime time.Time
+		ID        int64
+		Nickname  string
+		CreatedAt time.Time
 		Name      string
-		
+		Domain    string
+		Area      string
+		Introduce string
+		Avatar    string
+		Remark    string
+		Phone     string
+		ClassHour string
 	}
 )
 
@@ -42,9 +48,10 @@ func NewTeacherUsecase(br TeacherRepo, logger log.Logger) *TeacherUsecase {
 
 func outTeacher(b *Teacher) *api.Teacher {
 	return &api.Teacher{
-		Id:      uint32(b.ID),
-		Name:    b.Name,
-	
+		Id:     uint32(b.ID),
+		Name:   b.Name,
+		Domain: b.Domain,
+		Area:   b.Area,
 	}
 }
 
@@ -76,7 +83,6 @@ func (u *TeacherUsecase) UpdateTeacher(ctx context.Context, req *api.UpdateTeach
 }
 
 func (u *TeacherUsecase) CreateTeacher(ctx context.Context, req *api.CreateTeacherRequest) error {
-	
 	err := u.br.CreateTeacher(ctx, req)
 	return err
 }
@@ -86,18 +92,29 @@ func (u *TeacherUsecase) DeleteTeacher(ctx context.Context, id int64) error {
 	if err != nil {
 		return errors.Wrap(err, "GetTeacherError")
 	}
-	err = u.DeleteTeacher(ctx, id)
+	err = u.br.DeleteTeacher(ctx, id)
 	if err != nil {
 		return errors.Wrap(err, "DeleteTeacherError")
 	}
 	return nil
 }
 
-func (u *TeacherUsecase) GetTeacher(ctx context.Context, id int64) (*api.Teacher, error) {
+func (u *TeacherUsecase) GetTeacher(ctx context.Context, id int64) (*api.GetTeacherReply, error) {
 	teacher, err := u.br.GetTeacher(ctx, id)
 	if err != nil {
 		return nil, errors.Wrap(err, "GetTeacherError")
 	}
 
-	return outTeacher(teacher), nil
+	return &api.GetTeacherReply{
+		Id:        uint32(teacher.ID),
+		Name:      teacher.Name,
+		Nickname:  teacher.Nickname,
+		Domain:    teacher.Domain,
+		Area:      teacher.Area,
+		Introduce: teacher.Introduce,
+		Avatar:    teacher.Avatar,
+		Remark:    teacher.Remark,
+		ClassHour: teacher.ClassHour,
+		Phone:     teacher.Phone,
+	}, nil
 }

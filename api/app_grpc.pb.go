@@ -20,16 +20,22 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	App_CreateLesson_FullMethodName  = "/api.App/CreateLesson"
-	App_ListLesson_FullMethodName    = "/api.App/ListLesson"
-	App_GetLesson_FullMethodName     = "/api.App/GetLesson"
-	App_UpdateLesson_FullMethodName  = "/api.App/UpdateLesson"
-	App_DeleteLesson_FullMethodName  = "/api.App/DeleteLesson"
-	App_CreateTeacher_FullMethodName = "/api.App/CreateTeacher"
-	App_ListTeacher_FullMethodName   = "/api.App/ListTeacher"
-	App_GetTeacher_FullMethodName    = "/api.App/GetTeacher"
-	App_UpdateTeacher_FullMethodName = "/api.App/UpdateTeacher"
-	App_DeleteTeacher_FullMethodName = "/api.App/DeleteTeacher"
+	App_CreateLesson_FullMethodName       = "/api.App/CreateLesson"
+	App_ListLesson_FullMethodName         = "/api.App/ListLesson"
+	App_GetLesson_FullMethodName          = "/api.App/GetLesson"
+	App_UpdateLesson_FullMethodName       = "/api.App/UpdateLesson"
+	App_UpdateLessonStatus_FullMethodName = "/api.App/UpdateLessonStatus"
+	App_DeleteLesson_FullMethodName       = "/api.App/DeleteLesson"
+	App_CreateTeacher_FullMethodName      = "/api.App/CreateTeacher"
+	App_ListTeacher_FullMethodName        = "/api.App/ListTeacher"
+	App_GetTeacher_FullMethodName         = "/api.App/GetTeacher"
+	App_UpdateTeacher_FullMethodName      = "/api.App/UpdateTeacher"
+	App_DeleteTeacher_FullMethodName      = "/api.App/DeleteTeacher"
+	App_CreateBook_FullMethodName         = "/api.App/CreateBook"
+	App_ListBook_FullMethodName           = "/api.App/ListBook"
+	App_GetBook_FullMethodName            = "/api.App/GetBook"
+	App_UpdateBook_FullMethodName         = "/api.App/UpdateBook"
+	App_DeleteBook_FullMethodName         = "/api.App/DeleteBook"
 )
 
 // AppClient is the client API for App service.
@@ -40,12 +46,18 @@ type AppClient interface {
 	ListLesson(ctx context.Context, in *PageRequest, opts ...grpc.CallOption) (*ListLessonReply, error)
 	GetLesson(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*GetLessonReply, error)
 	UpdateLesson(ctx context.Context, in *UpdateLessonRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UpdateLessonStatus(ctx context.Context, in *UpdateLessonRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteLesson(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	CreateTeacher(ctx context.Context, in *CreateTeacherRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ListTeacher(ctx context.Context, in *PageRequest, opts ...grpc.CallOption) (*ListTeacherReply, error)
 	GetTeacher(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*GetTeacherReply, error)
 	UpdateTeacher(ctx context.Context, in *UpdateTeacherRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteTeacher(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateBook(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListBook(ctx context.Context, in *PageRequest, opts ...grpc.CallOption) (*ListBookReply, error)
+	GetBook(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*GetBookReply, error)
+	UpdateBook(ctx context.Context, in *UpdateBookRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	DeleteBook(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type appClient struct {
@@ -86,6 +98,15 @@ func (c *appClient) GetLesson(ctx context.Context, in *IDRequest, opts ...grpc.C
 func (c *appClient) UpdateLesson(ctx context.Context, in *UpdateLessonRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, App_UpdateLesson_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appClient) UpdateLessonStatus(ctx context.Context, in *UpdateLessonRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, App_UpdateLessonStatus_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -146,6 +167,51 @@ func (c *appClient) DeleteTeacher(ctx context.Context, in *IDRequest, opts ...gr
 	return out, nil
 }
 
+func (c *appClient) CreateBook(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, App_CreateBook_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appClient) ListBook(ctx context.Context, in *PageRequest, opts ...grpc.CallOption) (*ListBookReply, error) {
+	out := new(ListBookReply)
+	err := c.cc.Invoke(ctx, App_ListBook_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appClient) GetBook(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*GetBookReply, error) {
+	out := new(GetBookReply)
+	err := c.cc.Invoke(ctx, App_GetBook_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appClient) UpdateBook(ctx context.Context, in *UpdateBookRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, App_UpdateBook_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *appClient) DeleteBook(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, App_DeleteBook_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AppServer is the server API for App service.
 // All implementations must embed UnimplementedAppServer
 // for forward compatibility
@@ -154,12 +220,18 @@ type AppServer interface {
 	ListLesson(context.Context, *PageRequest) (*ListLessonReply, error)
 	GetLesson(context.Context, *IDRequest) (*GetLessonReply, error)
 	UpdateLesson(context.Context, *UpdateLessonRequest) (*emptypb.Empty, error)
+	UpdateLessonStatus(context.Context, *UpdateLessonRequest) (*emptypb.Empty, error)
 	DeleteLesson(context.Context, *IDRequest) (*emptypb.Empty, error)
 	CreateTeacher(context.Context, *CreateTeacherRequest) (*emptypb.Empty, error)
 	ListTeacher(context.Context, *PageRequest) (*ListTeacherReply, error)
 	GetTeacher(context.Context, *IDRequest) (*GetTeacherReply, error)
 	UpdateTeacher(context.Context, *UpdateTeacherRequest) (*emptypb.Empty, error)
 	DeleteTeacher(context.Context, *IDRequest) (*emptypb.Empty, error)
+	CreateBook(context.Context, *CreateBookRequest) (*emptypb.Empty, error)
+	ListBook(context.Context, *PageRequest) (*ListBookReply, error)
+	GetBook(context.Context, *IDRequest) (*GetBookReply, error)
+	UpdateBook(context.Context, *UpdateBookRequest) (*emptypb.Empty, error)
+	DeleteBook(context.Context, *IDRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedAppServer()
 }
 
@@ -179,6 +251,9 @@ func (UnimplementedAppServer) GetLesson(context.Context, *IDRequest) (*GetLesson
 func (UnimplementedAppServer) UpdateLesson(context.Context, *UpdateLessonRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateLesson not implemented")
 }
+func (UnimplementedAppServer) UpdateLessonStatus(context.Context, *UpdateLessonRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateLessonStatus not implemented")
+}
 func (UnimplementedAppServer) DeleteLesson(context.Context, *IDRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteLesson not implemented")
 }
@@ -196,6 +271,21 @@ func (UnimplementedAppServer) UpdateTeacher(context.Context, *UpdateTeacherReque
 }
 func (UnimplementedAppServer) DeleteTeacher(context.Context, *IDRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteTeacher not implemented")
+}
+func (UnimplementedAppServer) CreateBook(context.Context, *CreateBookRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateBook not implemented")
+}
+func (UnimplementedAppServer) ListBook(context.Context, *PageRequest) (*ListBookReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListBook not implemented")
+}
+func (UnimplementedAppServer) GetBook(context.Context, *IDRequest) (*GetBookReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBook not implemented")
+}
+func (UnimplementedAppServer) UpdateBook(context.Context, *UpdateBookRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateBook not implemented")
+}
+func (UnimplementedAppServer) DeleteBook(context.Context, *IDRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteBook not implemented")
 }
 func (UnimplementedAppServer) mustEmbedUnimplementedAppServer() {}
 
@@ -278,6 +368,24 @@ func _App_UpdateLesson_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AppServer).UpdateLesson(ctx, req.(*UpdateLessonRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _App_UpdateLessonStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateLessonRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).UpdateLessonStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: App_UpdateLessonStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).UpdateLessonStatus(ctx, req.(*UpdateLessonRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -390,6 +498,96 @@ func _App_DeleteTeacher_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _App_CreateBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateBookRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).CreateBook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: App_CreateBook_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).CreateBook(ctx, req.(*CreateBookRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _App_ListBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).ListBook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: App_ListBook_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).ListBook(ctx, req.(*PageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _App_GetBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).GetBook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: App_GetBook_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).GetBook(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _App_UpdateBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBookRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).UpdateBook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: App_UpdateBook_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).UpdateBook(ctx, req.(*UpdateBookRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _App_DeleteBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).DeleteBook(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: App_DeleteBook_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).DeleteBook(ctx, req.(*IDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // App_ServiceDesc is the grpc.ServiceDesc for App service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -414,6 +612,10 @@ var App_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _App_UpdateLesson_Handler,
 		},
 		{
+			MethodName: "UpdateLessonStatus",
+			Handler:    _App_UpdateLessonStatus_Handler,
+		},
+		{
 			MethodName: "DeleteLesson",
 			Handler:    _App_DeleteLesson_Handler,
 		},
@@ -436,6 +638,26 @@ var App_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteTeacher",
 			Handler:    _App_DeleteTeacher_Handler,
+		},
+		{
+			MethodName: "CreateBook",
+			Handler:    _App_CreateBook_Handler,
+		},
+		{
+			MethodName: "ListBook",
+			Handler:    _App_ListBook_Handler,
+		},
+		{
+			MethodName: "GetBook",
+			Handler:    _App_GetBook_Handler,
+		},
+		{
+			MethodName: "UpdateBook",
+			Handler:    _App_UpdateBook_Handler,
+		},
+		{
+			MethodName: "DeleteBook",
+			Handler:    _App_DeleteBook_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

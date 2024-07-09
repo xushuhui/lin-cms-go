@@ -20,19 +20,15 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
-const OperationCmsCreateBook = "/api.Cms/CreateBook"
 const OperationCmsCreateGroup = "/api.Cms/CreateGroup"
 const OperationCmsCreateUser = "/api.Cms/CreateUser"
-const OperationCmsDeleteBook = "/api.Cms/DeleteBook"
 const OperationCmsDeleteGroup = "/api.Cms/DeleteGroup"
 const OperationCmsDeleteUser = "/api.Cms/DeleteUser"
 const OperationCmsDispatchPermission = "/api.Cms/DispatchPermission"
 const OperationCmsDispatchPermissions = "/api.Cms/DispatchPermissions"
-const OperationCmsGetBook = "/api.Cms/GetBook"
 const OperationCmsGetGroup = "/api.Cms/GetGroup"
 const OperationCmsGetMyInfomation = "/api.Cms/GetMyInfomation"
 const OperationCmsGetUser = "/api.Cms/GetUser"
-const OperationCmsListBook = "/api.Cms/ListBook"
 const OperationCmsListGroup = "/api.Cms/ListGroup"
 const OperationCmsListLog = "/api.Cms/ListLog"
 const OperationCmsListLogUser = "/api.Cms/ListLogUser"
@@ -43,7 +39,6 @@ const OperationCmsLogin = "/api.Cms/Login"
 const OperationCmsPing = "/api.Cms/Ping"
 const OperationCmsRemovePermission = "/api.Cms/RemovePermission"
 const OperationCmsSearchLog = "/api.Cms/SearchLog"
-const OperationCmsUpdateBook = "/api.Cms/UpdateBook"
 const OperationCmsUpdateGroup = "/api.Cms/UpdateGroup"
 const OperationCmsUpdateMe = "/api.Cms/UpdateMe"
 const OperationCmsUpdateMyPassword = "/api.Cms/UpdateMyPassword"
@@ -52,30 +47,25 @@ const OperationCmsUpdateUserPassword = "/api.Cms/UpdateUserPassword"
 const OperationCmsUpload = "/api.Cms/Upload"
 
 type CmsHTTPServer interface {
-	CreateBook(context.Context, *CreateBookRequest) (*emptypb.Empty, error)
 	CreateGroup(context.Context, *CreateGroupRequest) (*emptypb.Empty, error)
-	CreateUser(context.Context, *CreateUserRequest) (*emptypb.Empty, error)
-	DeleteBook(context.Context, *IDRequest) (*emptypb.Empty, error)
+	CreateUser(context.Context, *CreateLinUserRequest) (*emptypb.Empty, error)
 	DeleteGroup(context.Context, *IDRequest) (*emptypb.Empty, error)
 	DeleteUser(context.Context, *IDRequest) (*emptypb.Empty, error)
 	DispatchPermission(context.Context, *DispatchPermissionRequest) (*emptypb.Empty, error)
 	DispatchPermissions(context.Context, *DispatchPermissionsRequest) (*emptypb.Empty, error)
-	GetBook(context.Context, *IDRequest) (*GetBookReply, error)
 	GetGroup(context.Context, *IDRequest) (*GetGroupReply, error)
 	GetMyInfomation(context.Context, *emptypb.Empty) (*GetMyInfomationReply, error)
-	GetUser(context.Context, *IDRequest) (*GetUserReply, error)
-	ListBook(context.Context, *PageRequest) (*ListBookReply, error)
+	GetUser(context.Context, *IDRequest) (*GetLinUserReply, error)
 	ListGroup(context.Context, *emptypb.Empty) (*ListGroupReply, error)
 	ListLog(context.Context, *PageRequest) (*ListLogReply, error)
 	ListLogUser(context.Context, *PageRequest) (*ListLogUserReply, error)
 	ListMyPermission(context.Context, *emptypb.Empty) (*ListMyPermissionReply, error)
 	ListPermission(context.Context, *emptypb.Empty) (*ListPermissionReply, error)
-	ListUser(context.Context, *ListUserRequest) (*ListUserReply, error)
+	ListUser(context.Context, *ListLinUserRequest) (*ListLinUserReply, error)
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
 	Ping(context.Context, *emptypb.Empty) (*PingReply, error)
 	RemovePermission(context.Context, *RemovePermissionRequest) (*emptypb.Empty, error)
 	SearchLog(context.Context, *SearchLogRequest) (*ListLogReply, error)
-	UpdateBook(context.Context, *UpdateBookRequest) (*emptypb.Empty, error)
 	UpdateGroup(context.Context, *UpdateGroupRequest) (*emptypb.Empty, error)
 	UpdateMe(context.Context, *UpdateMeRequest) (*emptypb.Empty, error)
 	UpdateMyPassword(context.Context, *UpdateMyPasswordRequest) (*emptypb.Empty, error)
@@ -88,11 +78,6 @@ func RegisterCmsHTTPServer(s *http.Server, srv CmsHTTPServer) {
 	r := s.Route("/")
 	r.GET("/ping", _Cms_Ping0_HTTP_Handler(srv))
 	r.POST("/cms/user/login", _Cms_Login0_HTTP_Handler(srv))
-	r.POST("/v1/book", _Cms_CreateBook0_HTTP_Handler(srv))
-	r.GET("/v1/book", _Cms_ListBook0_HTTP_Handler(srv))
-	r.GET("/v1/book/{id}", _Cms_GetBook0_HTTP_Handler(srv))
-	r.PUT("/v1/book/{id}", _Cms_UpdateBook0_HTTP_Handler(srv))
-	r.DELETE("/v1/book/{id}", _Cms_DeleteBook0_HTTP_Handler(srv))
 	r.POST("/cms/file", _Cms_Upload0_HTTP_Handler(srv))
 	r.POST("/cms/user/register", _Cms_CreateUser0_HTTP_Handler(srv))
 	r.PUT("/cms/user", _Cms_UpdateMe0_HTTP_Handler(srv))
@@ -156,110 +141,6 @@ func _Cms_Login0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) error {
 	}
 }
 
-func _Cms_CreateBook0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in CreateBookRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationCmsCreateBook)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.CreateBook(ctx, req.(*CreateBookRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*emptypb.Empty)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Cms_ListBook0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in PageRequest
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationCmsListBook)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.ListBook(ctx, req.(*PageRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*ListBookReply)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Cms_GetBook0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in IDRequest
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindVars(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationCmsGetBook)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.GetBook(ctx, req.(*IDRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*GetBookReply)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Cms_UpdateBook0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in UpdateBookRequest
-		if err := ctx.Bind(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindVars(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationCmsUpdateBook)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.UpdateBook(ctx, req.(*UpdateBookRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*emptypb.Empty)
-		return ctx.Result(200, reply)
-	}
-}
-
-func _Cms_DeleteBook0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) error {
-	return func(ctx http.Context) error {
-		var in IDRequest
-		if err := ctx.BindQuery(&in); err != nil {
-			return err
-		}
-		if err := ctx.BindVars(&in); err != nil {
-			return err
-		}
-		http.SetOperation(ctx, OperationCmsDeleteBook)
-		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.DeleteBook(ctx, req.(*IDRequest))
-		})
-		out, err := h(ctx, &in)
-		if err != nil {
-			return err
-		}
-		reply := out.(*emptypb.Empty)
-		return ctx.Result(200, reply)
-	}
-}
-
 func _Cms_Upload0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in UploadRequest
@@ -281,13 +162,13 @@ func _Cms_Upload0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) error {
 
 func _Cms_CreateUser0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in CreateUserRequest
+		var in CreateLinUserRequest
 		if err := ctx.Bind(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, OperationCmsCreateUser)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.CreateUser(ctx, req.(*CreateUserRequest))
+			return srv.CreateUser(ctx, req.(*CreateLinUserRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -395,19 +276,19 @@ func _Cms_ListPermission0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context)
 
 func _Cms_ListUser0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
-		var in ListUserRequest
+		var in ListLinUserRequest
 		if err := ctx.BindQuery(&in); err != nil {
 			return err
 		}
 		http.SetOperation(ctx, OperationCmsListUser)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
-			return srv.ListUser(ctx, req.(*ListUserRequest))
+			return srv.ListUser(ctx, req.(*ListLinUserRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
 			return err
 		}
-		reply := out.(*ListUserReply)
+		reply := out.(*ListLinUserReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -495,7 +376,7 @@ func _Cms_GetUser0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) error 
 		if err != nil {
 			return err
 		}
-		reply := out.(*GetUserReply)
+		reply := out.(*GetLinUserReply)
 		return ctx.Result(200, reply)
 	}
 }
@@ -719,30 +600,25 @@ func _Cms_ListLogUser0_HTTP_Handler(srv CmsHTTPServer) func(ctx http.Context) er
 }
 
 type CmsHTTPClient interface {
-	CreateBook(ctx context.Context, req *CreateBookRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	CreateGroup(ctx context.Context, req *CreateGroupRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	CreateUser(ctx context.Context, req *CreateUserRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	DeleteBook(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	CreateUser(ctx context.Context, req *CreateLinUserRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	DeleteGroup(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	DeleteUser(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	DispatchPermission(ctx context.Context, req *DispatchPermissionRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	DispatchPermissions(ctx context.Context, req *DispatchPermissionsRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
-	GetBook(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *GetBookReply, err error)
 	GetGroup(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *GetGroupReply, err error)
 	GetMyInfomation(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *GetMyInfomationReply, err error)
-	GetUser(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *GetUserReply, err error)
-	ListBook(ctx context.Context, req *PageRequest, opts ...http.CallOption) (rsp *ListBookReply, err error)
+	GetUser(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *GetLinUserReply, err error)
 	ListGroup(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *ListGroupReply, err error)
 	ListLog(ctx context.Context, req *PageRequest, opts ...http.CallOption) (rsp *ListLogReply, err error)
 	ListLogUser(ctx context.Context, req *PageRequest, opts ...http.CallOption) (rsp *ListLogUserReply, err error)
 	ListMyPermission(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *ListMyPermissionReply, err error)
 	ListPermission(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *ListPermissionReply, err error)
-	ListUser(ctx context.Context, req *ListUserRequest, opts ...http.CallOption) (rsp *ListUserReply, err error)
+	ListUser(ctx context.Context, req *ListLinUserRequest, opts ...http.CallOption) (rsp *ListLinUserReply, err error)
 	Login(ctx context.Context, req *LoginRequest, opts ...http.CallOption) (rsp *LoginReply, err error)
 	Ping(ctx context.Context, req *emptypb.Empty, opts ...http.CallOption) (rsp *PingReply, err error)
 	RemovePermission(ctx context.Context, req *RemovePermissionRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	SearchLog(ctx context.Context, req *SearchLogRequest, opts ...http.CallOption) (rsp *ListLogReply, err error)
-	UpdateBook(ctx context.Context, req *UpdateBookRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	UpdateGroup(ctx context.Context, req *UpdateGroupRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	UpdateMe(ctx context.Context, req *UpdateMeRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	UpdateMyPassword(ctx context.Context, req *UpdateMyPasswordRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
@@ -759,19 +635,6 @@ func NewCmsHTTPClient(client *http.Client) CmsHTTPClient {
 	return &CmsHTTPClientImpl{client}
 }
 
-func (c *CmsHTTPClientImpl) CreateBook(ctx context.Context, in *CreateBookRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
-	var out emptypb.Empty
-	pattern := "/v1/book"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationCmsCreateBook))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
 func (c *CmsHTTPClientImpl) CreateGroup(ctx context.Context, in *CreateGroupRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
 	pattern := "/cms/admin/group"
@@ -785,26 +648,13 @@ func (c *CmsHTTPClientImpl) CreateGroup(ctx context.Context, in *CreateGroupRequ
 	return &out, err
 }
 
-func (c *CmsHTTPClientImpl) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+func (c *CmsHTTPClientImpl) CreateUser(ctx context.Context, in *CreateLinUserRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
 	pattern := "/cms/user/register"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationCmsCreateUser))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *CmsHTTPClientImpl) DeleteBook(ctx context.Context, in *IDRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
-	var out emptypb.Empty
-	pattern := "/v1/book/{id}"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationCmsDeleteBook))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -863,19 +713,6 @@ func (c *CmsHTTPClientImpl) DispatchPermissions(ctx context.Context, in *Dispatc
 	return &out, err
 }
 
-func (c *CmsHTTPClientImpl) GetBook(ctx context.Context, in *IDRequest, opts ...http.CallOption) (*GetBookReply, error) {
-	var out GetBookReply
-	pattern := "/v1/book/{id}"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationCmsGetBook))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
 func (c *CmsHTTPClientImpl) GetGroup(ctx context.Context, in *IDRequest, opts ...http.CallOption) (*GetGroupReply, error) {
 	var out GetGroupReply
 	pattern := "/cms/admin/group/{id}"
@@ -902,24 +739,11 @@ func (c *CmsHTTPClientImpl) GetMyInfomation(ctx context.Context, in *emptypb.Emp
 	return &out, err
 }
 
-func (c *CmsHTTPClientImpl) GetUser(ctx context.Context, in *IDRequest, opts ...http.CallOption) (*GetUserReply, error) {
-	var out GetUserReply
+func (c *CmsHTTPClientImpl) GetUser(ctx context.Context, in *IDRequest, opts ...http.CallOption) (*GetLinUserReply, error) {
+	var out GetLinUserReply
 	pattern := "/cms/admin/user/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationCmsGetUser))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *CmsHTTPClientImpl) ListBook(ctx context.Context, in *PageRequest, opts ...http.CallOption) (*ListBookReply, error) {
-	var out ListBookReply
-	pattern := "/v1/book"
-	path := binding.EncodeURL(pattern, in, true)
-	opts = append(opts, http.Operation(OperationCmsListBook))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -993,8 +817,8 @@ func (c *CmsHTTPClientImpl) ListPermission(ctx context.Context, in *emptypb.Empt
 	return &out, err
 }
 
-func (c *CmsHTTPClientImpl) ListUser(ctx context.Context, in *ListUserRequest, opts ...http.CallOption) (*ListUserReply, error) {
-	var out ListUserReply
+func (c *CmsHTTPClientImpl) ListUser(ctx context.Context, in *ListLinUserRequest, opts ...http.CallOption) (*ListLinUserReply, error) {
+	var out ListLinUserReply
 	pattern := "/cms/admin/users"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationCmsListUser))
@@ -1052,19 +876,6 @@ func (c *CmsHTTPClientImpl) SearchLog(ctx context.Context, in *SearchLogRequest,
 	opts = append(opts, http.Operation(OperationCmsSearchLog))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return &out, err
-}
-
-func (c *CmsHTTPClientImpl) UpdateBook(ctx context.Context, in *UpdateBookRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
-	var out emptypb.Empty
-	pattern := "/v1/book/{id}"
-	path := binding.EncodeURL(pattern, in, false)
-	opts = append(opts, http.Operation(OperationCmsUpdateBook))
-	opts = append(opts, http.PathTemplate(pattern))
-	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

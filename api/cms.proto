@@ -16,34 +16,7 @@ service Cms {
       body : "*"
     };
   }
-  
-  rpc CreateBook(CreateBookRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      post : "/v1/book"
-      body : "*"
-    };
-  }
-  rpc ListBook(PageRequest) returns (ListBookReply) {
-    option (google.api.http) = {
-      get : "/v1/book"
-    };
-  }
-  rpc GetBook(IDRequest) returns (GetBookReply) {
-    option (google.api.http) = {
-      get : "/v1/book/{id}"
-    };
-  }
-  rpc UpdateBook(UpdateBookRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      put : "/v1/book/{id}"
-      body : "*"
-    };
-  }
-  rpc DeleteBook(IDRequest) returns (google.protobuf.Empty) {
-    option (google.api.http) = {
-      delete : "/v1/book/{id}"
-    };
-  }
+
   rpc Upload(UploadRequest) returns (UploadReply) {
     option (google.api.http) = {
       post : "/cms/file"
@@ -51,7 +24,7 @@ service Cms {
     };
   }
 
-  rpc CreateUser(CreateUserRequest) returns (google.protobuf.Empty) {
+  rpc CreateUser(CreateLinUserRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       post : "/cms/user/register"
       body : "*"
@@ -86,7 +59,7 @@ service Cms {
       get : "/cms/admin/permissions"
     };
   }
-  rpc ListUser(ListUserRequest) returns (ListUserReply) {
+  rpc ListUser(ListLinUserRequest) returns (ListLinUserReply) {
     option (google.api.http) = {
       get : "/cms/admin/users"
     };
@@ -109,7 +82,7 @@ service Cms {
       body : "*"
     };
   }
-  rpc GetUser(IDRequest) returns (GetUserReply) {
+  rpc GetUser(IDRequest) returns (GetLinUserReply) {
     option (google.api.http) = {
       get : "/cms/admin/user/{id}"
     };
@@ -181,7 +154,7 @@ service Cms {
   }
 }
 message DispatchPermissionsRequest {
-  int32 groupId = 1;
+  string groupId = 1;
   repeated int32 permissionIds = 2;
 }
 message DispatchPermissionRequest {
@@ -197,11 +170,10 @@ message LoginRequest {
   string username = 1;
   string password = 2;
 }
-message CreateUserRequest {
+message CreateLinUserRequest {
   string username = 1;
   string phone = 2;
   string password = 3;
-
   int32 groupId = 5;
 }
 message UpdateMeRequest {
@@ -231,20 +203,10 @@ message SearchLogRequest {
   string name = 6;
 }
 
-message ListUserRequest { int32 groupId = 1; }
-
-message CreateBookRequest {
-  string title = 1;
-  string author = 2;
-  string summary = 3;
-  string image = 4;
-}
-message UpdateBookRequest {
-  int64 id = 1;
-  string title = 2;
-  string author = 3;
-  string summary = 4;
-  string image = 5;
+message ListLinUserRequest {
+  int64 groupId = 1;
+  int32 page = 2;
+  int32 size = 3;
 }
 
 message UpdateGroupRequest {
@@ -253,7 +215,7 @@ message UpdateGroupRequest {
   string info = 3;
 }
 message GetGroupReply {}
-message GetUserReply {}
+message GetLinUserReply {}
 message GetMyInfomationReply {}
 message ListMyPermissionReply {}
 
@@ -264,27 +226,19 @@ message UpdateUserRequest {
 
 message UpdateMyPasswordRequest {}
 
-message ListUserReply { repeated User users = 1; }
-
-message ListGroupReply {}
-message User { int64 id = 1; }
-message Permission { int64 id = 1; }
-message ListPermissionReply { repeated Permission permissions = 1; }
-
-message CreateBookReply { int64 id = 1; }
-message Book { 
-  uint32 id = 1; 
-  string title = 2;
-  string author = 3;
-  string summary = 4;
-  string image = 5;
-  string created_at = 6;
-}
-message ListBookReply {
-  repeated Book list = 1;
+message ListLinUserReply {
+  repeated LinUser list = 1;
   uint32 total = 2;
 }
-message GetBookReply { Book book = 1; }
+
+message ListGroupReply {}
+message LinUser {
+  int64 id = 1;
+  string username = 2;
+  string phone = 3;
+}
+message Permission { int64 id = 1; }
+message ListPermissionReply { repeated Permission permissions = 1; }
 
 message UploadRequest { string file = 1; }
 message UploadReply { string url = 1; }
@@ -295,8 +249,11 @@ message CreateGroupRequest {
   string info = 2;
   repeated int64 permission_ids = 3;
 }
-
-message ListLogReply {}
+message Log { uint32 id = 1; }
+message ListLogReply {
+  repeated Log list = 1;
+  uint32 total = 2;
+}
 
 message PageRequest {
   int32 page = 1;

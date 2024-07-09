@@ -22,11 +22,6 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	Cms_Ping_FullMethodName                = "/api.Cms/Ping"
 	Cms_Login_FullMethodName               = "/api.Cms/Login"
-	Cms_CreateBook_FullMethodName          = "/api.Cms/CreateBook"
-	Cms_ListBook_FullMethodName            = "/api.Cms/ListBook"
-	Cms_GetBook_FullMethodName             = "/api.Cms/GetBook"
-	Cms_UpdateBook_FullMethodName          = "/api.Cms/UpdateBook"
-	Cms_DeleteBook_FullMethodName          = "/api.Cms/DeleteBook"
 	Cms_Upload_FullMethodName              = "/api.Cms/Upload"
 	Cms_CreateUser_FullMethodName          = "/api.Cms/CreateUser"
 	Cms_UpdateMe_FullMethodName            = "/api.Cms/UpdateMe"
@@ -58,23 +53,18 @@ const (
 type CmsClient interface {
 	Ping(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PingReply, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginReply, error)
-	CreateBook(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	ListBook(ctx context.Context, in *PageRequest, opts ...grpc.CallOption) (*ListBookReply, error)
-	GetBook(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*GetBookReply, error)
-	UpdateBook(ctx context.Context, in *UpdateBookRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	DeleteBook(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	Upload(ctx context.Context, in *UploadRequest, opts ...grpc.CallOption) (*UploadReply, error)
-	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateUser(ctx context.Context, in *CreateLinUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateMe(ctx context.Context, in *UpdateMeRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateMyPassword(ctx context.Context, in *UpdateMyPasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ListMyPermission(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListMyPermissionReply, error)
 	GetMyInfomation(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetMyInfomationReply, error)
 	ListPermission(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListPermissionReply, error)
-	ListUser(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserReply, error)
+	ListUser(ctx context.Context, in *ListLinUserRequest, opts ...grpc.CallOption) (*ListLinUserReply, error)
 	UpdateUserPassword(ctx context.Context, in *UpdateUserPasswordRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteUser(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	GetUser(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*GetUserReply, error)
+	GetUser(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*GetLinUserReply, error)
 	GetGroup(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*GetGroupReply, error)
 	UpdateGroup(ctx context.Context, in *UpdateGroupRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	DeleteGroup(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -114,51 +104,6 @@ func (c *cmsClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.Ca
 	return out, nil
 }
 
-func (c *cmsClient) CreateBook(ctx context.Context, in *CreateBookRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Cms_CreateBook_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *cmsClient) ListBook(ctx context.Context, in *PageRequest, opts ...grpc.CallOption) (*ListBookReply, error) {
-	out := new(ListBookReply)
-	err := c.cc.Invoke(ctx, Cms_ListBook_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *cmsClient) GetBook(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*GetBookReply, error) {
-	out := new(GetBookReply)
-	err := c.cc.Invoke(ctx, Cms_GetBook_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *cmsClient) UpdateBook(ctx context.Context, in *UpdateBookRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Cms_UpdateBook_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *cmsClient) DeleteBook(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, Cms_DeleteBook_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *cmsClient) Upload(ctx context.Context, in *UploadRequest, opts ...grpc.CallOption) (*UploadReply, error) {
 	out := new(UploadReply)
 	err := c.cc.Invoke(ctx, Cms_Upload_FullMethodName, in, out, opts...)
@@ -168,7 +113,7 @@ func (c *cmsClient) Upload(ctx context.Context, in *UploadRequest, opts ...grpc.
 	return out, nil
 }
 
-func (c *cmsClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+func (c *cmsClient) CreateUser(ctx context.Context, in *CreateLinUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, Cms_CreateUser_FullMethodName, in, out, opts...)
 	if err != nil {
@@ -222,8 +167,8 @@ func (c *cmsClient) ListPermission(ctx context.Context, in *emptypb.Empty, opts 
 	return out, nil
 }
 
-func (c *cmsClient) ListUser(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserReply, error) {
-	out := new(ListUserReply)
+func (c *cmsClient) ListUser(ctx context.Context, in *ListLinUserRequest, opts ...grpc.CallOption) (*ListLinUserReply, error) {
+	out := new(ListLinUserReply)
 	err := c.cc.Invoke(ctx, Cms_ListUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -258,8 +203,8 @@ func (c *cmsClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts 
 	return out, nil
 }
 
-func (c *cmsClient) GetUser(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*GetUserReply, error) {
-	out := new(GetUserReply)
+func (c *cmsClient) GetUser(ctx context.Context, in *IDRequest, opts ...grpc.CallOption) (*GetLinUserReply, error) {
+	out := new(GetLinUserReply)
 	err := c.cc.Invoke(ctx, Cms_GetUser_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -372,23 +317,18 @@ func (c *cmsClient) ListLogUser(ctx context.Context, in *PageRequest, opts ...gr
 type CmsServer interface {
 	Ping(context.Context, *emptypb.Empty) (*PingReply, error)
 	Login(context.Context, *LoginRequest) (*LoginReply, error)
-	CreateBook(context.Context, *CreateBookRequest) (*emptypb.Empty, error)
-	ListBook(context.Context, *PageRequest) (*ListBookReply, error)
-	GetBook(context.Context, *IDRequest) (*GetBookReply, error)
-	UpdateBook(context.Context, *UpdateBookRequest) (*emptypb.Empty, error)
-	DeleteBook(context.Context, *IDRequest) (*emptypb.Empty, error)
 	Upload(context.Context, *UploadRequest) (*UploadReply, error)
-	CreateUser(context.Context, *CreateUserRequest) (*emptypb.Empty, error)
+	CreateUser(context.Context, *CreateLinUserRequest) (*emptypb.Empty, error)
 	UpdateMe(context.Context, *UpdateMeRequest) (*emptypb.Empty, error)
 	UpdateMyPassword(context.Context, *UpdateMyPasswordRequest) (*emptypb.Empty, error)
 	ListMyPermission(context.Context, *emptypb.Empty) (*ListMyPermissionReply, error)
 	GetMyInfomation(context.Context, *emptypb.Empty) (*GetMyInfomationReply, error)
 	ListPermission(context.Context, *emptypb.Empty) (*ListPermissionReply, error)
-	ListUser(context.Context, *ListUserRequest) (*ListUserReply, error)
+	ListUser(context.Context, *ListLinUserRequest) (*ListLinUserReply, error)
 	UpdateUserPassword(context.Context, *UpdateUserPasswordRequest) (*emptypb.Empty, error)
 	DeleteUser(context.Context, *IDRequest) (*emptypb.Empty, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*emptypb.Empty, error)
-	GetUser(context.Context, *IDRequest) (*GetUserReply, error)
+	GetUser(context.Context, *IDRequest) (*GetLinUserReply, error)
 	GetGroup(context.Context, *IDRequest) (*GetGroupReply, error)
 	UpdateGroup(context.Context, *UpdateGroupRequest) (*emptypb.Empty, error)
 	DeleteGroup(context.Context, *IDRequest) (*emptypb.Empty, error)
@@ -413,25 +353,10 @@ func (UnimplementedCmsServer) Ping(context.Context, *emptypb.Empty) (*PingReply,
 func (UnimplementedCmsServer) Login(context.Context, *LoginRequest) (*LoginReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedCmsServer) CreateBook(context.Context, *CreateBookRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateBook not implemented")
-}
-func (UnimplementedCmsServer) ListBook(context.Context, *PageRequest) (*ListBookReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListBook not implemented")
-}
-func (UnimplementedCmsServer) GetBook(context.Context, *IDRequest) (*GetBookReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBook not implemented")
-}
-func (UnimplementedCmsServer) UpdateBook(context.Context, *UpdateBookRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateBook not implemented")
-}
-func (UnimplementedCmsServer) DeleteBook(context.Context, *IDRequest) (*emptypb.Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method DeleteBook not implemented")
-}
 func (UnimplementedCmsServer) Upload(context.Context, *UploadRequest) (*UploadReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Upload not implemented")
 }
-func (UnimplementedCmsServer) CreateUser(context.Context, *CreateUserRequest) (*emptypb.Empty, error) {
+func (UnimplementedCmsServer) CreateUser(context.Context, *CreateLinUserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedCmsServer) UpdateMe(context.Context, *UpdateMeRequest) (*emptypb.Empty, error) {
@@ -449,7 +374,7 @@ func (UnimplementedCmsServer) GetMyInfomation(context.Context, *emptypb.Empty) (
 func (UnimplementedCmsServer) ListPermission(context.Context, *emptypb.Empty) (*ListPermissionReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListPermission not implemented")
 }
-func (UnimplementedCmsServer) ListUser(context.Context, *ListUserRequest) (*ListUserReply, error) {
+func (UnimplementedCmsServer) ListUser(context.Context, *ListLinUserRequest) (*ListLinUserReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUser not implemented")
 }
 func (UnimplementedCmsServer) UpdateUserPassword(context.Context, *UpdateUserPasswordRequest) (*emptypb.Empty, error) {
@@ -461,7 +386,7 @@ func (UnimplementedCmsServer) DeleteUser(context.Context, *IDRequest) (*emptypb.
 func (UnimplementedCmsServer) UpdateUser(context.Context, *UpdateUserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
-func (UnimplementedCmsServer) GetUser(context.Context, *IDRequest) (*GetUserReply, error) {
+func (UnimplementedCmsServer) GetUser(context.Context, *IDRequest) (*GetLinUserReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
 func (UnimplementedCmsServer) GetGroup(context.Context, *IDRequest) (*GetGroupReply, error) {
@@ -546,96 +471,6 @@ func _Cms_Login_Handler(srv interface{}, ctx context.Context, dec func(interface
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Cms_CreateBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateBookRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CmsServer).CreateBook(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Cms_CreateBook_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CmsServer).CreateBook(ctx, req.(*CreateBookRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Cms_ListBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PageRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CmsServer).ListBook(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Cms_ListBook_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CmsServer).ListBook(ctx, req.(*PageRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Cms_GetBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IDRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CmsServer).GetBook(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Cms_GetBook_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CmsServer).GetBook(ctx, req.(*IDRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Cms_UpdateBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateBookRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CmsServer).UpdateBook(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Cms_UpdateBook_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CmsServer).UpdateBook(ctx, req.(*UpdateBookRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Cms_DeleteBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(IDRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CmsServer).DeleteBook(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Cms_DeleteBook_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CmsServer).DeleteBook(ctx, req.(*IDRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Cms_Upload_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UploadRequest)
 	if err := dec(in); err != nil {
@@ -655,7 +490,7 @@ func _Cms_Upload_Handler(srv interface{}, ctx context.Context, dec func(interfac
 }
 
 func _Cms_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateUserRequest)
+	in := new(CreateLinUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -667,7 +502,7 @@ func _Cms_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(inte
 		FullMethod: Cms_CreateUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CmsServer).CreateUser(ctx, req.(*CreateUserRequest))
+		return srv.(CmsServer).CreateUser(ctx, req.(*CreateLinUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -763,7 +598,7 @@ func _Cms_ListPermission_Handler(srv interface{}, ctx context.Context, dec func(
 }
 
 func _Cms_ListUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListUserRequest)
+	in := new(ListLinUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -775,7 +610,7 @@ func _Cms_ListUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: Cms_ListUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CmsServer).ListUser(ctx, req.(*ListUserRequest))
+		return srv.(CmsServer).ListUser(ctx, req.(*ListLinUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1064,26 +899,6 @@ var Cms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _Cms_Login_Handler,
-		},
-		{
-			MethodName: "CreateBook",
-			Handler:    _Cms_CreateBook_Handler,
-		},
-		{
-			MethodName: "ListBook",
-			Handler:    _Cms_ListBook_Handler,
-		},
-		{
-			MethodName: "GetBook",
-			Handler:    _Cms_GetBook_Handler,
-		},
-		{
-			MethodName: "UpdateBook",
-			Handler:    _Cms_UpdateBook_Handler,
-		},
-		{
-			MethodName: "DeleteBook",
-			Handler:    _Cms_DeleteBook_Handler,
 		},
 		{
 			MethodName: "Upload",

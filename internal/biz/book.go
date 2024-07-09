@@ -21,8 +21,7 @@ type (
 	}
 	Book struct {
 		ID         int64
-		CreateTime time.Time
-		UpdateTime time.Time
+		CreatedAt  time.Time
 		Title      string
 		Author     string
 		Summary    string
@@ -80,7 +79,6 @@ func (u *BookUsecase) UpdateBook(ctx context.Context, req *api.UpdateBookRequest
 }
 
 func (u *BookUsecase) CreateBook(ctx context.Context, req *api.CreateBookRequest) error {
-	
 	err := u.br.CreateBook(ctx, req)
 	return err
 }

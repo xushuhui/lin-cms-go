@@ -76,11 +76,17 @@ func (r *teacherRepo) DeleteTeacher(ctx context.Context, id int64) error {
 
 func toTeacher(model *model.Teacher) *biz.Teacher {
 	return &biz.Teacher{
-		ID:   model.ID,
-		Name: model.Name,
-
-		CreateTime: model.CreatedAt,
-		UpdateTime: model.UpdatedAt,
+		ID:        model.ID,
+		Name:      model.Name,
+		Nickname:  model.Nickname,
+		Domain:    model.Domain,
+		Area:      model.Area,
+		Introduce: model.Introduce,
+		Avatar:    model.Avatar,
+		ClassHour: model.ClassHour,
+		Remark:    model.Remark,
+		Phone:     model.Phone,
+		CreatedAt: model.CreatedAt,
 	}
 }
 

@@ -19,7 +19,7 @@ import (
 // MiddlewareCors 设置跨域请求头
 
 // NewHTTPServer new a HTTP server.
-func NewHTTPServer(c *conf.Server, s *service.CmsService, logger log.Logger) *http.Server {
+func NewHTTPServer(c *conf.Server, cs *service.CmsService,as *service.AppService, logger log.Logger) *http.Server {
 	opts := []http.ServerOption{
 		http.Middleware(
 
@@ -45,7 +45,8 @@ func NewHTTPServer(c *conf.Server, s *service.CmsService, logger log.Logger) *ht
 
 	srv := http.NewServer(opts...)
 
-	api.RegisterCmsHTTPServer(srv, s)
+	api.RegisterCmsHTTPServer(srv, cs)
+	api.RegisterAppHTTPServer(srv, as)
 	return srv
 }
 

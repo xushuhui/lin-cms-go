@@ -12,7 +12,6 @@ type LogRepo interface {
 }
 type Log struct{}
 
-
 func GetLogs(ctx context.Context, req *api.ListLogRequest) (res interface{}, total int, err error) {
 	// var logs []*model.LinLog
 	//
@@ -24,7 +23,7 @@ func GetLogs(ctx context.Context, req *api.ListLogRequest) (res interface{}, tot
 	// if req.Start != "" && req.End != "" {
 	// 	start := utils.String2time(req.Start)
 	// 	end := utils.String2time(req.End)
-	// 	q := linlog.And(linlog.CreateTimeGT(start), linlog.CreateTimeLT(end))
+	// 	q := linlog.And(linlog.CreatedAtGT(start), linlog.CreatedAtLT(end))
 	// 	query = append(query, q)
 	// }
 	// logs, err = paging.Search(ctx, query)
@@ -49,7 +48,7 @@ func SearchLogs(ctx context.Context, req api.SearchLogRequest, page int, size in
 	// if req.Start != "" && req.End != "" {
 	// 	start := utils.String2time(req.Start)
 	// 	end := utils.String2time(req.End)
-	// 	q := linlog.And(linlog.CreateTimeGT(start), linlog.CreateTimeLT(end))
+	// 	q := linlog.And(linlog.CreatedAtGT(start), linlog.CreatedAtLT(end))
 	// 	query = append(query, q)
 	// }
 	// if req.Keyword != "" {

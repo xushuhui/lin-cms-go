@@ -14,7 +14,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Userusecase struct {
+type LinUserusecase struct {
 	log *log.Helper
 	ur  LinUserRepo
 }
@@ -23,12 +23,12 @@ type UserClaims struct {
 	UserID string `json:"user_id"`
 }
 
-func NewUserUsecase(ur LinUserRepo, logger log.Logger) *Userusecase {
-	return &Userusecase{ur: ur, log: log.NewHelper(logger)}
+func NewLinUserUsecase(ur LinUserRepo, logger log.Logger) *LinUserusecase {
+	return &LinUserusecase{ur: ur, log: log.NewHelper(logger)}
 }
 
-func (u *Userusecase) Login(ctx context.Context, req *api.LoginRequest) (*api.LoginReply, error) {
-	userIdentity, err := u.ur.GetUserIdentityByIdentifier(ctx, req.Username)
+func (u *LinUserusecase) Login(ctx context.Context, req *api.LoginRequest) (*api.LoginReply, error) {
+	userIdentity, err := u.ur.GetUserByUsername(ctx, req.Username)
 	if err != nil {
 		return nil, errors.Unauthorized("USER_NOT_FOUND", "用户不存在")
 	}
@@ -71,31 +71,6 @@ func generateToken(ctx context.Context, userID int64) (string, string, error) {
 	}
 
 	return accessToken, refreshToken, nil
-}
-
-func (u *Userusecase) Register(ctx context.Context, req *api.CreateUserRequest) error {
-	userIdentity, err := u.ur.GetUserIdentityByIdentifier(ctx, req.Username)
-	if err != nil {
-		return errors.InternalServer("INTERNAL_ERROR", "服务器内部错误")
-	}
-	if userIdentity.ID > 0 {
-		return errors.InternalServer("INTERNAL_ERROR", "用户已经存在")
-	}
-	hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return errors.InternalServer("INTERNAL_ERROR", "服务器内部错误")
-	}
-	userIdentity = &LinUser{
-		Username: req.Username,
-		Password: string(hash),
-		Phone:    req.Phone,
-	}
-	err = u.ur.CreateUser(ctx, userIdentity)
-	if err != nil {
-		return errors.InternalServer("INTERNAL_ERROR", "服务器内部错误")
-	}
-
-	return nil
 }
 
 func UpdateMe(ctx context.Context, req *api.UpdateMeRequest, uid int) (err error) {

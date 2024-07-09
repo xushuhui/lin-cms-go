@@ -28,6 +28,12 @@ service App {
       body : "*"
     };
   }
+  rpc UpdateLessonStatus(UpdateLessonRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put : "/v1/lesson/{id}/status"
+      body : "*"
+    };
+  }
   rpc DeleteLesson(IDRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {
       delete : "/v1/lesson/{id}"
@@ -60,17 +66,64 @@ service App {
       delete : "/v1/teacher/{id}"
     };
   }
+  rpc CreateBook(CreateBookRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post : "/v1/book"
+      body : "*"
+    };
+  }
+  rpc ListBook(PageRequest) returns (ListBookReply) {
+    option (google.api.http) = {
+      get : "/v1/book"
+    };
+  }
+  rpc GetBook(IDRequest) returns (GetBookReply) {
+    option (google.api.http) = {
+      get : "/v1/book/{id}"
+    };
+  }
+  rpc UpdateBook(UpdateBookRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put : "/v1/book/{id}"
+      body : "*"
+    };
+  }
+  rpc DeleteBook(IDRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete : "/v1/book/{id}"
+    };
+  }
 }
-message CreateTeacherRequest { string name = 1; }
+message CreateTeacherRequest { 
+  string name = 2;
+  string nickname=3;
+  string area=4;
+  string introduce=5;
+  string avatar=6;
+  string phone=7;
+  string domain=8;
+  string classHour=9;
+  string remark=10;
+}
 message UpdateTeacherRequest {
   int64 id = 1;
   string name = 2;
+  string nickname=3;
+  string area=4;
+  string introduce=5;
+  string avatar=6;
+  string phone=7;
+  string domain=8;
+  string classHour=9;
+  string remark=10;
 }
 message CreateLessonRequest { string title = 1; }
 message UpdateLessonRequest {
   int64 id = 1;
   string title = 2;
+  int32 status=3;
 }
+
 message GetLessonReply { Lesson lesson = 1; }
 message Lesson {
   uint32 id = 1;
@@ -82,14 +135,57 @@ message ListLessonReply {
   int32 page = 3;
   int32 size = 4;
 }
-message ListTeacherReply{
-    repeated Teacher list = 1;
-    uint32 total = 2;
+message ListTeacherReply {
+  repeated Teacher list = 1;
+  uint32 total = 2;
+  int32 page = 3;
+  int32 size = 4;
 }
 message Teacher {
   uint32 id = 1;
   string name = 2;
+  string domain=3;
+  string area=4;
 }
-message GetTeacherReply{
-    Teacher teacher = 1;
+message GetTeacherReply { 
+  uint32 id = 1;
+  string name = 2;
+  string nickname=3;
+  string domain=8;
+  string area=4;
+  string introduce=5;
+  string avatar=6;
+  string phone=7;
+  string classHour=9;
+  string remark=10;
 }
+message CreateBookReply { int64 id = 1; }
+message Book {
+  uint32 id = 1;
+  string title = 2;
+  string author = 3;
+  string summary = 4;
+  string image = 5;
+  string created_at = 6;
+}
+message ListBookReply {
+  repeated Book list = 1;
+  uint32 total = 2;
+  int32 page = 3;
+  int32 size = 4;
+}
+message GetBookReply { Book book = 1; }
+message CreateBookRequest {
+  string title = 1;
+  string author = 2;
+  string summary = 3;
+  string image = 4;
+}
+message UpdateBookRequest {
+  int64 id = 1;
+  string title = 2;
+  string author = 3;
+  string summary = 4;
+  string image = 5;
+}
+

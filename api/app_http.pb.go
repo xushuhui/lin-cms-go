@@ -20,27 +20,39 @@ var _ = binding.EncodeURL
 
 const _ = http.SupportPackageIsVersion1
 
+const OperationAppCreateBook = "/api.App/CreateBook"
 const OperationAppCreateLesson = "/api.App/CreateLesson"
 const OperationAppCreateTeacher = "/api.App/CreateTeacher"
+const OperationAppDeleteBook = "/api.App/DeleteBook"
 const OperationAppDeleteLesson = "/api.App/DeleteLesson"
 const OperationAppDeleteTeacher = "/api.App/DeleteTeacher"
+const OperationAppGetBook = "/api.App/GetBook"
 const OperationAppGetLesson = "/api.App/GetLesson"
 const OperationAppGetTeacher = "/api.App/GetTeacher"
+const OperationAppListBook = "/api.App/ListBook"
 const OperationAppListLesson = "/api.App/ListLesson"
 const OperationAppListTeacher = "/api.App/ListTeacher"
+const OperationAppUpdateBook = "/api.App/UpdateBook"
 const OperationAppUpdateLesson = "/api.App/UpdateLesson"
+const OperationAppUpdateLessonStatus = "/api.App/UpdateLessonStatus"
 const OperationAppUpdateTeacher = "/api.App/UpdateTeacher"
 
 type AppHTTPServer interface {
+	CreateBook(context.Context, *CreateBookRequest) (*emptypb.Empty, error)
 	CreateLesson(context.Context, *CreateLessonRequest) (*emptypb.Empty, error)
 	CreateTeacher(context.Context, *CreateTeacherRequest) (*emptypb.Empty, error)
+	DeleteBook(context.Context, *IDRequest) (*emptypb.Empty, error)
 	DeleteLesson(context.Context, *IDRequest) (*emptypb.Empty, error)
 	DeleteTeacher(context.Context, *IDRequest) (*emptypb.Empty, error)
+	GetBook(context.Context, *IDRequest) (*GetBookReply, error)
 	GetLesson(context.Context, *IDRequest) (*GetLessonReply, error)
 	GetTeacher(context.Context, *IDRequest) (*GetTeacherReply, error)
+	ListBook(context.Context, *PageRequest) (*ListBookReply, error)
 	ListLesson(context.Context, *PageRequest) (*ListLessonReply, error)
 	ListTeacher(context.Context, *PageRequest) (*ListTeacherReply, error)
+	UpdateBook(context.Context, *UpdateBookRequest) (*emptypb.Empty, error)
 	UpdateLesson(context.Context, *UpdateLessonRequest) (*emptypb.Empty, error)
+	UpdateLessonStatus(context.Context, *UpdateLessonRequest) (*emptypb.Empty, error)
 	UpdateTeacher(context.Context, *UpdateTeacherRequest) (*emptypb.Empty, error)
 }
 
@@ -50,12 +62,18 @@ func RegisterAppHTTPServer(s *http.Server, srv AppHTTPServer) {
 	r.GET("/v1/lesson", _App_ListLesson0_HTTP_Handler(srv))
 	r.GET("/v1/lesson/{id}", _App_GetLesson0_HTTP_Handler(srv))
 	r.PUT("/v1/lesson/{id}", _App_UpdateLesson0_HTTP_Handler(srv))
+	r.PUT("/v1/lesson/{id}/status", _App_UpdateLessonStatus0_HTTP_Handler(srv))
 	r.DELETE("/v1/lesson/{id}", _App_DeleteLesson0_HTTP_Handler(srv))
 	r.POST("/v1/teacher", _App_CreateTeacher0_HTTP_Handler(srv))
 	r.GET("/v1/teacher", _App_ListTeacher0_HTTP_Handler(srv))
 	r.GET("/v1/teacher/{id}", _App_GetTeacher0_HTTP_Handler(srv))
 	r.PUT("/v1/teacher/{id}", _App_UpdateTeacher0_HTTP_Handler(srv))
 	r.DELETE("/v1/teacher/{id}", _App_DeleteTeacher0_HTTP_Handler(srv))
+	r.POST("/v1/book", _App_CreateBook0_HTTP_Handler(srv))
+	r.GET("/v1/book", _App_ListBook0_HTTP_Handler(srv))
+	r.GET("/v1/book/{id}", _App_GetBook0_HTTP_Handler(srv))
+	r.PUT("/v1/book/{id}", _App_UpdateBook0_HTTP_Handler(srv))
+	r.DELETE("/v1/book/{id}", _App_DeleteBook0_HTTP_Handler(srv))
 }
 
 func _App_CreateLesson0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
@@ -130,6 +148,28 @@ func _App_UpdateLesson0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) e
 		http.SetOperation(ctx, OperationAppUpdateLesson)
 		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
 			return srv.UpdateLesson(ctx, req.(*UpdateLessonRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _App_UpdateLessonStatus0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateLessonRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppUpdateLessonStatus)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateLessonStatus(ctx, req.(*UpdateLessonRequest))
 		})
 		out, err := h(ctx, &in)
 		if err != nil {
@@ -266,16 +306,126 @@ func _App_DeleteTeacher0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) 
 	}
 }
 
+func _App_CreateBook0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in CreateBookRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppCreateBook)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.CreateBook(ctx, req.(*CreateBookRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _App_ListBook0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in PageRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppListBook)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.ListBook(ctx, req.(*PageRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*ListBookReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _App_GetBook0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in IDRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppGetBook)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.GetBook(ctx, req.(*IDRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*GetBookReply)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _App_UpdateBook0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in UpdateBookRequest
+		if err := ctx.Bind(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppUpdateBook)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.UpdateBook(ctx, req.(*UpdateBookRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
+func _App_DeleteBook0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in IDRequest
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		if err := ctx.BindVars(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppDeleteBook)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.DeleteBook(ctx, req.(*IDRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*emptypb.Empty)
+		return ctx.Result(200, reply)
+	}
+}
+
 type AppHTTPClient interface {
+	CreateBook(ctx context.Context, req *CreateBookRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	CreateLesson(ctx context.Context, req *CreateLessonRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	CreateTeacher(ctx context.Context, req *CreateTeacherRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	DeleteBook(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	DeleteLesson(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	DeleteTeacher(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	GetBook(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *GetBookReply, err error)
 	GetLesson(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *GetLessonReply, err error)
 	GetTeacher(ctx context.Context, req *IDRequest, opts ...http.CallOption) (rsp *GetTeacherReply, err error)
+	ListBook(ctx context.Context, req *PageRequest, opts ...http.CallOption) (rsp *ListBookReply, err error)
 	ListLesson(ctx context.Context, req *PageRequest, opts ...http.CallOption) (rsp *ListLessonReply, err error)
 	ListTeacher(ctx context.Context, req *PageRequest, opts ...http.CallOption) (rsp *ListTeacherReply, err error)
+	UpdateBook(ctx context.Context, req *UpdateBookRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	UpdateLesson(ctx context.Context, req *UpdateLessonRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
+	UpdateLessonStatus(ctx context.Context, req *UpdateLessonRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 	UpdateTeacher(ctx context.Context, req *UpdateTeacherRequest, opts ...http.CallOption) (rsp *emptypb.Empty, err error)
 }
 
@@ -285,6 +435,19 @@ type AppHTTPClientImpl struct {
 
 func NewAppHTTPClient(client *http.Client) AppHTTPClient {
 	return &AppHTTPClientImpl{client}
+}
+
+func (c *AppHTTPClientImpl) CreateBook(ctx context.Context, in *CreateBookRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/v1/book"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAppCreateBook))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
 }
 
 func (c *AppHTTPClientImpl) CreateLesson(ctx context.Context, in *CreateLessonRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
@@ -307,6 +470,19 @@ func (c *AppHTTPClientImpl) CreateTeacher(ctx context.Context, in *CreateTeacher
 	opts = append(opts, http.Operation(OperationAppCreateTeacher))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) DeleteBook(ctx context.Context, in *IDRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/v1/book/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAppDeleteBook))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "DELETE", path, nil, &out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -339,6 +515,19 @@ func (c *AppHTTPClientImpl) DeleteTeacher(ctx context.Context, in *IDRequest, op
 	return &out, err
 }
 
+func (c *AppHTTPClientImpl) GetBook(ctx context.Context, in *IDRequest, opts ...http.CallOption) (*GetBookReply, error) {
+	var out GetBookReply
+	pattern := "/v1/book/{id}"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAppGetBook))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
 func (c *AppHTTPClientImpl) GetLesson(ctx context.Context, in *IDRequest, opts ...http.CallOption) (*GetLessonReply, error) {
 	var out GetLessonReply
 	pattern := "/v1/lesson/{id}"
@@ -357,6 +546,19 @@ func (c *AppHTTPClientImpl) GetTeacher(ctx context.Context, in *IDRequest, opts 
 	pattern := "/v1/teacher/{id}"
 	path := binding.EncodeURL(pattern, in, true)
 	opts = append(opts, http.Operation(OperationAppGetTeacher))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) ListBook(ctx context.Context, in *PageRequest, opts ...http.CallOption) (*ListBookReply, error) {
+	var out ListBookReply
+	pattern := "/v1/book"
+	path := binding.EncodeURL(pattern, in, true)
+	opts = append(opts, http.Operation(OperationAppListBook))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
 	if err != nil {
@@ -391,11 +593,37 @@ func (c *AppHTTPClientImpl) ListTeacher(ctx context.Context, in *PageRequest, op
 	return &out, err
 }
 
+func (c *AppHTTPClientImpl) UpdateBook(ctx context.Context, in *UpdateBookRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/v1/book/{id}"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAppUpdateBook))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
 func (c *AppHTTPClientImpl) UpdateLesson(ctx context.Context, in *UpdateLessonRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
 	var out emptypb.Empty
 	pattern := "/v1/lesson/{id}"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAppUpdateLesson))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) UpdateLessonStatus(ctx context.Context, in *UpdateLessonRequest, opts ...http.CallOption) (*emptypb.Empty, error) {
+	var out emptypb.Empty
+	pattern := "/v1/lesson/{id}/status"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAppUpdateLessonStatus))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "PUT", path, in, &out, opts...)
 	if err != nil {

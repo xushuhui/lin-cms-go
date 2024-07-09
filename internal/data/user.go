@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"fmt"
 
 	"lin-cms-go/internal/biz"
 	"lin-cms-go/internal/data/model"
@@ -9,45 +10,55 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 )
 
-type userRepo struct {
+type linUserRepo struct {
 	data *Data
 	log  *log.Helper
 }
 
-func NewUserRepo(data *Data, logger log.Logger) biz.LinUserRepo {
-	return &userRepo{data: data, log: log.NewHelper(logger)}
+func NewLinUserRepo(data *Data, logger log.Logger) biz.LinUserRepo {
+	return &linUserRepo{data: data, log: log.NewHelper(logger)}
 }
 
-func (r *userRepo) GetUserIdentityByIdentifier(ctx context.Context, identifier string) (*biz.LinUser, error) {
-	var identiy model.LinUserIdentiy
-	if err := r.data.db.First(&identiy, "identifier = ?", identifier).Error; err != nil {
+func (r *linUserRepo) GetUserByUsername(ctx context.Context, username string)(*biz.LinUser, error) {
+	var u model.LinUser
+	err := r.data.db.First(&u, "username = ?", username).Error
+	if  err != nil {
 		return nil, err
 	}
 	return &biz.LinUser{
-		ID:         identiy.UserID,
-		Username:   identiy.Identifier,
-		Password:   identiy.Credential,
-		
+		ID:       u.ID,
+		Username: u.Username,
+		Password: u.Password,
+		Phone:    u.Phone,
 	}, nil
 }
 
-func (r *userRepo) ListUser(ctx context.Context, page int, size int) ([]*biz.LinUser, int64, error) {
+func (r *linUserRepo) ListUser(ctx context.Context, page, size int32, groupId int64) ([]*biz.LinUser, int64, error) {
 	panic("not implemented") // TODO: Implement
 }
 
-func (r *userRepo) GetUser(ctx context.Context, userId int) (*biz.LinUser, error) {
+func (r *linUserRepo) GetUser(ctx context.Context, userId int) (*biz.LinUser, error) {
 	panic("not implemented") // TODO: Implement
 }
 
-func (r *userRepo) CreateUser(ctx context.Context, user *biz.LinUser) error {
+func (r *linUserRepo) CreateUser(ctx context.Context, user *biz.LinUser) error {
+	err := r.data.db.Create(&model.LinUser{
+		Username: user.Username,
+		Password: user.Password,
+		Phone:    user.Phone,
+		Nickname: user.Username,
+	}).Error
+	if err != nil {
+		return fmt.Errorf("CreateUser failed %w ", err)
+	}
+	return nil
+}
+
+func (r *linUserRepo) ChangeUserPassword(ctx context.Context, userId int, password string) error {
 	panic("not implemented") // TODO: Implement
 }
 
-func (r *userRepo) ChangeUserPassword(ctx context.Context, userId int, password string) error {
-	panic("not implemented") // TODO: Implement
-}
-
-func (r *userRepo) UpdateUser(ctx context.Context, user *biz.LinUser) error {
+func (r *linUserRepo) UpdateUser(ctx context.Context, user *biz.LinUser) error {
 	panic("not implemented") // TODO: Implement
 }
 

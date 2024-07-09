@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cast"
 )
 
-var ProviderSet = wire.NewSet(NewCmsService)
+var ProviderSet = wire.NewSet(NewCmsService,NewAppService)
 
 func CurrentUserId(ctx context.Context) string {
 	// if ginCtx, ok := ctx.(*gin.Context); ok {

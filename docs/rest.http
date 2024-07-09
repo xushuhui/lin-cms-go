@@ -1,5 +1,6 @@
-###
-OPTIONS  http://localhost:8000/cms/user/login
+
+# @name login
+POST  {{host}}/cms/user/login
 Content-Type: application/json
 
 {
@@ -8,7 +9,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/cms/user/register
+POST {{host}}/cms/user/register
 Content-Type: application/json
 
 {
@@ -18,14 +19,24 @@ Content-Type: application/json
   "group_id": 1,
   "password": "123456"
 }
-
 ###
-GET http://localhost:3000/cms/admin/permissions
+POST  {{host}}/cms/user/login
+Content-Type: application/json
+
+{
+  "username": "guest",
+  "password": "123456"
+}
+###
+
+@token = {{login.response.body.$.accessToken}}
+
+GET {{host}}/cms/admin/permissions
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
-POST http://localhost:3000/cms/admin/permissions/remove
+POST {{host}}/cms/admin/permissions/remove
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -35,7 +46,7 @@ Authorization: Bearer {{token}}
 }
 
 ###
-POST http://localhost:3000/cms/admin/permissions/dispatch
+POST {{host}}/cms/admin/permissions/dispatch
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
@@ -44,14 +55,74 @@ Authorization: Bearer {{token}}
   "permission_ids": [1,2,3]
 }
 ###
-GET http://localhost:3000/cms/user/permissions
+GET {{host}}/cms/user/permissions
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
-DELETE http://localhost:3000/cms/admin/group/1
+DELETE {{host}}/cms/admin/group/1
 Content-Type: application/json
 Authorization: Bearer {{token}}
 ###
-GET http://localhost:8000/v1/book
+GET {{host}}/v1/book
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+GET {{host}}/v1/teacher
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+GET {{host}}/v1/teacher/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+POST  {{host}}/v1/teacher
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "teacher1"
+
+}
+###
+PUT {{host}}/v1/teacher/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+
+}
+###
+DELETE  {{host}}/v1/teacher/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/v1/lesson
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+GET {{host}}/v1/lesson/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+POST  {{host}}/v1/lesson
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "teacher1"
+
+}
+###
+PUT {{host}}/v1/lesson/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+
+}
+###
+DELETE  {{host}}/v1/lesson/{id}
 Content-Type: application/json
 Authorization: Bearer {{token}}

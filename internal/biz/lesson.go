@@ -21,10 +21,8 @@ type (
 	}
 	Lesson struct {
 		ID         int64
-		CreateTime time.Time
-		UpdateTime time.Time
+		CreatedAt  time.Time
 		Title      string
-		
 	}
 )
 
@@ -42,9 +40,8 @@ func NewLessonUsecase(br LessonRepo, logger log.Logger) *LessonUsecase {
 
 func outLesson(b *Lesson) *api.Lesson {
 	return &api.Lesson{
-		Id:      uint32(b.ID),
-		Title:   b.Title,
-	
+		Id:    uint32(b.ID),
+		Title: b.Title,
 	}
 }
 
@@ -76,7 +73,6 @@ func (u *LessonUsecase) UpdateLesson(ctx context.Context, req *api.UpdateLessonR
 }
 
 func (u *LessonUsecase) CreateLesson(ctx context.Context, req *api.CreateLessonRequest) error {
-	
 	err := u.br.CreateLesson(ctx, req)
 	return err
 }

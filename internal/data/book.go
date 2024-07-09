@@ -32,7 +32,7 @@ func (r *bookRepo) GetBook(ctx context.Context, id int64) (*biz.Book, error) {
 	return toBook(&book), nil
 }
 
-func (r *bookRepo) ListBook(ctx context.Context, page , size int) ([]*biz.Book, int64, error) {
+func (r *bookRepo) ListBook(ctx context.Context, page, size int) ([]*biz.Book, int64, error) {
 	var count int64
 	err := r.data.db.Find(&model.Book{}).Count(&count).Error
 	if err != nil {
@@ -48,10 +48,10 @@ func (r *bookRepo) ListBook(ctx context.Context, page , size int) ([]*biz.Book, 
 
 func (r *bookRepo) CreateBook(ctx context.Context, req *api.CreateBookRequest) error {
 	err := r.data.db.Create(&model.Book{
-		Title:      req.GetTitle(),
-		Author:     req.GetAuthor(),
-		Summary:    req.GetSummary(),
-		Image:      req.GetImage(),
+		Title:   req.GetTitle(),
+		Author:  req.GetAuthor(),
+		Summary: req.GetSummary(),
+		Image:   req.GetImage(),
 	}).Error
 	if err != nil {
 		return err
@@ -59,12 +59,12 @@ func (r *bookRepo) CreateBook(ctx context.Context, req *api.CreateBookRequest) e
 	return nil
 }
 
-func (r *bookRepo) UpdateBook(ctx context.Context,req *api.UpdateBookRequest) error {
+func (r *bookRepo) UpdateBook(ctx context.Context, req *api.UpdateBookRequest) error {
 	err := r.data.db.Model(&model.Book{}).Where("id = ?", req.GetId()).Updates(map[string]interface{}{
-		"title":      req.GetTitle(),
-		"author":     req.GetAuthor(),
-		"summary":    req.GetSummary(),
-		"image":      req.GetImage(),
+		"title":   req.GetTitle(),
+		"author":  req.GetAuthor(),
+		"summary": req.GetSummary(),
+		"image":   req.GetImage(),
 	}).Error
 	if err != nil {
 		return err
@@ -87,12 +87,12 @@ func toBook(model *model.Book) *biz.Book {
 		Author:     model.Author,
 		Summary:    model.Summary,
 		Image:      model.Image,
-		CreateTime: model.CreatedAt,
-		UpdateTime: model.UpdatedAt,
+		CreatedAt:  model.CreatedAt,
 	}
 }
+
 func toBooks(models []*model.Book) []*biz.Book {
-	var books = make([]*biz.Book, len(models))
+	books := make([]*biz.Book, len(models))
 	for i := range models {
 		books[i] = toBook(models[i])
 	}
@@ -103,6 +103,3 @@ func toBooks(models []*model.Book) []*biz.Book {
 // 	model, err = GetDB().Book.Query().Where(book.Title(title)).First(ctx)
 // 	return
 // }
-
-
-

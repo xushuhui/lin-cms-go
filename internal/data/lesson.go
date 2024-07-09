@@ -1,6 +1,5 @@
 package data
 
-
 import (
 	"context"
 
@@ -33,7 +32,7 @@ func (r *lessonRepo) GetLesson(ctx context.Context, id int64) (*biz.Lesson, erro
 	return toLesson(&lesson), nil
 }
 
-func (r *lessonRepo) ListLesson(ctx context.Context, page , size int) ([]*biz.Lesson, int64, error) {
+func (r *lessonRepo) ListLesson(ctx context.Context, page, size int) ([]*biz.Lesson, int64, error) {
 	var count int64
 	err := r.data.db.Find(&model.Lesson{}).Count(&count).Error
 	if err != nil {
@@ -49,8 +48,7 @@ func (r *lessonRepo) ListLesson(ctx context.Context, page , size int) ([]*biz.Le
 
 func (r *lessonRepo) CreateLesson(ctx context.Context, req *api.CreateLessonRequest) error {
 	err := r.data.db.Create(&model.Lesson{
-		Title:      req.GetTitle(),
-	
+		Title: req.GetTitle(),
 	}).Error
 	if err != nil {
 		return err
@@ -58,10 +56,9 @@ func (r *lessonRepo) CreateLesson(ctx context.Context, req *api.CreateLessonRequ
 	return nil
 }
 
-func (r *lessonRepo) UpdateLesson(ctx context.Context,req *api.UpdateLessonRequest) error {
+func (r *lessonRepo) UpdateLesson(ctx context.Context, req *api.UpdateLessonRequest) error {
 	err := r.data.db.Model(&model.Lesson{}).Where("id = ?", req.GetId()).Updates(map[string]interface{}{
-		"title":      req.GetTitle(),
-	
+		"title": req.GetTitle(),
 	}).Error
 	if err != nil {
 		return err
@@ -79,21 +76,17 @@ func (r *lessonRepo) DeleteLesson(ctx context.Context, id int64) error {
 
 func toLesson(model *model.Lesson) *biz.Lesson {
 	return &biz.Lesson{
-		ID:         model.ID,
-		Title:      model.Title,
-		
-		CreateTime: model.CreatedAt,
-		UpdateTime: model.UpdatedAt,
+		ID:    model.ID,
+		Title: model.Title,
+
+		CreatedAt:  model.CreatedAt,
 	}
 }
+
 func toLessons(models []*model.Lesson) []*biz.Lesson {
-	var lessons = make([]*biz.Lesson, len(models))
+	lessons := make([]*biz.Lesson, len(models))
 	for i := range models {
 		lessons[i] = toLesson(models[i])
 	}
 	return lessons
 }
-
-
-
-
